@@ -6,6 +6,7 @@ public class TiposPrimitivos {
 		int numeroEntero = 15;
 		float numeroConDecimales = 15.7f;
 		System.out.println(numeroEntero);
+		System.out.println("Hola Mundo");
 	}
 	    
 	
