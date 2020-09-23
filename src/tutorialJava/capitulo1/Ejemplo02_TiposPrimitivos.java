@@ -1,12 +1,12 @@
 package tutorialJava.capitulo1;
 
-public class TiposPrimitivos {
+public class Ejemplo02_TiposPrimitivos {
 	
 	public static void main (String args[]) {
-		int numeroEntero = 15;
-		float numeroConDecimales = 15.7f;
-		System.out.println(numeroEntero);
-		System.out.println("Hola Mundo");
+		int num1 = 10;
+		int num2 = 3;
+		double resultado = Math.sqrt(num1);
+		System.out.println(resultado);
 	}
 	    
 	
