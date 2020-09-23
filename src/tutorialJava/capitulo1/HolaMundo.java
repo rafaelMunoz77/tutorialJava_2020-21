@@ -3,7 +3,13 @@ package tutorialJava.capitulo1;
 public class HolaMundo {
 
 	public static void main(String[] args) {
-		System.out.println("Hola Mundo");
-	}
+		int miNumero;
+		miNumero = 10;
+		int otroNumero = 15;
+		int suma;
+		suma = miNumero + otroNumero;
+		System.out.println(suma);
+		double miNumeroReal = 14.5;
+	}     
 
 }
