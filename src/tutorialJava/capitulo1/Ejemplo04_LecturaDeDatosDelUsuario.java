@@ -2,7 +2,7 @@ package tutorialJava.capitulo1;
 
 import javax.swing.JOptionPane;
 
-public class LecturaDeDatosDelUsuario {
+public class Ejemplo04_LecturaDeDatosDelUsuario {
 
 	public static void main (String args[]) {
 //		lecturaCadenaDeCaracteres();
@@ -20,12 +20,12 @@ public class LecturaDeDatosDelUsuario {
 	
 	
 	public static void lecturaDatosEnteros () {
-		String str = JOptionPane.showInputDialog("Introduzca un número entero: ");
+		String str = JOptionPane.showInputDialog("Introduzca un nï¿½mero entero: ");
 		int var1 = Integer.parseInt(str);
-		System.out.println("Número introducido: " + var1);
-		str = JOptionPane.showInputDialog("Introduzca otro número entero: ");
+		System.out.println("Nï¿½mero introducido: " + var1);
+		str = JOptionPane.showInputDialog("Introduzca otro nï¿½mero entero: ");
 		int var2 = Integer.parseInt(str);
-		System.out.println("Número introducido: " + var2);
+		System.out.println("Nï¿½mero introducido: " + var2);
 		
 		int suma = var1 + var2;
 		System.out.println("Suma de los dos valores introducidos: " + suma);
@@ -33,25 +33,25 @@ public class LecturaDeDatosDelUsuario {
 	
 	
 	public static void lecturaDatosEnterosConError () {
-		String str = JOptionPane.showInputDialog("Introduzca un número entero: ");
+		String str = JOptionPane.showInputDialog("Introduzca un nï¿½mero entero: ");
 		try {
 			int var1 = Integer.parseInt(str);
-			System.out.println("Número introducido: " + var1);
+			System.out.println("Nï¿½mero introducido: " + var1);
 		}
 		catch (Exception ex) {
-			System.out.println("Error, no has introducido un número entero");
+			System.out.println("Error, no has introducido un nï¿½mero entero");
 		}
 	}
 
 	
 	public static void lecturaDatosFlotantes () {
-		String str = JOptionPane.showInputDialog("Introduzca un número flotante: ");
+		String str = JOptionPane.showInputDialog("Introduzca un nï¿½mero flotante: ");
 		float var1 = Float.parseFloat(str);
-		System.out.println("Número introducido: " + var1);
+		System.out.println("Nï¿½mero introducido: " + var1);
 		
-		str = JOptionPane.showInputDialog("Introduzca otro número flotante: ");
+		str = JOptionPane.showInputDialog("Introduzca otro nï¿½mero flotante: ");
 		float var2 = Float.parseFloat(str);
-		System.out.println("Número introducido: " + var2);
+		System.out.println("Nï¿½mero introducido: " + var2);
 		
 		float suma = var1 + var2;
 		System.out.println("Suma de los dos valores introducidos: " + suma);

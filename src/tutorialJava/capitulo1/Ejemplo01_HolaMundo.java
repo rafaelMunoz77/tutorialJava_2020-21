@@ -1,6 +1,6 @@
 package tutorialJava.capitulo1;
 
-public class HolaMundo {
+public class Ejemplo01_HolaMundo {
 
 	public static void main(String[] args) {
 		int miNumero;

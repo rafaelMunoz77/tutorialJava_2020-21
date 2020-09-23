@@ -1,6 +1,6 @@
 package tutorialJava.capitulo1;
 
-public class TiposPrimitivos {
+public class Ejemplo02_TiposPrimitivos {
 	
 	public static void main (String args[]) {
 		int num1 = 10;
