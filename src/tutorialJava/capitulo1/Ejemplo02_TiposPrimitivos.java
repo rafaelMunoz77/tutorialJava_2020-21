@@ -15,7 +15,7 @@ public class Ejemplo02_TiposPrimitivos {
 		numDouble = 4.8; // Asignación de valor double a variable double
 	
 		// Impresión en la consola de salida de las variabless
-		System.out.println("El valor de la variable numEntero es: " + numEntero + 
+		System.out.println("El valor de la variable numEntero es: " + numEntero +
 				"\nEl valor de la variable numFlotante es: " + numFlotante +
 				"\nEl valor de la variable numDouble es: " + numDouble);
 	}

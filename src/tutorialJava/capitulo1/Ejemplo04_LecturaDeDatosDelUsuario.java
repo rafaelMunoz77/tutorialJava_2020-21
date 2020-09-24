@@ -9,16 +9,16 @@ public class Ejemplo04_LecturaDeDatosDelUsuario {
 	 * @param args
 	 */
 	public static void main(String args[]) {
-		lecturaCadenaDeCaracteres(); // Llamada al método "lecturaCadenaDeCaracteres()"
-//		lecturaDatosEnteros();
+//		lecturaCadenaDeCaracteres(); // Llamada al método "lecturaCadenaDeCaracteres()"
+		lecturaDatosEnteros();
 	}
 
 	/**
 	 * Método lecturaCadenaDeCaracteres
 	 */
 	public static void lecturaCadenaDeCaracteres() {
-		String palabra; // Creo una variable String, para almacenar la palabra introducida por el usuario
-		String str = JOptionPane.showInputDialog("Introduzca una palabra o frase, ya!"); // Saca en pantalla una ventana y obtiene un string
+		String str; // Creo una variable String, para almacenar la palabra introducida por el usuario
+		str = JOptionPane.showInputDialog("Introduzca una palabra o frase, ya!"); // Saca en pantalla una ventana y obtiene un string
 		System.out.println("Palabra o frase introducida: " + str); // Imprime en la consola la palabra introducida
 	}
 
