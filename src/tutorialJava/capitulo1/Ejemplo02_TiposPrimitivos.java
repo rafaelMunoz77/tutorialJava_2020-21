@@ -2,6 +2,9 @@ package tutorialJava.capitulo1;
 
 public class Ejemplo02_TiposPrimitivos {
 	
+	/*
+	 * Comentario multilínea
+	 */
 	public static void main (String args[]) {
 		int numEntero;  // Declaración de una variable entera
 		float numFlotante; // Declaración de una variable real o flotante
@@ -11,7 +14,7 @@ public class Ejemplo02_TiposPrimitivos {
 		numFlotante = (float) 4.5; // Casting de valor double a float
 		numDouble = 4.8; // Asignación de valor double a variable double
 	
-		// Impresi�n en la consola de salida de las variabless
+		// Impresión en la consola de salida de las variabless
 		System.out.println("El valor de la variable numEntero es: " + numEntero + 
 				"\nEl valor de la variable numFlotante es: " + numFlotante +
 				"\nEl valor de la variable numDouble es: " + numDouble);
