@@ -7,7 +7,7 @@ public class Ejemplo02_TiposPrimitivos {
 	 */
 	public static void main (String args[]) {
 		int numEntero;  // Declaración de una variable entera
-		numEntero = 4;
+		numEntero = 104;
 		float numFlotante; // Declaración de una variable real o flotante
 		double numDouble; // Declaración de una variable flotante larga
 		
