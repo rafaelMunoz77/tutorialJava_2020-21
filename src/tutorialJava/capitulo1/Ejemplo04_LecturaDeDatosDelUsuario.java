@@ -9,8 +9,7 @@ public class Ejemplo04_LecturaDeDatosDelUsuario {
 	 * @param args
 	 */
 	public static void main(String args[]) {
-//		lecturaCadenaDeCaracteres(); // Llamada al método "lecturaCadenaDeCaracteres()"
-		lecturaDatosEnteros();
+		lecturaCadenaDeCaracteres(); // Llamada al método "lecturaCadenaDeCaracteres()"
 	}
 
 	/**
@@ -22,6 +21,17 @@ public class Ejemplo04_LecturaDeDatosDelUsuario {
 		System.out.println("Palabra o frase introducida: " + str); // Imprime en la consola la palabra introducida
 	}
 
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	/**
 	 * Método lecturaDatosEnteros
 	 */
