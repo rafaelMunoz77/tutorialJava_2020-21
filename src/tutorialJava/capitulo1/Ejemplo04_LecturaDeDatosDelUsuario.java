@@ -36,7 +36,7 @@ public class Ejemplo04_LecturaDeDatosDelUsuario {
 	 * Método lecturaDatosEnteros
 	 */
 	public static void lecturaDatosEnteros() {
-		String str = JOptionPane.showInputDialog("Introduzca un número entero: "); // Sacamos ventana en pantalla y obtenemos un String
+		String str = "1732"; // Sacamos ventana en pantalla y obtenemos un String
 		int var1 = Integer.parseInt(str); // Convierto la variable escrita en un número entero
 		System.out.println("Número introducido: " + var1); // Muestro el número en pantalla
 		// Se repiten los pasos anteriores
