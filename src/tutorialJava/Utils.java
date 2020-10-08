@@ -12,4 +12,18 @@ public class Utils {
 		 return (int) Math.round(Math.random() * 100);
 	}
 	
+	
+	
+	public static int obtenerEntero () {
+		int numero = 0;
+		try {
+			InputStreamReader isr = new InputStreamReader(System.in);
+			BufferedReader br = new BufferedReader (isr);
+			numero = Integer.parseInt (br.readLine());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return numero;
+	}
+
 }

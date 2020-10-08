@@ -5,7 +5,7 @@ import javax.swing.JOptionPane;
 import tutorialJava.Utils;
 
 
-public class Condicionales {
+public class Ejemplo01_Condicionales {
 
 	 
 	/**
@@ -13,10 +13,10 @@ public class Condicionales {
 	 * @param args
 	 */
 	public static void main (String args[]) {
-		primerEjemploCondicionalSimple();
+//		primerEjemploCondicionalSimple();
 //		ejemploCondicionalCompuesto();
 //		ejemploCondicionalAnidado();
-//		ejemploCondicionalMultiple();
+		ejemploCondicionalMultiple();
 //		ejemploOperadorTernario();
 	}
 	
@@ -42,7 +42,7 @@ public class Condicionales {
 	 */
 	public static void ejemploCondicionalCompuesto () {
 		int numero = Utils.obtenerNumeroAzar(); // Obtengo número al azar
-		System.out.println("Var n�mero: " + numero);
+		System.out.println("Var número: " + numero);
 		
 		// Determino si es mayor de 50 o no lo es
 		if (numero > 50) {
@@ -82,12 +82,14 @@ public class Condicionales {
 	public static void ejemploCondicionalMultiple () {
 		int nota = 11;
 		
+		// switch decidirá el camino a tomar en función del valor
+		// de la variable
 		switch (nota) {
 			case 0:
 			case 1:
 			case 2:
-				System.out.println("Muy deficiente");
-				break;
+				System.out.println("Muy deficiente"); // Se llega en los cases 0, 1 y 2
+				break; // Con esta instrucción salimos del switch
 			case 3:
 			case 4:
 				System.out.println("Deficiente");
