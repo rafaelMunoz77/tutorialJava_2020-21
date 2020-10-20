@@ -10,7 +10,7 @@ public class Ejemplo03_Bucle_DoWhile {
 		i = 0;
 		do {
 			System.out.println("Valor de la i: " + i);
-			i++;
+			i++;  // Equivalente a   i += 1     o      i = i + 1
 		} while (i < 11);
 	}
 

@@ -9,7 +9,7 @@ public class Ejemplo04_LecturaDeDatosDelUsuario {
 	 * @param args
 	 */
 	public static void main(String args[]) {
-		lecturaCadenaDeCaracteres(); // Llamada al método "lecturaCadenaDeCaracteres()"
+		lecturaDatosEnteros();
 	}
 
 	/**

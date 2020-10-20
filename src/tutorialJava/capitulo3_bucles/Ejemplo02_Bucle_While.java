@@ -3,6 +3,11 @@ package tutorialJava.capitulo3_bucles;
 import tutorialJava.Utils;
 
 public class Ejemplo02_Bucle_While {
+	
+	public static void main (String args[]) {
+		pedirNumerosAlUsuario();
+	}
+	
 
 	public static void cuentaAdelanteYCuentaAtras() {
 		int i;
@@ -41,7 +46,7 @@ public class Ejemplo02_Bucle_While {
 		while (numero != 0) {
 			System.out.println("Por favor, introduzca un n�mero (0 para terminar): ");
 			numero = Utils.obtenerEntero();
-			acumulador += numero;
+			acumulador += numero;  // igual a      acumulador = acumulador + numero;
 		}
 		System.out.println("Suma de todos los n�meros: " + acumulador);
 	}

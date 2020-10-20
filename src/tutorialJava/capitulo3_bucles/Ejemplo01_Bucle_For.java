@@ -13,11 +13,23 @@ public class Ejemplo01_Bucle_For {
 	 * @param args
 	 */
 	public static void main (String args[]) {
-		cuentaAdelanteYAtras();
-		cuentaAdelanteConMultiplos();
-		tablaMultiplicar();
-		mayorDeUnaSerieDeNumeros();
-		numerosPrimos();
+//		cuentaAdelanteYAtras();
+//		cuentaAdelanteConMultiplos();
+//		tablaMultiplicar();
+//		mayorDeUnaSerieDeNumeros();
+//		numerosPrimos();
+		
+		
+		int suma = 0;
+		int numero = -1;
+		for (;numero != 0;) {
+			numero = Integer.parseInt(JOptionPane.showInputDialog("Introduzca número"));
+			suma += numero;
+		}
+		
+		System.out.println("Suma: " + suma);
+		
+		
 	}
 	
 	
@@ -99,7 +111,7 @@ public class Ejemplo01_Bucle_For {
 	 * Realizar factorial de un número
 	 */
 	public static void factorial () {
-		System.out.println ("Introduzca el número cuyo factorial desea conocer: ");
+//		System.out.println ("Introduzca el número cuyo factorial desea conocer: ");
 		int factorial = 6;
 		
 		for (int i = factorial-1; i > 1; i--) {
@@ -115,22 +127,56 @@ public class Ejemplo01_Bucle_For {
 	 * Obtener números primos
 	 */
 	public static void numerosPrimos () {
-		int numero = 2;
-		boolean esPrimo = true;
+		int limite = 50000;
 		
-		for (numero = 1; numero < 700000000; numero++) {
-			esPrimo = true;
-			for (int i = 2; i <= (numero/2+1) && esPrimo == true; i++) {
-				if (numero % i == 0) { // Hay divisor, el número es compuesto
-					//System.out.println("Divisor encontrado: " + i);
-					esPrimo = false;
+		
+		long millisDesde1970 = new Date().getTime();
+		
+		for (int numero = 2; numero < limite; numero++) {
+
+			
+			
+			boolean numeroEsPrimo = true;
+			for (int i = 2; i < (numero / 2 + 1); i++) {
+				if (numero % i == 0) {
+					numeroEsPrimo = false;
+					break;
 				}
 			}
-			if (esPrimo == true) {
-				System.out.println("Número primo: " + numero);
+			
+			if (numeroEsPrimo == true) {
+				System.out.println("el número " + numero + " es primo");
 			}
+			
+			
+			
+			
+			
 		}
-		System.out.println("Acabado");
+		
+		
+		long millisDespuesDeBusquedaPrimos = new Date().getTime();
+		
+		long restaDeMillis = millisDespuesDeBusquedaPrimos - millisDesde1970;
+		
+		System.out.println("He tardado " + restaDeMillis + " milisegundos - " + (restaDeMillis / 1000) + " segundos");		
+		
+		
+		
+		
+		
 	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	
 }

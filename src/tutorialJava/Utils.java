@@ -2,6 +2,7 @@ package tutorialJava;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
+import java.util.Scanner;
 
 import javax.swing.JOptionPane;
 
@@ -26,4 +27,16 @@ public class Utils {
 		return numero;
 	}
 
+	
+	
+	public static int obtenerEnteroMet2() {
+		Scanner sc = new Scanner(System.in);
+		return sc.nextInt();
+	}
+	
+	
+	public static int obtenerEnteroMet3() {
+		String str = JOptionPane.showInputDialog("Introduce un número");
+		return Integer.parseInt(str);
+	}
 }
