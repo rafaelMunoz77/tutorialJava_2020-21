@@ -13,6 +13,12 @@ public class Utils {
 		 return (int) Math.round(Math.random() * 100);
 	}
 	
+
+	
+	public static int obtenerNumeroAzar (int min, int max) {
+		 return (int) Math.round(Math.random() * (max - min)) + min;
+	}
+	 
 	
 	
 	public static int obtenerEntero () {
