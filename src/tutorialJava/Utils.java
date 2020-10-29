@@ -8,20 +8,31 @@ import javax.swing.JOptionPane;
 
 public class Utils {
 
-	
+	/**
+	 * Método que obtiene y devuelve un número al azar, entre 0 y 100.
+	 * @return Número generado al azar entre 0 y 100
+	 */
 	public static int obtenerNumeroAzar () {
 		 return (int) Math.round(Math.random() * 100);
 	}
 	
 
-	
+	/**
+	 * 
+	 * @param min Límite inferior de generación del número al azar
+	 * @param max Límite superior de generación del número al azar
+	 * @return Número generado al azar entre dos límites.
+	 */
 	public static int obtenerNumeroAzar (int min, int max) {
 		 return (int) Math.round(Math.random() * (max - min)) + min;
 	}
 	 
 	
-	
-	public static int obtenerEntero () {
+	/**
+	 * Obtiene un número entero introducido por el usuario, por el método de InputStreamReader
+	 * @return Número entero introducido por el usuario.
+	 */
+	public static int obtenerEnteroPorInputStreamReader () {
 		int numero = 0;
 		try {
 			InputStreamReader isr = new InputStreamReader(System.in);
@@ -34,15 +45,29 @@ public class Utils {
 	}
 
 	
-	
-	public static int obtenerEnteroMet2() {
+	/**
+	 * Obtiene un número entero a través de un objeto Scanner
+	 * @return Número entero introducido por el usuario.
+	 */
+	public static int obtenerEnteroPorScanner() {
 		Scanner sc = new Scanner(System.in);
 		return sc.nextInt();
 	}
 	
-	
-	public static int obtenerEnteroMet3() {
+	/**
+	 * Obtiene un número entero a través de un JOptionPane
+	 * @return Número entero introducido a través de un JOptionPane.
+	 */
+	public static int obtenerEnteroPorJOptionPane() {
 		String str = JOptionPane.showInputDialog("Introduce un número");
 		return Integer.parseInt(str);
+	}
+	
+	/**
+	 * 
+	 * @return Número entero introducido por el usuario
+	 */
+	public static int obtenerEntero() {
+		return obtenerEnteroPorJOptionPane();
 	}
 }
