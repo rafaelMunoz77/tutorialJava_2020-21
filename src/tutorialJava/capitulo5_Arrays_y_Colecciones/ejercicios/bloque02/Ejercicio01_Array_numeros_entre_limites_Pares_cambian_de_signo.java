@@ -21,7 +21,7 @@ public class Ejercicio01_Array_numeros_entre_limites_Pares_cambian_de_signo {
 		
 		// Paso por todos los elementos del array, buscando los de índice par y cambiando su signo
 		for (int i = 0; i < array.length; i++) {
-			if (i % 2 == 0) { // El índice es par
+			if (array[i] % 2 == 0) { // El valor es par
 				array[i] = -array[i];
 			}
 		}

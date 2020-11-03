@@ -10,7 +10,7 @@ import tutorialJava.Utils;
  *
  */
 public class Ejercicio00_Mayor_Menor_Suma_Media_de_Array {
-
+	
 	/**
 	 * Método principal
 	 * @param args

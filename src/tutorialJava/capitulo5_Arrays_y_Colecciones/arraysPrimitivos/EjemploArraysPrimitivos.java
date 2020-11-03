@@ -10,8 +10,7 @@ public class EjemploArraysPrimitivos {
 	 */
 	public static void main(String[] args) {
 		primerEjemploArray();
-		segundoEjemploArray();
-		
+//		segundoEjemploArray();
 	}
 	
 	
