@@ -27,6 +27,7 @@ public class Utils {
 		 return (int) Math.round(Math.random() * (max - min)) + min;
 	}
 	 
+ 
 	
 	/**
 	 * Obtiene un número entero introducido por el usuario, por el método de InputStreamReader
@@ -60,7 +61,8 @@ public class Utils {
 	 */
 	public static int obtenerEnteroPorJOptionPane() {
 		String str = JOptionPane.showInputDialog("Introduce un número");
-		return Integer.parseInt(str);
+		int numEntero = Integer.parseInt(str);
+		return numEntero;
 	}
 	
 	/**
