@@ -1,4 +1,4 @@
-package tutorialJava.examenes.examen20201103.examenA;
+package tutorialJava.examenes.examen20201103.examenB;
 
 import tutorialJava.Utils;
 
@@ -9,7 +9,7 @@ import tutorialJava.Utils;
  * los números que aparecen en el array.
  *
  */
-public class Ejercicio00_Mayor_Menor_Suma_Media_de_Array {
+public class EjercicioA_Mayor_Menor_Suma_Media_de_Array {
 	
 	/**
 	 * Método principal

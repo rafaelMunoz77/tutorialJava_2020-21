@@ -1,5 +1,10 @@
 package tutorialJava;
 
+/**
+ * 
+ * @author rafae
+ *
+ */
 public class UtilsArrays {
 
 	/**
@@ -12,7 +17,7 @@ public class UtilsArrays {
 			System.out.print(array[i] + " ");
 		}
 	}
-	
+
 	/**
 	 * 
 	 * @param longitud
