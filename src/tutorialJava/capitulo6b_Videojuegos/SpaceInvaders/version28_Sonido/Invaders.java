@@ -1,0 +1,373 @@
+package tutorialJava.capitulo6b_Videojuegos.SpaceInvaders.version28_Sonido;
+
+import java.awt.BorderLayout;
+import java.awt.Canvas;
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.Graphics2D;
+import java.awt.Rectangle;
+import java.awt.Toolkit;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.awt.image.BufferStrategy;
+import java.awt.image.BufferedImage;
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+
+
+/**
+ * @author Rafael Muñoz Ruiz
+ * 
+ * Clase principal del juego, contiene la ventana y, al mismo tiempo, es el objeto Canvas sobre el que
+ * se redibuja continuamente el juego. Tiene la lista de actores. Para el repintado de escena utiliza
+ * la técnica de doble búffer, a través del objeto BufferStrategy
+ *
+ */
+public class Invaders extends Canvas {
+	// Ventana principal del juego
+	JFrame ventana = new JFrame("Invaders");
+	
+	// Indicamos alto y ancho del objeto tipo Canvas
+	private static final int JFRAME_WIDTH=640;
+	private static final int JFRAME_HEIGHT=480;
+	
+	// Velocidad de los fotogramas, en concreto este indica que el proceso de redibujado dormirá 10 millis
+	// tras haber repintado la escena
+	public static final int SPEED_FPS=60;
+	
+	// Lista con todos los actores que intervienen en el videojuego
+	private List<Actor> actors = new ArrayList<Actor>(); 
+	// Lista con actores que deben incorporarse en la siguiente iteración del juego
+	private List<Actor> newActorsForNextIteration = new ArrayList<Actor>();
+	
+	// BufferStrategy usado para conseguir la técnica de doble búffer
+	private BufferStrategy strategy;
+	private long usedTime; // Tiempo usado en cada iteración del bucle principal del juego.
+	
+	// Instancia para patrón Singleton
+	private static Invaders instance = null;
+	
+	// Referencia que guardaremos apuntando al objeto de tipo Player
+	private Player player = null;
+	
+	// Para establecer el lugar que ocupa la barra de estado, necesitamos tener una referencia de hasta dónde llega
+	// la zona vertical de juego y dónde empieza la barra de estado
+	private int YforStatusBar = 0;
+	
+	// La siguiente variable es una bandera booleana que se activará cuando el juego llegue a su fin, se establece
+	// un método setter para permitir que desde cualquier lugar se decida terminar el juego
+	private boolean gameEnded = false;
+	
+	// Creo un actor de tipo "animatedBackground, que será el fondo animado del video juego
+	private AnimatedBackground animatedBackground = null;
+	
+	
+	/**
+	 * Constructor: crea la ventana, obtiene una referencia al panel principal, introduce el Canvas en su interior
+	 * y habilita y deshabilita varios comportamientos de la ventana
+	 */
+	public Invaders() {
+		// Lo primero que hago en el juego es una precarga de todos los archivos de sonido
+		SoundsRepository.getInstance();
+		
+		// Obtengo referencia al panel principal de la ventana
+		JPanel panel = (JPanel) ventana.getContentPane();
+		// Establezco una plantilla en el panel, para poder incorporar el Canvas
+		panel.setLayout(new BorderLayout());
+		// Agrego el Canvas al panel
+		panel.add(this, BorderLayout.CENTER);
+		// Dimensiono la ventana
+		ventana.setBounds(0,0, JFRAME_WIDTH, JFRAME_HEIGHT);
+		// Muestro la ventana en pantalla
+		ventana.setVisible(true);
+		// Desactivo el comportamiento por defecto al pulsar el botón de cierre de la ventana
+		ventana.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+		// Agrego un escuchador a la ventana, para detectar el evento de cierre de la misma
+		ventana.addWindowListener( new WindowAdapter() {
+			public void windowClosing(WindowEvent e) {
+				cerrarAplicacion();
+			}
+		});
+		// Con ignoreRepaint le decimos al JFrame que no debe repintarse cuando el Sistema Operativo se lo indique,
+		// nosotros nos ocupamos totalmente del refresco de la pantalla
+		ventana.setIgnoreRepaint(true);
+		// El Canvas se dibujará en pantalla con una estrategia de doble búffer
+		this.createBufferStrategy(2);
+		// Obtengo una referencia a la estrategia de doble búffer.
+		strategy = getBufferStrategy();
+		// El foco de Windows irá al Canvas, para que directamente podamos controlar este juego a través del teclado
+		this.requestFocus();
+		
+		// Lanzo la música de fondo, en modo bucle
+		SoundsRepository.getInstance().loopSound(SoundsRepository.BACKGROUND_THEME);
+	}
+	
+	/**
+	 * Método de obtención de patrón Singleton
+	 * @return
+	 */
+	public static Invaders getInstance () {
+		if (instance == null) {
+			instance = new Invaders();
+		}
+		return instance;
+	}
+	
+	/**
+	 * Al cerrar la aplicación preguntaremos al usuario si está seguro de que desea salir.
+	 */
+	private void cerrarAplicacion() {
+		String [] opciones ={"Aceptar","Cancelar"};
+		int eleccion = JOptionPane.showOptionDialog(ventana,"¿Desea cerrar la aplicación?","Salir de la aplicación",
+		JOptionPane.YES_NO_OPTION,
+		JOptionPane.QUESTION_MESSAGE, null, opciones, "Aceptar");
+		if (eleccion == JOptionPane.YES_OPTION) {
+			System.exit(0);
+		}
+	}
+
+	
+	/**
+	 * Método con el que iniciamos la cantidad de actores que aparecen en el videojuego
+	 */
+	public void initWorld() {
+		// Creo una oleada de 10 Monstruos
+		for (int i = 0; i < 10; i++){
+			Monster m = new Monster();
+			m.setX((int)(Math.random() * (this.getWidth() - m.getWidth())) ); // Inicializo al azar la posición del eje horizontal del monstruo
+			m.setY(i * 20); // Inicializo la posición en el eje vertical, escalonando los monstruos hacia abajo
+			m.setVx((int)(Math.random() * (20 - 2) + 2)); // Inicio al azar la velocidad de cada monstruo en el eje horizontal, entre 2 y 20
+			actors.add(m); // agrego el nuevo actor a la lista de actores del juego
+		}
+		
+		// Agrego a la lista de jugadores al actor de tipo Player
+		Player player = new Player();
+		player.setX(this.getWidth() / 2 - player.getWidth() / 2); // Centro al player horizontalmente
+		player.setY(this.getHeight() - 80); // Pongo al player en la parte inferior del Canvas
+		this.actors.add(player);
+		// Mantengo una referencia al Player
+		this.player = player;
+		// Agrego un listener para eventos de teclado y, cuando se produzcan, los derivo al objeto de tipo Player
+		this.addKeyListener(player);
+		
+		// Creo un nuevo fondo animado, será un actor que no se tendrá en cuenta para localizar colisiones
+		this.animatedBackground = new AnimatedBackground();
+
+	}
+	
+	/**
+	 * Este método actualiza la posición y valores de los diferentes actores del juego, se ejecuta en cada iteración.
+	 */
+	public void updateWorld() {
+		// Para permitir un fondo animado con scroll, llamo al método "act" del fondo animado. De esta manera consigo
+		// actulizar el recuadro del fondo a mostrar
+		this.animatedBackground.act();
+		
+		// Puede ocurrir que existan actores que se deben eliminar para el siguiente pintado de escena.
+		// Cuando estoy recorriendo una lista no puedo eliminar elementos sin arriesgarme a provocar un problema de
+		// concurrencia de acceso. Por ello lo que hago es crear una nueva lista con los elementos a eliminar. Después
+		// se recorre esa lista eliminando los elementos de la lista principal y, por último, limpio la lista
+		List<Actor> actorsForRemoval = new ArrayList<Actor>();
+		for (Actor actor : this.actors) {
+			if (actor.isMarkedForRemoval()) {
+				actorsForRemoval.add(actor);
+			}
+		}
+		// Elimino los actores marcados para su eliminación
+		for (Actor actor : actorsForRemoval) {
+			this.actors.remove(actor);
+		}
+		// Limpio la lista de actores para eliminar
+		actorsForRemoval.clear();
+		
+		// Además de eliminar actores, también puede haber actores nuevos que se deban insertar en la siguiente iteración.
+		// Se insertan y después se limpia la lista de nuevos actores a insertar
+		this.actors.addAll(newActorsForNextIteration);
+		this.newActorsForNextIteration.clear();
+
+		// Finalmente, se llama al método "act" de cada actor, para que cada uno recalcule por si mismo sus valores.
+		for (Actor actor : this.actors) {
+			actor.act();
+		}
+		
+		// Una vez que cada actor ha actuado, intento detectar colisiones entre los actores y notificarlas. Para detectar
+		// estas colisiones, no nos queda más remedio que intentar detectar la colisión de cualquier actor con cualquier otro
+		// sólo con la excepción de no comparar un actor consigo mismo.
+		// La detección de colisiones se va a baser en formar un rectángulo con las medidas que ocupa cada actor en pantalla,
+		// De esa manera, las colisiones se traducirán en intersecciones entre rectángulos.
+		for (Actor actor1 : this.actors) {
+			// No comprobaré colisiones con actores que han sido marcados para su eliminación
+			if (!actor1.isMarkedForRemoval()) {
+				// Creo un rectángulo para este actor.
+				Rectangle rect1 = new Rectangle(actor1.getX(), actor1.getY(), actor1.getWidth(), actor1.getHeight());
+				// Compruebo un actor con cualquier otro actor
+				for (Actor actor2 : this.actors) {
+					// Evito comparar un actor consigo mismo, ya que eso siempre provocaría una colisión y no tiene sentido
+					// Además también se debe evitar trabajar con actores que han sido marcados para ser eliminados
+					if (!actor1.equals(actor2) && !actor2.isMarkedForRemoval()) {
+						// Formo el rectángulo del actor 2
+						Rectangle rect2 = new Rectangle(actor2.getX(), actor2.getY(), actor2.getWidth(), actor2.getHeight());
+						// Si los dos rectángulos tienen alguna intersección, notifico una colisión en los dos actores
+						if (rect1.intersects(rect2)) {
+							actor1.collisionWith(actor2); // El actor 1 colisiona con el actor 2
+							actor2.collisionWith(actor1); // El actor 2 colisiona con el actor 1
+						}
+					}
+				}
+			}
+		}
+	}
+	
+	/**
+	 * Método responsable del pintado de toda la escena, se ejecuta una vez por cada ciclo del programa
+	 */
+	public void paintWorld() {
+		// Resuelve un problema de sincronización de memoria de vídeo en Linux
+		Toolkit.getDefaultToolkit().sync();
+		// Obtengo el objeto gráfico que me permita pintar en el doble búffer
+		Graphics2D g = (Graphics2D)strategy.getDrawGraphics();
+		// Pinto fondo animado que ocupa toda la escena
+		this.animatedBackground.paint(g);
+		// Para cada actor del juego, le pido que se pinte a sí mismo
+		for (Actor actor : this.actors) {
+			actor.paint(g);
+		}
+		
+		// Pinto la barra de estado, para lo que necesito conocer el alto del juego
+		YforStatusBar = this.getHeight() - 25;
+		this.paintStatus(g);
+		
+		// Si el juego ha llegado a su fin, permito que siga habiendo frames pero coloco un mensaje de "game over"
+		if (this.gameEnded) {
+			paintGameOver(g);
+		}
+		
+		// Muestro la imagen de búffer que acabo de crear
+		strategy.show();
+	}
+
+	
+	/**
+	 * Pinta la barra de estado completa del videojuego
+	 * @param g
+	 */
+	public void paintStatus(Graphics2D g) {
+	  paintScore(g);
+	  paintShields(g);
+	  paintAmmo(g);
+	}
+	
+
+	/**
+	 * Pinta una barra de progreso que cambia de color cuando el jugador va perdiendo vida
+	 * @param g
+	 */
+	public void paintShields(Graphics2D g) {
+		// Se pinta en rojo un rectángulo con toda la vida disponible
+		g.setPaint(Color.red);
+		g.fillRect(280, YforStatusBar, Player.MAX_SHIELDS, 20);
+		// En azul pinta un rectángulo con los puntos de vida actuales 
+		g.setPaint(Color.blue);
+		g.fillRect(280 + Player.MAX_SHIELDS - player.getShields(), YforStatusBar, player.getShields(), 20);
+		// En verde se pinta un texto con la cantidad de puntos de vida actuales
+		g.setFont(new Font("Arial",Font.BOLD,20));
+		g.setPaint(Color.green);
+		g.drawString("Shields", 170, YforStatusBar + 20);
+    	
+	}
+    
+	/**
+	 * Pinta la puntuación del jugador
+	 * @param g
+	 */
+	public void paintScore(Graphics2D g) {
+		// En verde pinta el texto "Score:"
+		g.setFont(new Font("Arial", Font.BOLD,20));
+		g.setPaint(Color.green);
+		g.drawString("Score:", 20, YforStatusBar + 20);
+		// En rojo pinta una cadena de texto con la puntuación conseguida
+		g.setPaint(Color.red);
+		g.drawString(player.getScore() + "", 100, YforStatusBar + 20);
+	}
+	
+	/**
+	 * Pinta un pequeño icono de bomba para cada bomba que aún podemos disparar
+	 * @param g
+	 */
+	public void paintAmmo(Graphics2D g) {
+		int xBase = 280 + Player.MAX_SHIELDS + 10;
+		for (int i = 0; i < player.getRemainingBombs(); i++) {
+			BufferedImage bomb = SpritesRepository.getInstance().getSprite("bombUL.gif");
+			g.drawImage(bomb, xBase + i * bomb.getWidth() , YforStatusBar, this);
+		}
+	}
+	
+	/**
+	 * Pinta un mensaje de "Game Over" en el canvas
+	 */
+	public void paintGameOver(Graphics2D g) {
+		g.setColor(Color.white);
+		g.setFont(new Font("Arial",Font.BOLD,20));
+		g.drawString("GAME OVER", this.getWidth() / 2 - 50, this.getHeight() / 2);
+		strategy.show();
+	}
+	
+
+	
+	
+	/**
+	 * Método principal del juego, con el bucle contínuo que refresca el mismo en cada FPS
+	 */
+	public void game() {
+		// Inicialización del juego
+		initWorld();
+		
+		// El bucle se ejecutará mientras el objeto Canvas sea visible
+		while (isVisible()) {
+			long startTime = System.currentTimeMillis(); // Tomo el tiempo, en millis, antes de crear el siguiente Frame del juego
+			// actualizo y pinto la escena
+			updateWorld(); 
+			paintWorld();
+			// Calculo el tiempo que se ha tardado en la ejecución
+			usedTime = System.currentTimeMillis()-startTime;
+			// Hago que el bucle pare una serie de millis, antes de generar el siguiente FPS
+			// El cálculo hecho "duerme" el proceso para no generar más de los SPEED_FPS que se haya específicado
+			try { 
+				int millisToSleep = (int) (1000/SPEED_FPS - usedTime);
+				if (millisToSleep < 0) {
+					millisToSleep = 0;
+				}
+				Thread.sleep(millisToSleep);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}			
+		}
+	}
+	
+	/**
+	 * 
+	 * @param newActor
+	 */
+	public void addNewActorToNextIteration (Actor newActor) {
+		this.newActorsForNextIteration.add(newActor);
+	}
+	
+	// Getters y Setters
+	public Player getPlayer() { return player; }
+	public void setPlayer(Player player) { this.player = player; }
+	public boolean isGameEnded() { return gameEnded; }
+	public void setGameEnded(boolean gameEnded) { this.gameEnded = gameEnded; }
+
+	/**
+	 * Método principal del juego
+	 * @param args
+	 */
+	public static void main(String[] args) {
+		Invaders.getInstance().game();
+	}
+
+}

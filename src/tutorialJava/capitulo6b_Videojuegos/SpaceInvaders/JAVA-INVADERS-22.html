@@ -1,0 +1,358 @@
+<html>
+<head>
+<title>Curso - Programación de un Space Invaders en Java</title>
+
+</head>
+<body><link rel="stylesheet" type="text/css" href="estilos.css">
+
+
+
+
+                     
+<link rel="stylesheet" type="text/css" href="estilos.css">
+
+
+<h1>Curso - Programación de un Space Invaders en Java</h1>
+<table border="0" width="100%">
+<tr>
+  <td width="33%" align="center">&nbsp;
+    
+    <a href="JAVA-INVADERS-21.html"> 
+    
+    Página Anterior - 
+    
+    Barra de estado
+    </a>
+   
+  </td>
+  <td width="33%" align="center"><b>
+    
+    Página Actual - 
+    
+    22 - Puntuación</b>
+  </td>
+  <td width="33%" align="center">&nbsp;
+    
+    <a href="JAVA-INVADERS-23.html"> 
+    
+    Página Siguiente - 
+    
+    Muriendo
+    </a>
+    
+  </td>    
+</tr>
+<tr>
+<tr>
+  <td>&nbsp;</td>
+  <td align="center"><a href="index.html">Índice del curso</a></td>
+  <td>&nbsp;</td>
+</tr>
+</table>
+<hr>
+ 
+<link rel="stylesheet" href="codigo.css" />
+<h2>Puntuación</h2>
+<p class=autor> (c) Alexander Hristov </p>
+
+<p>El paso que daremos a continuación es prácticamente trivial. Cuando matamos a un monstruo, queremos que
+nuestra puntuación aumente en - por ejemplo - 20 puntos. Este cambio lo haremos en el método de la clase 
+<span class="clase">Monster</span> que se llama cuando ocurre una colisión. Sin embargo hay un pequeño problema
+y es que la puntuación es un atributo del jugador, y la clase Monster no tiene acceso a esta variable. Dado que
+podemos necesitar acceder a la instancia del jugador desde multitud de sitios distintos, por ejemplo para
+aumentar el número de bombas, para disminuir los escudos, etc., lo que haremos es añadir un método a la clase 
+<span class="clase">Stage</span> para obtener a la instancia del jugador desde cualquier punto del programa</p>
+
+<div class='codigo'>
+<TABLE id="Header" border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td colspan="2" width="33%">&nbsp;</td>
+<td align="center" colspan="2" width="33%">
+<font size="4">Stage.java</font>
+</td>
+<td align="right" colspan="2" width="33%">&nbsp;</td>
+</tr>
+</TABLE>
+<pre ID="Classes">
+
+<FONT ID="LN">1     </FONT><A NAME="1"></A><FONT ID="FormalComment">/**
+<FONT ID="LN">2     </FONT><A NAME="2"></A> * Curso Básico de desarrollo de Juegos en Java - Invaders
+<FONT ID="LN">3     </FONT><A NAME="3"></A> * 
+<FONT ID="LN">4     </FONT><A NAME="4"></A> * (c) 2004 Planetalia S.L. - Todos los derechos reservados. Prohibida su reproducción
+<FONT ID="LN">5     </FONT><A NAME="5"></A> * 
+<FONT ID="LN">6     </FONT><A NAME="6"></A> * http://www.planetalia.com
+<FONT ID="LN">7     </FONT><A NAME="7"></A> * 
+<FONT ID="LN">8     </FONT><A NAME="8"></A> */</FONT>
+<FONT ID="LN">9     </FONT><A NAME="9"></A><FONT ID="Package">package</FONT> version22;
+<FONT ID="LN">10    </FONT><A NAME="10"></A>
+<FONT ID="LN">11    </FONT><A NAME="11"></A><FONT ID="Import">import</FONT> java.awt.image.ImageObserver;
+<FONT ID="LN">12    </FONT><A NAME="12"></A>
+<FONT ID="LN">13    </FONT><A NAME="13"></A><FONT ID="Public">public</FONT> <FONT ID="Interface">interface</FONT> Stage <FONT ID="Extends">extends</FONT> ImageObserver {
+<FONT ID="LN">14    </FONT><A NAME="14"></A>  <FONT ID="Public">public</FONT> <FONT ID="Static">static</FONT> <FONT ID="Final">final</FONT> <FONT ID="Int">int</FONT> WIDTH=<FONT ID="IntegerLiteral">640</FONT>;
+<FONT ID="LN">15    </FONT><A NAME="15"></A>  <FONT ID="Public">public</FONT> <FONT ID="Static">static</FONT> <FONT ID="Final">final</FONT> <FONT ID="Int">int</FONT> HEIGHT=<FONT ID="IntegerLiteral">480</FONT>;
+<FONT ID="LN">16    </FONT><A NAME="16"></A>  <FONT ID="Public">public</FONT> <FONT ID="Static">static</FONT> <FONT ID="Final">final</FONT> <FONT ID="Int">int</FONT> PLAY_HEIGHT = <FONT ID="IntegerLiteral">400</FONT>; 
+<FONT ID="LN">17    </FONT><A NAME="17"></A>  <FONT ID="Public">public</FONT> <FONT ID="Static">static</FONT> <FONT ID="Final">final</FONT> <FONT ID="Int">int</FONT> SPEED=<FONT ID="IntegerLiteral">10</FONT>;
+<FONT ID="LN">18    </FONT><A NAME="18"></A>  <FONT ID="Public">public</FONT> <A TITLE='Java Source' HREF="version22/SpriteCache.java.html">SpriteCache</A> getSpriteCache();
+<FONT ID="LN">19    </FONT><A NAME="19"></A>  <FONT ID="Public">public</FONT> <FONT ID="Void">void</FONT> addActor(<A TITLE='Java Source' HREF="version22/Actor.java.html">Actor</A> a);
+<div class='cambio'>
+<FONT ID="LN">20    </FONT><A NAME="20"></A>  <FONT ID="Public">public</FONT> <A TITLE='Java Source' HREF="version22/Player.java.html">Player</A> getPlayer();
+</div>
+<FONT ID="LN">21    </FONT><A NAME="21"></A>}
+<FONT ID="LN">22    </FONT><A NAME="22"></A>
+</div>
+
+
+<p> Por supuesto este método hay que implementarlo en la clase <span class="clase">Invaders</span>: </p>
+
+<div class='codigo'>
+<TABLE id="Header" border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td colspan="2" width="33%">&nbsp;</td>
+<td align="center" colspan="2" width="33%">
+<font size="4">Invaders.java</font>
+</td>
+<td align="right" colspan="2" width="33%">&nbsp;</td>
+</tr>
+</TABLE>
+<pre ID="Classes">
+
+           . . .  
+<FONT ID="LN">81    </FONT><A NAME="81"></A>  
+<FONT ID="LN">82    </FONT><A NAME="82"></A>  <FONT ID="Public">public</FONT> <A TITLE='Java Source' HREF="version22/Player.java.html">Player</A> getPlayer() {
+<FONT ID="LN">83    </FONT><A NAME="83"></A>    <FONT ID="Return">return</FONT> player;
+<FONT ID="LN">84    </FONT><A NAME="84"></A>  }
+<FONT ID="LN">85    </FONT><A NAME="85"></A>  
+           . . .  
+
+</div>
+
+
+<p> Ahora que podemos obtener una referencia al jugador, utilizamos este método para aumentar la puntuación cada
+vez que un monstruo es destruido:</p>
+
+<div class='codigo'>
+<TABLE id="Header" border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td colspan="2" width="33%">&nbsp;</td>
+<td align="center" colspan="2" width="33%">
+<font size="4">Monster.java</font>
+</td>
+<td align="right" colspan="2" width="33%">&nbsp;</td>
+</tr>
+</TABLE>
+<pre ID="Classes">
+
+<FONT ID="LN">1     </FONT><A NAME="1"></A><FONT ID="FormalComment">/**
+<FONT ID="LN">2     </FONT><A NAME="2"></A> * Curso Básico de desarrollo de Juegos en Java - Invaders
+<FONT ID="LN">3     </FONT><A NAME="3"></A> * 
+<FONT ID="LN">4     </FONT><A NAME="4"></A> * (c) 2004 Planetalia S.L. - Todos los derechos reservados. Prohibida su reproducción
+<FONT ID="LN">5     </FONT><A NAME="5"></A> * 
+<FONT ID="LN">6     </FONT><A NAME="6"></A> * http://www.planetalia.com
+<FONT ID="LN">7     </FONT><A NAME="7"></A> * 
+<FONT ID="LN">8     </FONT><A NAME="8"></A> */</FONT>
+<FONT ID="LN">9     </FONT><A NAME="9"></A><FONT ID="Package">package</FONT> version22;
+<FONT ID="LN">10    </FONT><A NAME="10"></A>
+<FONT ID="LN">11    </FONT><A NAME="11"></A><FONT ID="Public">public</FONT> <FONT ID="Class">class</FONT> Monster <FONT ID="Extends">extends</FONT> <A TITLE='Java Source' HREF="version22/Actor.java.html">Actor</A> {
+<FONT ID="LN">12    </FONT><A NAME="12"></A>  <FONT ID="Protected">protected</FONT> <FONT ID="Int">int</FONT> vx;
+<FONT ID="LN">13    </FONT><A NAME="13"></A>  
+<FONT ID="LN">14    </FONT><A NAME="14"></A>  <FONT ID="Public">public</FONT> Monster(<A TITLE='Java Source' HREF="version22/Stage.java.html">Stage</A> stage) {
+<FONT ID="LN">15    </FONT><A NAME="15"></A>    <FONT ID="Super">super</FONT>(stage);
+<FONT ID="LN">16    </FONT><A NAME="16"></A>    setSpriteNames( <FONT ID="New">new</FONT> String[] {<FONT ID="StringLiteral">"bicho0.gif"</FONT>,<FONT ID="StringLiteral">"bicho1.gif"</FONT>});
+<FONT ID="LN">17    </FONT><A NAME="17"></A>    setFrameSpeed(<FONT ID="IntegerLiteral">35</FONT>);
+<FONT ID="LN">18    </FONT><A NAME="18"></A>  }
+<FONT ID="LN">19    </FONT><A NAME="19"></A>  
+<FONT ID="LN">20    </FONT><A NAME="20"></A>  <FONT ID="Public">public</FONT> <FONT ID="Void">void</FONT> act() {
+<FONT ID="LN">21    </FONT><A NAME="21"></A>    <FONT ID="Super">super</FONT>.act();
+<FONT ID="LN">22    </FONT><A NAME="22"></A>    x+=vx;
+<FONT ID="LN">23    </FONT><A NAME="23"></A>    <FONT ID="If">if</FONT> (x &lt; <FONT ID="IntegerLiteral">0</FONT> || x &gt; Stage.WIDTH)
+<FONT ID="LN">24    </FONT><A NAME="24"></A>      vx = -vx;
+<FONT ID="LN">25    </FONT><A NAME="25"></A>  }
+<FONT ID="LN">26    </FONT><A NAME="26"></A>
+<FONT ID="LN">27    </FONT><A NAME="27"></A>  <FONT ID="Public">public</FONT> <FONT ID="Int">int</FONT> getVx() { <FONT ID="Return">return</FONT> vx; }
+<FONT ID="LN">28    </FONT><A NAME="28"></A>  <FONT ID="Public">public</FONT> <FONT ID="Void">void</FONT> setVx(<FONT ID="Int">int</FONT> i) {vx = i; }
+<FONT ID="LN">29    </FONT><A NAME="29"></A>  
+<FONT ID="LN">30    </FONT><A NAME="30"></A>  <FONT ID="Public">public</FONT> <FONT ID="Void">void</FONT> collision(<A TITLE='Java Source' HREF="version22/Actor.java.html">Actor</A> a) {
+<FONT ID="LN">31    </FONT><A NAME="31"></A>    <FONT ID="If">if</FONT> (a <FONT ID="InstanceOf">instanceof</FONT> <A TITLE='Java Source' HREF="version22/Bullet.java.html">Bullet</A> || a <FONT ID="InstanceOf">instanceof</FONT> <A TITLE='Java Source' HREF="version22/Bomb.java.html">Bomb</A>) {
+<FONT ID="LN">32    </FONT><A NAME="32"></A>      remove();
+<div class='cambio'>
+<FONT ID="LN">33    </FONT><A NAME="33"></A>      stage.getPlayer().addScore(<FONT ID="IntegerLiteral">20</FONT>);
+</div>
+<FONT ID="LN">34    </FONT><A NAME="34"></A>    }
+<FONT ID="LN">35    </FONT><A NAME="35"></A>  }
+<FONT ID="LN">36    </FONT><A NAME="36"></A>}
+<FONT ID="LN">37    </FONT><A NAME="37"></A>
+</div>
+
+ 
+                               
+
+
+<br />
+
+<hr>
+<div class="archivos">  
+<h3>Lista de archivos Java del programa en este paso </h3>
+<table width='80%' align='center' border='1' cellpadding='4' cellspacing='0'>
+<tr >
+<td width='25%' align='center'>
+<a href='version22/Actor.java'>Actor.java</a>
+</td>
+<td width='25%' align='center'>
+<a href='version22/Bomb.java'>Bomb.java</a>
+</td>
+<td width='25%' align='center'>
+<a href='version22/Bullet.java'>Bullet.java</a>
+</td>
+<td width='25%' align='center'>
+<a href='version22/Invaders.java'>Invaders.java</a>
+</td>
+</tr>
+<tr >
+<td width='25%' align='center'>
+<a href='version22/Monster.java'>Monster.java</a>
+</td>
+<td width='25%' align='center'>
+<a href='version22/Player.java'>Player.java</a>
+</td>
+<td width='25%' align='center'>
+<a href='version22/SpriteCache.java'>SpriteCache.java</a>
+</td>
+<td width='25%' align='center'>
+<a href='version22/Stage.java'>Stage.java</a>
+</td>
+</tr>
+</table>
+
+<br />
+<h3>Lista de recursos</h3>
+<table width='80%' align='center' border='1' cellpadding='4' cellspacing='0'>
+<tr >
+<td align='center'>
+<a href='res/bicho.gif'>bicho.gif</a>
+</td>
+<td align='center'>
+<a href='res/bicho0.gif'>bicho0.gif</a>
+</td>
+<td align='center'>
+<a href='res/bicho1.gif'>bicho1.gif</a>
+</td>
+<td align='center'>
+<a href='res/bicho2.gif'>bicho2.gif</a>
+</td>
+</tr>
+<tr >
+<td align='center'>
+<a href='res/bombD.gif'>bombD.gif</a>
+</td>
+<td align='center'>
+<a href='res/bombDL.gif'>bombDL.gif</a>
+</td>
+<td align='center'>
+<a href='res/bombDR.gif'>bombDR.gif</a>
+</td>
+<td align='center'>
+<a href='res/bombL.gif'>bombL.gif</a>
+</td>
+</tr>
+<tr >
+<td align='center'>
+<a href='res/bombR.gif'>bombR.gif</a>
+</td>
+<td align='center'>
+<a href='res/bombU.gif'>bombU.gif</a>
+</td>
+<td align='center'>
+<a href='res/bombUL.gif'>bombUL.gif</a>
+</td>
+<td align='center'>
+<a href='res/bombUR.gif'>bombUR.gif</a>
+</td>
+</tr>
+<tr >
+<td align='center'>
+<a href='res/disparo.gif'>disparo.gif</a>
+</td>
+<td align='center'>
+<a href='res/disparo0.gif'>disparo0.gif</a>
+</td>
+<td align='center'>
+<a href='res/disparo1.gif'>disparo1.gif</a>
+</td>
+<td align='center'>
+<a href='res/disparo2.gif'>disparo2.gif</a>
+</td>
+</tr>
+<tr >
+<td align='center'>
+<a href='res/explosion.wav'>explosion.wav</a>
+</td>
+<td align='center'>
+<a href='res/misil.gif'>misil.gif</a>
+</td>
+<td align='center'>
+<a href='res/missile.wav'>missile.wav</a>
+</td>
+<td align='center'>
+<a href='res/musica.wav'>musica.wav</a>
+</td>
+</tr>
+<tr >
+<td align='center'>
+<a href='res/nave.gif'>nave.gif</a>
+</td>
+<td align='center'>
+<a href='res/oceano.gif'>oceano.gif</a>
+</td>
+<td align='center'>
+<a href='res/photon.wav'>photon.wav</a>
+</td>
+<td align='center'>
+<a href='res/Thumbs.db'>Thumbs.db</a>
+</td>
+</tr>
+</table>
+
+<br />
+</div>
+<table border="0" width="100%">
+<tr>
+  <td width="33%" align="center">&nbsp;
+    
+    <a href="JAVA-INVADERS-21.html"> 
+    
+    Página Anterior - 
+    
+    Barra de estado
+    </a>
+   
+  </td>
+  <td width="33%" align="center"><b>
+    
+    Página Actual - 
+    
+    22 - Puntuación</b>
+  </td>
+  <td width="33%" align="center">&nbsp;
+    
+    <a href="JAVA-INVADERS-23.html"> 
+    
+    Página Siguiente - 
+    
+    Muriendo
+    </a>
+    
+  </td>    
+</tr>
+<tr>
+<tr>
+  <td>&nbsp;</td>
+  <td align="center"><a href="index.html">Índice del curso</a></td>
+  <td>&nbsp;</td>
+</tr>
+</table>
+
+<p class="pie">(c) 2004 Planetalia S.L. Todos los derechos reservados. Prohibida su reproducción</p>
+</html>
+
+
+

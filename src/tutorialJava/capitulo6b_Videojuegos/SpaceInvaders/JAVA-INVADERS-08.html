@@ -1,0 +1,288 @@
+<html>
+<head>
+<title>Curso - Programación de un Space Invaders en Java</title>
+
+</head>
+<body><link rel="stylesheet" type="text/css" href="estilos.css">
+
+
+
+
+                     
+<link rel="stylesheet" type="text/css" href="estilos.css">
+
+
+<h1>Curso - Programación de un Space Invaders en Java</h1>
+<table border="0" width="100%">
+<tr>
+  <td width="33%" align="center">&nbsp;
+    
+    <a href="JAVA-INVADERS-07.html"> 
+    
+    Página Anterior - 
+    
+    Bucle principal
+    </a>
+   
+  </td>
+  <td width="33%" align="center"><b>
+    
+    Página Actual - 
+    
+    08 - Limpiando la basura</b>
+  </td>
+  <td width="33%" align="center">&nbsp;
+    
+    <a href="JAVA-INVADERS-09.html"> 
+    
+    Página Siguiente - 
+    
+    Controlando el caos
+    </a>
+    
+  </td>    
+</tr>
+<tr>
+<tr>
+  <td>&nbsp;</td>
+  <td align="center"><a href="index.html">Índice del curso</a></td>
+  <td>&nbsp;</td>
+</tr>
+</table>
+<hr>
+ 
+<link rel="stylesheet" href="codigo.css" />
+<h2>Limpiando la basura</h2>
+<p class=autor> (c) Alexander Hristov </p>
+
+<p>El paso anterior nos dejó con una saturación de bichos que había que solucionar. Para ello, vamos a probar inicialmente
+una estrategia consistente en borrar a mano toda la ventana <i>antes</i> de pintar el bicho correspondiente.
+El único cambio consiste en las siguientes líneas dentro de <span class=kw>paint()</span></p>
+
+<div class='codigo'>
+<TABLE id="Header" border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td colspan="2" width="33%">&nbsp;</td>
+<td align="center" colspan="2" width="33%">
+<font size="4">Invaders.java</font>
+</td>
+<td align="right" colspan="2" width="33%">&nbsp;</td>
+</tr>
+</TABLE>
+<pre ID="Classes">
+
+           . . .  
+<FONT ID="LN">76    </FONT><A NAME="76"></A>  
+<div class='cambio'>
+<FONT ID="LN">77    </FONT><A NAME="77"></A>  <FONT ID="Public">public</FONT> <FONT ID="Void">void</FONT> paint(Graphics g) {
+<FONT ID="LN">78    </FONT><A NAME="78"></A>    g.setColor(getBackground());
+</div>
+<FONT ID="LN">79    </FONT><A NAME="79"></A>    g.fillRect(<FONT ID="IntegerLiteral">0</FONT>,<FONT ID="IntegerLiteral">0</FONT>,getWidth(),getHeight());
+<FONT ID="LN">80    </FONT><A NAME="80"></A>    g.drawImage(getSprite(<FONT ID="StringLiteral">"bicho.gif"</FONT>), posX, posY,<FONT ID="This">this</FONT>);
+           . . .  
+
+</div>
+
+
+
+<p>Si ejecutamos ahora el programa, veremos que el bicho cambia de posición tan rápidamente que apenas da tiempo
+a verlo. Está claro que hay que insertar artificialmente una pausa en el bucle del programa, para que el usuario
+tenga tiempo de ver algo en pantalla: </p>
+
+<ol>
+  <li>Actualizar el "estado del mundo" o el "escenario"> </li>
+  <li><i>Si es preciso</i>, refrescar la pantalla </li>
+  <li>Esperar un intervalo de tiempo </li>
+  <li>Volver al punto 1
+</ol>
+
+<p> El intervalo de tiempo - como no podría ser de otra manera - será una constante que definiremos a nivel global
+e inicialmente fijaremos en 50 ms :</p>
+
+<div class='codigo'>
+<TABLE id="Header" border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td colspan="2" width="33%">&nbsp;</td>
+<td align="center" colspan="2" width="33%">
+<font size="4">Invaders.java</font>
+</td>
+<td align="right" colspan="2" width="33%">&nbsp;</td>
+</tr>
+</TABLE>
+<pre ID="Classes">
+
+           . . .  
+<FONT ID="LN">24    </FONT><A NAME="24"></A>
+<FONT ID="LN">25    </FONT><A NAME="25"></A><FONT ID="Public">public</FONT> <FONT ID="Class">class</FONT> Invaders <FONT ID="Extends">extends</FONT> Canvas {
+<FONT ID="LN">26    </FONT><A NAME="26"></A>  <FONT ID="Public">public</FONT> <FONT ID="Static">static</FONT> <FONT ID="Final">final</FONT> <FONT ID="Int">int</FONT> WIDTH = <FONT ID="IntegerLiteral">640</FONT>;
+<FONT ID="LN">27    </FONT><A NAME="27"></A>  <FONT ID="Public">public</FONT> <FONT ID="Static">static</FONT> <FONT ID="Final">final</FONT> <FONT ID="Int">int</FONT> HEIGHT = <FONT ID="IntegerLiteral">480</FONT>;
+<FONT ID="LN">28    </FONT><A NAME="28"></A>  <FONT ID="Public">public</FONT> <FONT ID="Static">static</FONT> <FONT ID="Final">final</FONT> <FONT ID="Int">int</FONT> SPEED = <FONT ID="IntegerLiteral">10</FONT>;
+<FONT ID="LN">29    </FONT><A NAME="29"></A>  
+           . . .  
+<FONT ID="LN">87    </FONT><A NAME="87"></A>  
+<FONT ID="LN">88    </FONT><A NAME="88"></A>  <FONT ID="Public">public</FONT> <FONT ID="Void">void</FONT> game() {
+<FONT ID="LN">89    </FONT><A NAME="89"></A>    <FONT ID="While">while</FONT> (isVisible()) {
+<FONT ID="LN">90    </FONT><A NAME="90"></A>      updateWorld();
+<FONT ID="LN">91    </FONT><A NAME="91"></A>      paint(getGraphics());
+<div class='cambio'>
+<FONT ID="LN">92    </FONT><A NAME="92"></A>      <FONT ID="Try">try</FONT> { 
+<FONT ID="LN">93    </FONT><A NAME="93"></A>         Thread.sleep(SPEED);
+<FONT ID="LN">94    </FONT><A NAME="94"></A>      } <FONT ID="Catch">catch</FONT> (InterruptedException e) {}
+</div>
+<FONT ID="LN">95    </FONT><A NAME="95"></A>    }
+<FONT ID="LN">96    </FONT><A NAME="96"></A>  }
+           . . .  
+
+</div>
+
+
+                               
+
+
+<br />
+
+<hr>
+<div class="archivos">  
+<h3>Lista de archivos Java del programa en este paso </h3>
+<table width='80%' align='center' border='1' cellpadding='4' cellspacing='0'>
+<tr >
+<td width='25%' align='center'>
+<a href='version08/Invaders.java'>Invaders.java</a>
+</td>
+<td width='25%' align='center'>&nbsp;</td>
+<td width='25%' align='center'>&nbsp;</td>
+<td width='25%' align='center'>&nbsp;</td>
+</tr>
+</table>
+
+<br />
+<h3>Lista de recursos</h3>
+<table width='80%' align='center' border='1' cellpadding='4' cellspacing='0'>
+<tr >
+<td align='center'>
+<a href='res/bicho.gif'>bicho.gif</a>
+</td>
+<td align='center'>
+<a href='res/bicho0.gif'>bicho0.gif</a>
+</td>
+<td align='center'>
+<a href='res/bicho1.gif'>bicho1.gif</a>
+</td>
+<td align='center'>
+<a href='res/bicho2.gif'>bicho2.gif</a>
+</td>
+</tr>
+<tr >
+<td align='center'>
+<a href='res/bombD.gif'>bombD.gif</a>
+</td>
+<td align='center'>
+<a href='res/bombDL.gif'>bombDL.gif</a>
+</td>
+<td align='center'>
+<a href='res/bombDR.gif'>bombDR.gif</a>
+</td>
+<td align='center'>
+<a href='res/bombL.gif'>bombL.gif</a>
+</td>
+</tr>
+<tr >
+<td align='center'>
+<a href='res/bombR.gif'>bombR.gif</a>
+</td>
+<td align='center'>
+<a href='res/bombU.gif'>bombU.gif</a>
+</td>
+<td align='center'>
+<a href='res/bombUL.gif'>bombUL.gif</a>
+</td>
+<td align='center'>
+<a href='res/bombUR.gif'>bombUR.gif</a>
+</td>
+</tr>
+<tr >
+<td align='center'>
+<a href='res/disparo.gif'>disparo.gif</a>
+</td>
+<td align='center'>
+<a href='res/disparo0.gif'>disparo0.gif</a>
+</td>
+<td align='center'>
+<a href='res/disparo1.gif'>disparo1.gif</a>
+</td>
+<td align='center'>
+<a href='res/disparo2.gif'>disparo2.gif</a>
+</td>
+</tr>
+<tr >
+<td align='center'>
+<a href='res/explosion.wav'>explosion.wav</a>
+</td>
+<td align='center'>
+<a href='res/misil.gif'>misil.gif</a>
+</td>
+<td align='center'>
+<a href='res/missile.wav'>missile.wav</a>
+</td>
+<td align='center'>
+<a href='res/musica.wav'>musica.wav</a>
+</td>
+</tr>
+<tr >
+<td align='center'>
+<a href='res/nave.gif'>nave.gif</a>
+</td>
+<td align='center'>
+<a href='res/oceano.gif'>oceano.gif</a>
+</td>
+<td align='center'>
+<a href='res/photon.wav'>photon.wav</a>
+</td>
+<td align='center'>
+<a href='res/Thumbs.db'>Thumbs.db</a>
+</td>
+</tr>
+</table>
+
+<br />
+</div>
+<table border="0" width="100%">
+<tr>
+  <td width="33%" align="center">&nbsp;
+    
+    <a href="JAVA-INVADERS-07.html"> 
+    
+    Página Anterior - 
+    
+    Bucle principal
+    </a>
+   
+  </td>
+  <td width="33%" align="center"><b>
+    
+    Página Actual - 
+    
+    08 - Limpiando la basura</b>
+  </td>
+  <td width="33%" align="center">&nbsp;
+    
+    <a href="JAVA-INVADERS-09.html"> 
+    
+    Página Siguiente - 
+    
+    Controlando el caos
+    </a>
+    
+  </td>    
+</tr>
+<tr>
+<tr>
+  <td>&nbsp;</td>
+  <td align="center"><a href="index.html">Índice del curso</a></td>
+  <td>&nbsp;</td>
+</tr>
+</table>
+
+<p class="pie">(c) 2004 Planetalia S.L. Todos los derechos reservados. Prohibida su reproducción</p>
+</html>
+

@@ -1,0 +1,627 @@
+<html>
+<head>
+<title>Curso - Programación de un Space Invaders en Java</title>
+
+</head>
+<body><link rel="stylesheet" type="text/css" href="estilos.css">
+
+
+
+
+                     
+<link rel="stylesheet" type="text/css" href="estilos.css">
+
+
+<h1>Curso - Programación de un Space Invaders en Java</h1>
+<table border="0" width="100%">
+<tr>
+  <td width="33%" align="center">&nbsp;
+    
+    <a href="JAVA-INVADERS-12.html"> 
+    
+    Página Anterior - 
+    
+    Medición del rendimiento
+    </a>
+   
+  </td>
+  <td width="33%" align="center"><b>
+    
+    Página Actual - 
+    
+    13 - Reorganización del código Java</b>
+  </td>
+  <td width="33%" align="center">&nbsp;
+    
+    <a href="JAVA-INVADERS-14.html"> 
+    
+    Página Siguiente - 
+    
+    Fotogramas
+    </a>
+    
+  </td>    
+</tr>
+<tr>
+<tr>
+  <td>&nbsp;</td>
+  <td align="center"><a href="index.html">Índice del curso</a></td>
+  <td>&nbsp;</td>
+</tr>
+</table>
+<hr>
+ 
+<link rel="stylesheet" href="codigo.css" />
+<h2>Reorganización del código Java</h2>
+<p class=autor> (c) Alexander Hristov </p>
+
+<p>En este punto el programa Invaders.java está convirtiéndose en una masa de código entremezclada; nada que ver
+con la programación orientada a objetos o con un buen estilo de programación. Si no se tiene experiencia, es
+normal haber recorrido este camino y llegar a esta situación. Lo importante es saber detenerse, como vamos a hacer
+nosotros aquí, y ver si existe alguna mejor forma de organizar el código. Con el tiempo y según se vaya acumulando
+experiencia en la programación  en Java o cualquier otro lenguaje orientado a objetos, las decisiones que vamos
+a tomar aquí las habríamos tomado al principio en base a los comportamientos y tipos de "cosas" que preveamos que
+habrá en el programa final. </p>
+<p>Inicialmente vamos a pensar que "cosas" (entidades) distintas tenemos en el programa : </p>
+<p>Tenemos una parte del programa - relativamente independiente de las demás - que se dedica a gestionar un "caché de sprites". 
+Esa parte del programa, que tiene una serie de datos propios (los sprites cargados) y comportamientos propios (leer y proporcionar
+sprites) es candidata típica para convertirse en una clase independiente. Cuando se define una clase nueva, es buena idea 
+pensar qué responsabilidades o interacciones tendrá esa clase con el resto del sistema. En este caso la clase es muy
+sencilla y su única interacción es "dar gráficos" a quien lo necesite. Por lo tanto su único método público
+será el siguiente: </p>
+<PRE class="linea"><FONT ID="Public">public</FONT> BufferedImage getSprite(String nombre) {</PRE>
+<p>Una vez que tenemos claros los servicios que proporcionará la clase, debemos preguntarnos qué necesitará
+internamente para llevar a cabo su cometido. En este caso, lógicamente la clase necesitará el mapa de sprites
+y el método para cargar una imagen en memoria. Con todo esto, la clase <span class="clase">SpriteCache</span> quedaría
+como sigue: </p>
+
+<div class='codigo'>
+<TABLE id="Header" border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td colspan="2" width="33%">&nbsp;</td>
+<td align="center" colspan="2" width="33%">
+<font size="4">SpriteCache.java</font>
+</td>
+<td align="right" colspan="2" width="33%">&nbsp;</td>
+</tr>
+</TABLE>
+<pre ID="Classes">
+
+<FONT ID="LN">1     </FONT><A NAME="1"></A><FONT ID="FormalComment">/**
+<FONT ID="LN">2     </FONT><A NAME="2"></A> * Curso Básico de desarrollo de Juegos en Java - Invaders
+<FONT ID="LN">3     </FONT><A NAME="3"></A> * 
+<FONT ID="LN">4     </FONT><A NAME="4"></A> * (c) 2004 Planetalia S.L. - Todos los derechos reservados. Prohibida su reproducción
+<FONT ID="LN">5     </FONT><A NAME="5"></A> * 
+<FONT ID="LN">6     </FONT><A NAME="6"></A> * http://www.planetalia.com
+<FONT ID="LN">7     </FONT><A NAME="7"></A> * 
+<FONT ID="LN">8     </FONT><A NAME="8"></A> */</FONT>
+<FONT ID="LN">9     </FONT><A NAME="9"></A><FONT ID="Package">package</FONT> version13;
+<FONT ID="LN">10    </FONT><A NAME="10"></A>
+<FONT ID="LN">11    </FONT><A NAME="11"></A><FONT ID="Import">import</FONT> java.awt.image.BufferedImage;
+<FONT ID="LN">12    </FONT><A NAME="12"></A><FONT ID="Import">import</FONT> java.net.URL;
+<FONT ID="LN">13    </FONT><A NAME="13"></A><FONT ID="Import">import</FONT> java.util.HashMap;
+<FONT ID="LN">14    </FONT><A NAME="14"></A>
+<FONT ID="LN">15    </FONT><A NAME="15"></A><FONT ID="Import">import</FONT> javax.imageio.ImageIO;
+<FONT ID="LN">16    </FONT><A NAME="16"></A>
+<FONT ID="LN">17    </FONT><A NAME="17"></A><FONT ID="Public">public</FONT> <FONT ID="Class">class</FONT> SpriteCache {
+<FONT ID="LN">18    </FONT><A NAME="18"></A>  <FONT ID="Private">private</FONT> HashMap sprites;
+<FONT ID="LN">19    </FONT><A NAME="19"></A>  
+<FONT ID="LN">20    </FONT><A NAME="20"></A>  <FONT ID="Public">public</FONT> SpriteCache() {
+<FONT ID="LN">21    </FONT><A NAME="21"></A>    sprites = <FONT ID="New">new</FONT> HashMap();
+<FONT ID="LN">22    </FONT><A NAME="22"></A>  }
+<FONT ID="LN">23    </FONT><A NAME="23"></A>  
+<FONT ID="LN">24    </FONT><A NAME="24"></A>  <FONT ID="Private">private</FONT> BufferedImage loadImage(String nombre) {
+<FONT ID="LN">25    </FONT><A NAME="25"></A>    URL url=<FONT ID="Null">null</FONT>;
+<FONT ID="LN">26    </FONT><A NAME="26"></A>    <FONT ID="Try">try</FONT> {
+<FONT ID="LN">27    </FONT><A NAME="27"></A>      url = getClass().getClassLoader().getResource(nombre);
+<FONT ID="LN">28    </FONT><A NAME="28"></A>      <FONT ID="Return">return</FONT> ImageIO.read(url);
+<FONT ID="LN">29    </FONT><A NAME="29"></A>    } <FONT ID="Catch">catch</FONT> (Exception e) {
+<FONT ID="LN">30    </FONT><A NAME="30"></A>      System.out.println(<FONT ID="StringLiteral">"No se pudo cargar la imagen "</FONT> + nombre +<FONT ID="StringLiteral">" de "</FONT>+url);
+<FONT ID="LN">31    </FONT><A NAME="31"></A>      System.out.println(<FONT ID="StringLiteral">"El error fue : "</FONT>+e.getClass().getName()+<FONT ID="StringLiteral">" "</FONT>+e.getMessage());
+<FONT ID="LN">32    </FONT><A NAME="32"></A>      System.exit(<FONT ID="IntegerLiteral">0</FONT>);
+<FONT ID="LN">33    </FONT><A NAME="33"></A>      <FONT ID="Return">return</FONT> <FONT ID="Null">null</FONT>;
+<FONT ID="LN">34    </FONT><A NAME="34"></A>    }
+<FONT ID="LN">35    </FONT><A NAME="35"></A>  }
+<FONT ID="LN">36    </FONT><A NAME="36"></A>  
+<FONT ID="LN">37    </FONT><A NAME="37"></A>  <FONT ID="Public">public</FONT> BufferedImage getSprite(String nombre) {
+<FONT ID="LN">38    </FONT><A NAME="38"></A>    BufferedImage img = (BufferedImage)sprites.get(nombre);
+<FONT ID="LN">39    </FONT><A NAME="39"></A>    <FONT ID="If">if</FONT> (img == <FONT ID="Null">null</FONT>) {
+<FONT ID="LN">40    </FONT><A NAME="40"></A>      img = loadImage(<FONT ID="StringLiteral">"res/"</FONT>+nombre);
+<FONT ID="LN">41    </FONT><A NAME="41"></A>      sprites.put(nombre,img);
+<FONT ID="LN">42    </FONT><A NAME="42"></A>    }
+<FONT ID="LN">43    </FONT><A NAME="43"></A>    <FONT ID="Return">return</FONT> img;
+<FONT ID="LN">44    </FONT><A NAME="44"></A>  }
+<FONT ID="LN">45    </FONT><A NAME="45"></A>}
+<FONT ID="LN">46    </FONT><A NAME="46"></A>
+</div>
+
+
+<p>En segundo lugar tenemos el sitio donde se desarrolla la acción.  Vamos a llamar a este sitio "el escenario" (<i>Stage</i> en inglés).
+El escenario es el que de alguna forma "coordina" las cosas que ocurren en el juego - el escenario es el que sabe cuántos monstruos
+hay, cuantas balas, en qué nivel estamos, etc... Una característica muy importante del escenario es que es precisamente
+él el que tiene la referencia al único objeto <span class="clase">SpriteCache</span> que existe en el programa. 
+Podríamos pensar que ya tenemos una clase "escenario" que es la propia Invaders.java, pero lo cierto es que si queremos 
+tener una serie de funcionalidades que nos sirvan para otros juegos, será mejor separarlas en una clase o en una 
+interfaz distinta. En este caso hemos optado por crear una interfaz que indique las características que tiene el 
+escenario. </p>
+<p>Vamos a definir la interfaz <span class="clase">Stage</span> de la siguiente forma: </p>
+
+<div class='codigo'>
+<TABLE id="Header" border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td colspan="2" width="33%">&nbsp;</td>
+<td align="center" colspan="2" width="33%">
+<font size="4">Stage.java</font>
+</td>
+<td align="right" colspan="2" width="33%">&nbsp;</td>
+</tr>
+</TABLE>
+<pre ID="Classes">
+
+<FONT ID="LN">1     </FONT><A NAME="1"></A><FONT ID="FormalComment">/**
+<FONT ID="LN">2     </FONT><A NAME="2"></A> * Curso Básico de desarrollo de Juegos en Java - Invaders
+<FONT ID="LN">3     </FONT><A NAME="3"></A> * 
+<FONT ID="LN">4     </FONT><A NAME="4"></A> * (c) 2004 Planetalia S.L. - Todos los derechos reservados. Prohibida su reproducción
+<FONT ID="LN">5     </FONT><A NAME="5"></A> * 
+<FONT ID="LN">6     </FONT><A NAME="6"></A> * http://www.planetalia.com
+<FONT ID="LN">7     </FONT><A NAME="7"></A> * 
+<FONT ID="LN">8     </FONT><A NAME="8"></A> */</FONT>
+<FONT ID="LN">9     </FONT><A NAME="9"></A><FONT ID="Package">package</FONT> version13;
+<FONT ID="LN">10    </FONT><A NAME="10"></A>
+<FONT ID="LN">11    </FONT><A NAME="11"></A><FONT ID="Import">import</FONT> java.awt.image.ImageObserver;
+<FONT ID="LN">12    </FONT><A NAME="12"></A>
+<FONT ID="LN">13    </FONT><A NAME="13"></A><FONT ID="Public">public</FONT> <FONT ID="Interface">interface</FONT> Stage <FONT ID="Extends">extends</FONT> ImageObserver {
+<FONT ID="LN">14    </FONT><A NAME="14"></A>  <FONT ID="Public">public</FONT> <FONT ID="Static">static</FONT> <FONT ID="Final">final</FONT> <FONT ID="Int">int</FONT> WIDTH=<FONT ID="IntegerLiteral">640</FONT>;
+<FONT ID="LN">15    </FONT><A NAME="15"></A>  <FONT ID="Public">public</FONT> <FONT ID="Static">static</FONT> <FONT ID="Final">final</FONT> <FONT ID="Int">int</FONT> HEIGHT=<FONT ID="IntegerLiteral">480</FONT>;
+<FONT ID="LN">16    </FONT><A NAME="16"></A>  <FONT ID="Public">public</FONT> <FONT ID="Static">static</FONT> <FONT ID="Final">final</FONT> <FONT ID="Int">int</FONT> SPEED=<FONT ID="IntegerLiteral">10</FONT>;
+<FONT ID="LN">17    </FONT><A NAME="17"></A>  <FONT ID="Public">public</FONT> <A TITLE='Java Source' HREF="version13/SpriteCache.java.html">SpriteCache</A> getSpriteCache();
+<FONT ID="LN">18    </FONT><A NAME="18"></A>
+<FONT ID="LN">19    </FONT><A NAME="19"></A>}
+<FONT ID="LN">20    </FONT><A NAME="20"></A>
+</div>
+
+
+<p>Como se puede ver, de momento esta interfaz lo único que contiene son las constantes generales del juego y 
+un método para acceder al caché de sprites</p>
+
+<p>Adicionalmente tenemos el monstruo. Está claro que si en el futuro vamos a añadir más, todos ellos serán en esencia lo mismo, si
+acaso en distintas posiciones, o con distintas velocidades. Pensemos por un momento qué características comunes
+van a tener nuestros monstruos en el juego para poder definir una clase apropiada. Por un lado, todos los monstruos
+van a tener una posición sobre la pantalla. Además, todos van a tener un gráfico que periódicamente van a tener
+que pintar sobre ella. Dado que es posible que queramos definir monstruos diferentes, cada uno tendrá un tamaño
+que no será necesariamente el mismo para todos. Por último, todos van a "hacer algo" cuando les toque el turno. Puede ser que elijan moverse,
+disparar, desaparecer, teleportarse, atacar al jugador, o cualquier cosa que se nos ocurra más adelante. Como ahora
+mismo no sabemos qué va a ser esa cualquier cosa, vamos a definir un método genérico llamado <span class="kw">act()</span>
+en el que cada monstruo elegirá lo que quiere hacer. Lo bonito de este sistema es que el programa principal se limitará
+a llamar a <span class="kw">monstruo.act()</span> y cada uno actuará según el comportamiento programado, sin que el programa principal
+tenga que saber nada al respecto.</p>
+<p>Por lo tanto y resumiendo, los monstruos :</p>
+<ol>
+<li>Tienen una posición sobre la pantalla</li>
+<li>Tienen un tamaño (una anchura y una altura) </li>
+<li>Son capaces de pintarse sobre la pantalla</li>
+<li>Periódicamente ejecutan un comportamiento</li>
+</ol>
+<p>Pensemos ahora un poco más y veremos que realmente estas características las tienen no solo los monstruos sino
+el propio jugador (su nave) o los disparos de la misma. Por lo tanto hemos llegado a una clase que es capaz de
+encapsular prácticamente cualquier cosa "activa" o "viva" sobre el escenario y a esta clase la vamos a llamar
+<span class="clase">Actor</span>. Por supuesto, podríamos haber hecho este razonamiento al principio del curso,
+pero el objetivo era llegar hasta él de forma natural, como lo haría una persona sin mucha experiencia y que
+está aprendiendo. 
+</p>
+<p> Con lo dicho hasta ahora, la clase Actor quedaría como sigue: </p>
+
+<div class='codigo'>
+<TABLE id="Header" border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td colspan="2" width="33%">&nbsp;</td>
+<td align="center" colspan="2" width="33%">
+<font size="4">Actor.java</font>
+</td>
+<td align="right" colspan="2" width="33%">&nbsp;</td>
+</tr>
+</TABLE>
+<pre ID="Classes">
+
+<FONT ID="LN">1     </FONT><A NAME="1"></A><FONT ID="FormalComment">/**
+<FONT ID="LN">2     </FONT><A NAME="2"></A> * Curso Básico de desarrollo de Juegos en Java - Invaders
+<FONT ID="LN">3     </FONT><A NAME="3"></A> * 
+<FONT ID="LN">4     </FONT><A NAME="4"></A> * (c) 2004 Planetalia S.L. - Todos los derechos reservados. Prohibida su reproducción
+<FONT ID="LN">5     </FONT><A NAME="5"></A> * 
+<FONT ID="LN">6     </FONT><A NAME="6"></A> * http://www.planetalia.com
+<FONT ID="LN">7     </FONT><A NAME="7"></A> * 
+<FONT ID="LN">8     </FONT><A NAME="8"></A> */</FONT>
+<FONT ID="LN">9     </FONT><A NAME="9"></A><FONT ID="Package">package</FONT> version13;
+<FONT ID="LN">10    </FONT><A NAME="10"></A>
+<FONT ID="LN">11    </FONT><A NAME="11"></A><FONT ID="Import">import</FONT> java.awt.Graphics2D;
+<FONT ID="LN">12    </FONT><A NAME="12"></A><FONT ID="Import">import</FONT> java.awt.image.BufferedImage;
+<FONT ID="LN">13    </FONT><A NAME="13"></A>
+<FONT ID="LN">14    </FONT><A NAME="14"></A><FONT ID="Public">public</FONT> <FONT ID="Class">class</FONT> Actor {
+<FONT ID="LN">15    </FONT><A NAME="15"></A>  <FONT ID="Protected">protected</FONT> <FONT ID="Int">int</FONT> x,y;
+<FONT ID="LN">16    </FONT><A NAME="16"></A>  <FONT ID="Protected">protected</FONT> <FONT ID="Int">int</FONT> width, height;
+<FONT ID="LN">17    </FONT><A NAME="17"></A>  <FONT ID="Protected">protected</FONT> String spriteName;
+<FONT ID="LN">18    </FONT><A NAME="18"></A>  <FONT ID="Protected">protected</FONT> <A TITLE='Java Source' HREF="version13/Stage.java.html">Stage</A> stage;
+<FONT ID="LN">19    </FONT><A NAME="19"></A>  <FONT ID="Protected">protected</FONT> <A TITLE='Java Source' HREF="version13/SpriteCache.java.html">SpriteCache</A> spriteCache;
+<FONT ID="LN">20    </FONT><A NAME="20"></A>  
+<FONT ID="LN">21    </FONT><A NAME="21"></A>  <FONT ID="Public">public</FONT> Actor(<A TITLE='Java Source' HREF="version13/Stage.java.html">Stage</A> stage) {
+<FONT ID="LN">22    </FONT><A NAME="22"></A>    <FONT ID="This">this</FONT>.stage = stage;
+<FONT ID="LN">23    </FONT><A NAME="23"></A>    spriteCache = stage.getSpriteCache();
+<FONT ID="LN">24    </FONT><A NAME="24"></A>  }
+<FONT ID="LN">25    </FONT><A NAME="25"></A>  
+<FONT ID="LN">26    </FONT><A NAME="26"></A>  <FONT ID="Public">public</FONT> <FONT ID="Void">void</FONT> paint(Graphics2D g){
+<FONT ID="LN">27    </FONT><A NAME="27"></A>    g.drawImage( spriteCache.getSprite(spriteName), x,y, stage );
+<FONT ID="LN">28    </FONT><A NAME="28"></A>  }
+<FONT ID="LN">29    </FONT><A NAME="29"></A>  
+<FONT ID="LN">30    </FONT><A NAME="30"></A>  <FONT ID="Public">public</FONT> <FONT ID="Int">int</FONT> getX()  { <FONT ID="Return">return</FONT> x; }
+<FONT ID="LN">31    </FONT><A NAME="31"></A>  <FONT ID="Public">public</FONT> <FONT ID="Void">void</FONT> setX(<FONT ID="Int">int</FONT> i) { x = i; }
+<FONT ID="LN">32    </FONT><A NAME="32"></A>
+<FONT ID="LN">33    </FONT><A NAME="33"></A>  <FONT ID="Public">public</FONT> <FONT ID="Int">int</FONT> getY() { <FONT ID="Return">return</FONT> y; }
+<FONT ID="LN">34    </FONT><A NAME="34"></A>  <FONT ID="Public">public</FONT> <FONT ID="Void">void</FONT> setY(<FONT ID="Int">int</FONT> i) { y = i; }
+<FONT ID="LN">35    </FONT><A NAME="35"></A>  
+<FONT ID="LN">36    </FONT><A NAME="36"></A>  <FONT ID="Public">public</FONT> String getSpriteName() { <FONT ID="Return">return</FONT> spriteName; }
+<FONT ID="LN">37    </FONT><A NAME="37"></A>  <FONT ID="Public">public</FONT> <FONT ID="Void">void</FONT> setSpriteName(String string) { 
+<FONT ID="LN">38    </FONT><A NAME="38"></A>    spriteName = string;
+<FONT ID="LN">39    </FONT><A NAME="39"></A>    BufferedImage image = spriteCache.getSprite(spriteName);
+<FONT ID="LN">40    </FONT><A NAME="40"></A>    height = image.getHeight();
+<FONT ID="LN">41    </FONT><A NAME="41"></A>    width = image.getWidth();
+<FONT ID="LN">42    </FONT><A NAME="42"></A>  }     
+<FONT ID="LN">43    </FONT><A NAME="43"></A>  
+<FONT ID="LN">44    </FONT><A NAME="44"></A>  <FONT ID="Public">public</FONT> <FONT ID="Int">int</FONT> getHeight() { <FONT ID="Return">return</FONT> height; }
+<FONT ID="LN">45    </FONT><A NAME="45"></A>  <FONT ID="Public">public</FONT> <FONT ID="Int">int</FONT> getWidth() { <FONT ID="Return">return</FONT> width; }
+<FONT ID="LN">46    </FONT><A NAME="46"></A>  <FONT ID="Public">public</FONT> <FONT ID="Void">void</FONT> setHeight(<FONT ID="Int">int</FONT> i) {height = i; }
+<FONT ID="LN">47    </FONT><A NAME="47"></A>  <FONT ID="Public">public</FONT> <FONT ID="Void">void</FONT> setWidth(<FONT ID="Int">int</FONT> i) { width = i;  }
+<FONT ID="LN">48    </FONT><A NAME="48"></A>
+<FONT ID="LN">49    </FONT><A NAME="49"></A>  <FONT ID="Public">public</FONT> <FONT ID="Void">void</FONT> act() { }
+<FONT ID="LN">50    </FONT><A NAME="50"></A>}
+<FONT ID="LN">51    </FONT><A NAME="51"></A>
+</div>
+
+
+<p>Esta es la clase genérica, y ahora vamos a definir una clase descendiente de ella llamada
+<span class="clase">Monster</span> que se limitará a moverse y a actuar como hasta ahora lo hacía nuestro único
+monstruo: </p>
+
+<div class='codigo'>
+<TABLE id="Header" border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td colspan="2" width="33%">&nbsp;</td>
+<td align="center" colspan="2" width="33%">
+<font size="4">Monster.java</font>
+</td>
+<td align="right" colspan="2" width="33%">&nbsp;</td>
+</tr>
+</TABLE>
+<pre ID="Classes">
+
+<FONT ID="LN">1     </FONT><A NAME="1"></A><FONT ID="FormalComment">/**
+<FONT ID="LN">2     </FONT><A NAME="2"></A> * Curso Básico de desarrollo de Juegos en Java - Space Invaders
+<FONT ID="LN">3     </FONT><A NAME="3"></A> * 
+<FONT ID="LN">4     </FONT><A NAME="4"></A> * (c) 2004 Planetalia S.L. - Todos los derechos reservados. Prohibida su reproducción
+<FONT ID="LN">5     </FONT><A NAME="5"></A> * 
+<FONT ID="LN">6     </FONT><A NAME="6"></A> * http://www.planetalia.com
+<FONT ID="LN">7     </FONT><A NAME="7"></A> * 
+<FONT ID="LN">8     </FONT><A NAME="8"></A> */</FONT>
+<FONT ID="LN">9     </FONT><A NAME="9"></A>
+<FONT ID="LN">10    </FONT><A NAME="10"></A><FONT ID="Package">package</FONT> version13;
+<FONT ID="LN">11    </FONT><A NAME="11"></A><FONT ID="Public">public</FONT> <FONT ID="Class">class</FONT> Monster <FONT ID="Extends">extends</FONT> <A TITLE='Java Source' HREF="version13/Actor.java.html">Actor</A> {
+<FONT ID="LN">12    </FONT><A NAME="12"></A>  <FONT ID="Protected">protected</FONT> <FONT ID="Int">int</FONT> vx;
+<FONT ID="LN">13    </FONT><A NAME="13"></A>  
+<FONT ID="LN">14    </FONT><A NAME="14"></A>  <FONT ID="Public">public</FONT> Monster(<A TITLE='Java Source' HREF="version13/Stage.java.html">Stage</A> stage) {
+<FONT ID="LN">15    </FONT><A NAME="15"></A>    <FONT ID="Super">super</FONT>(stage);
+<FONT ID="LN">16    </FONT><A NAME="16"></A>    setSpriteName(<FONT ID="StringLiteral">"bicho.gif"</FONT>);
+<FONT ID="LN">17    </FONT><A NAME="17"></A>  }
+<FONT ID="LN">18    </FONT><A NAME="18"></A>  
+<FONT ID="LN">19    </FONT><A NAME="19"></A>  <FONT ID="Public">public</FONT> <FONT ID="Void">void</FONT> act() {
+<FONT ID="LN">20    </FONT><A NAME="20"></A>    x+=vx;
+<FONT ID="LN">21    </FONT><A NAME="21"></A>    <FONT ID="If">if</FONT> (x &lt; <FONT ID="IntegerLiteral">0</FONT> || x &gt; Stage.WIDTH)
+<FONT ID="LN">22    </FONT><A NAME="22"></A>      vx = -vx;
+<FONT ID="LN">23    </FONT><A NAME="23"></A>  }
+<FONT ID="LN">24    </FONT><A NAME="24"></A>
+<FONT ID="LN">25    </FONT><A NAME="25"></A>  <FONT ID="Public">public</FONT> <FONT ID="Int">int</FONT> getVx() { <FONT ID="Return">return</FONT> vx; }
+<FONT ID="LN">26    </FONT><A NAME="26"></A>  <FONT ID="Public">public</FONT> <FONT ID="Void">void</FONT> setVx(<FONT ID="Int">int</FONT> i) {vx = i; }
+<FONT ID="LN">27    </FONT><A NAME="27"></A>
+<FONT ID="LN">28    </FONT><A NAME="28"></A>}
+<FONT ID="LN">29    </FONT><A NAME="29"></A>
+</div>
+
+
+<p>Y finalmente nos toca reescribir la clase original - <span class="clase">Invaders</span> y aprovecharemos para añadir
+la posibilidad de que existan muchos monstruos. Tods ellos los almacenaremos en una lista llamada "actors":</p>
+
+<div class='codigo'>
+<TABLE id="Header" border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td colspan="2" width="33%">&nbsp;</td>
+<td align="center" colspan="2" width="33%">
+<font size="4">Invaders.java</font>
+</td>
+<td align="right" colspan="2" width="33%">&nbsp;</td>
+</tr>
+</TABLE>
+<pre ID="Classes">
+
+<FONT ID="LN">1     </FONT><A NAME="1"></A><FONT ID="Package">package</FONT> version13;
+<FONT ID="LN">2     </FONT><A NAME="2"></A><FONT ID="FormalComment">/**
+<FONT ID="LN">3     </FONT><A NAME="3"></A> * Curso Básico de desarrollo de Juegos en Java - Invaders
+<FONT ID="LN">4     </FONT><A NAME="4"></A> * 
+<FONT ID="LN">5     </FONT><A NAME="5"></A> * (c) 2004 Planetalia S.L. - Todos los derechos reservados. Prohibida su reproducción
+<FONT ID="LN">6     </FONT><A NAME="6"></A> * 
+<FONT ID="LN">7     </FONT><A NAME="7"></A> * http://www.planetalia.com
+<FONT ID="LN">8     </FONT><A NAME="8"></A> * 
+<FONT ID="LN">9     </FONT><A NAME="9"></A> */</FONT>
+<FONT ID="LN">10    </FONT><A NAME="10"></A>
+<FONT ID="LN">11    </FONT><A NAME="11"></A><FONT ID="Import">import</FONT> java.awt.Canvas;
+<FONT ID="LN">12    </FONT><A NAME="12"></A><FONT ID="Import">import</FONT> java.awt.Color;
+<FONT ID="LN">13    </FONT><A NAME="13"></A><FONT ID="Import">import</FONT> java.awt.Dimension;
+<FONT ID="LN">14    </FONT><A NAME="14"></A><FONT ID="Import">import</FONT> java.awt.Graphics2D;
+<FONT ID="LN">15    </FONT><A NAME="15"></A><FONT ID="Import">import</FONT> java.awt.event.WindowAdapter;
+<FONT ID="LN">16    </FONT><A NAME="16"></A><FONT ID="Import">import</FONT> java.awt.event.WindowEvent;
+<FONT ID="LN">17    </FONT><A NAME="17"></A><FONT ID="Import">import</FONT> java.awt.image.BufferStrategy;
+<FONT ID="LN">18    </FONT><A NAME="18"></A><FONT ID="Import">import</FONT> java.util.ArrayList;
+<FONT ID="LN">19    </FONT><A NAME="19"></A>
+<FONT ID="LN">20    </FONT><A NAME="20"></A><FONT ID="Import">import</FONT> javax.swing.JFrame;
+<FONT ID="LN">21    </FONT><A NAME="21"></A><FONT ID="Import">import</FONT> javax.swing.JPanel;
+<FONT ID="LN">22    </FONT><A NAME="22"></A>
+<FONT ID="LN">23    </FONT><A NAME="23"></A><FONT ID="Public">public</FONT> <FONT ID="Class">class</FONT> Invaders <FONT ID="Extends">extends</FONT> Canvas <FONT ID="Implements">implements</FONT> <A TITLE='Java Source' HREF="version13/Stage.java.html">Stage</A> {
+<FONT ID="LN">24    </FONT><A NAME="24"></A>  
+<FONT ID="LN">25    </FONT><A NAME="25"></A>  <FONT ID="Private">private</FONT> BufferStrategy strategy;
+<FONT ID="LN">26    </FONT><A NAME="26"></A>  <FONT ID="Private">private</FONT> <FONT ID="Long">long</FONT> usedTime;
+<FONT ID="LN">27    </FONT><A NAME="27"></A>  
+<FONT ID="LN">28    </FONT><A NAME="28"></A>  <FONT ID="Private">private</FONT> <A TITLE='Java Source' HREF="version13/SpriteCache.java.html">SpriteCache</A> spriteCache;
+<FONT ID="LN">29    </FONT><A NAME="29"></A>  <FONT ID="Private">private</FONT> ArrayList actors; 
+<FONT ID="LN">30    </FONT><A NAME="30"></A>  
+<FONT ID="LN">31    </FONT><A NAME="31"></A>  <FONT ID="Public">public</FONT> Invaders() {
+<FONT ID="LN">32    </FONT><A NAME="32"></A>    spriteCache = <FONT ID="New">new</FONT> <A TITLE='Java Source' HREF="version13/SpriteCache.java.html">SpriteCache</A>();
+<FONT ID="LN">33    </FONT><A NAME="33"></A>
+<FONT ID="LN">34    </FONT><A NAME="34"></A>    JFrame ventana = <FONT ID="New">new</FONT> JFrame(<FONT ID="StringLiteral">"Invaders"</FONT>);
+<FONT ID="LN">35    </FONT><A NAME="35"></A>    JPanel panel = (JPanel)ventana.getContentPane();
+<FONT ID="LN">36    </FONT><A NAME="36"></A>    setBounds(<FONT ID="IntegerLiteral">0</FONT>,<FONT ID="IntegerLiteral">0</FONT>,Stage.WIDTH,Stage.HEIGHT);
+<FONT ID="LN">37    </FONT><A NAME="37"></A>    panel.setPreferredSize(<FONT ID="New">new</FONT> Dimension(Stage.WIDTH,Stage.HEIGHT));
+<FONT ID="LN">38    </FONT><A NAME="38"></A>    panel.setLayout(<FONT ID="Null">null</FONT>);
+<FONT ID="LN">39    </FONT><A NAME="39"></A>    panel.add(<FONT ID="This">this</FONT>);
+<FONT ID="LN">40    </FONT><A NAME="40"></A>    ventana.setBounds(<FONT ID="IntegerLiteral">0</FONT>,<FONT ID="IntegerLiteral">0</FONT>,Stage.WIDTH,Stage.HEIGHT);
+<FONT ID="LN">41    </FONT><A NAME="41"></A>    ventana.setVisible(<FONT ID="True">true</FONT>);
+<FONT ID="LN">42    </FONT><A NAME="42"></A>    ventana.addWindowListener( <FONT ID="New">new</FONT> WindowAdapter() {
+<FONT ID="LN">43    </FONT><A NAME="43"></A>      <FONT ID="Public">public</FONT> <FONT ID="Void">void</FONT> windowClosing(WindowEvent e) {
+<FONT ID="LN">44    </FONT><A NAME="44"></A>        System.exit(<FONT ID="IntegerLiteral">0</FONT>);
+<FONT ID="LN">45    </FONT><A NAME="45"></A>      }
+<FONT ID="LN">46    </FONT><A NAME="46"></A>    });
+<FONT ID="LN">47    </FONT><A NAME="47"></A>    ventana.setResizable(<FONT ID="False">false</FONT>);
+<FONT ID="LN">48    </FONT><A NAME="48"></A>    createBufferStrategy(<FONT ID="IntegerLiteral">2</FONT>);
+<FONT ID="LN">49    </FONT><A NAME="49"></A>    strategy = getBufferStrategy();
+<FONT ID="LN">50    </FONT><A NAME="50"></A>    requestFocus();
+<FONT ID="LN">51    </FONT><A NAME="51"></A>  }
+<FONT ID="LN">52    </FONT><A NAME="52"></A>  
+<FONT ID="LN">53    </FONT><A NAME="53"></A>  <FONT ID="Public">public</FONT> <FONT ID="Void">void</FONT> initWorld() {
+<FONT ID="LN">54    </FONT><A NAME="54"></A>    actors = <FONT ID="New">new</FONT> ArrayList();
+<FONT ID="LN">55    </FONT><A NAME="55"></A>    <FONT ID="For">for</FONT> (<FONT ID="Int">int</FONT> i = <FONT ID="IntegerLiteral">0</FONT>; i &lt; <FONT ID="IntegerLiteral">10</FONT>; i++){
+<FONT ID="LN">56    </FONT><A NAME="56"></A>      <A TITLE='Java Source' HREF="version13/Monster.java.html">Monster</A> m = <FONT ID="New">new</FONT> <A TITLE='Java Source' HREF="version13/Monster.java.html">Monster</A>(<FONT ID="This">this</FONT>);
+<FONT ID="LN">57    </FONT><A NAME="57"></A>      m.setX( (<FONT ID="Int">int</FONT>)(Math.random()*Stage.WIDTH) );
+<FONT ID="LN">58    </FONT><A NAME="58"></A>      m.setY( i*<FONT ID="IntegerLiteral">20</FONT> );
+<FONT ID="LN">59    </FONT><A NAME="59"></A>      m.setVx( (<FONT ID="Int">int</FONT>)(Math.random()*<FONT ID="IntegerLiteral">20</FONT>-<FONT ID="IntegerLiteral">10</FONT>) );
+<FONT ID="LN">60    </FONT><A NAME="60"></A>      actors.add(m);
+<FONT ID="LN">61    </FONT><A NAME="61"></A>    }
+<FONT ID="LN">62    </FONT><A NAME="62"></A>  }
+<FONT ID="LN">63    </FONT><A NAME="63"></A>  
+<FONT ID="LN">64    </FONT><A NAME="64"></A>  <FONT ID="Public">public</FONT> <FONT ID="Void">void</FONT> updateWorld() {
+<FONT ID="LN">65    </FONT><A NAME="65"></A>    <FONT ID="For">for</FONT> (<FONT ID="Int">int</FONT> i = <FONT ID="IntegerLiteral">0</FONT>; i &lt; actors.size(); i++) {
+<FONT ID="LN">66    </FONT><A NAME="66"></A>      <A TITLE='Java Source' HREF="version13/Actor.java.html">Actor</A> m = (<A TITLE='Java Source' HREF="version13/Actor.java.html">Actor</A>)actors.get(i);
+<FONT ID="LN">67    </FONT><A NAME="67"></A>      m.act();
+<FONT ID="LN">68    </FONT><A NAME="68"></A>    }
+<FONT ID="LN">69    </FONT><A NAME="69"></A>  }
+<FONT ID="LN">70    </FONT><A NAME="70"></A>  
+<FONT ID="LN">71    </FONT><A NAME="71"></A>  <FONT ID="Public">public</FONT> <FONT ID="Void">void</FONT> paintWorld() {
+<FONT ID="LN">72    </FONT><A NAME="72"></A>    Graphics2D g = (Graphics2D)strategy.getDrawGraphics();
+<FONT ID="LN">73    </FONT><A NAME="73"></A>    g.setColor(Color.black);
+<FONT ID="LN">74    </FONT><A NAME="74"></A>    g.fillRect(<FONT ID="IntegerLiteral">0</FONT>,<FONT ID="IntegerLiteral">0</FONT>,getWidth(),getHeight());
+<FONT ID="LN">75    </FONT><A NAME="75"></A>    <FONT ID="For">for</FONT> (<FONT ID="Int">int</FONT> i = <FONT ID="IntegerLiteral">0</FONT>; i &lt; actors.size(); i++) {
+<FONT ID="LN">76    </FONT><A NAME="76"></A>      <A TITLE='Java Source' HREF="version13/Actor.java.html">Actor</A> m = (<A TITLE='Java Source' HREF="version13/Actor.java.html">Actor</A>)actors.get(i);
+<FONT ID="LN">77    </FONT><A NAME="77"></A>      m.paint(g);
+<FONT ID="LN">78    </FONT><A NAME="78"></A>    }
+<FONT ID="LN">79    </FONT><A NAME="79"></A>
+<FONT ID="LN">80    </FONT><A NAME="80"></A>    g.setColor(Color.white);
+<FONT ID="LN">81    </FONT><A NAME="81"></A>    <FONT ID="If">if</FONT> (usedTime &gt; <FONT ID="IntegerLiteral">0</FONT>)
+<FONT ID="LN">82    </FONT><A NAME="82"></A>      g.drawString(String.valueOf(<FONT ID="IntegerLiteral">1000</FONT>/usedTime)+<FONT ID="StringLiteral">" fps"</FONT>,<FONT ID="IntegerLiteral">0</FONT>,Stage.HEIGHT-<FONT ID="IntegerLiteral">50</FONT>);
+<FONT ID="LN">83    </FONT><A NAME="83"></A>    <FONT ID="Else">else</FONT>
+<FONT ID="LN">84    </FONT><A NAME="84"></A>      g.drawString(<FONT ID="StringLiteral">"--- fps"</FONT>,<FONT ID="IntegerLiteral">0</FONT>,Stage.HEIGHT-<FONT ID="IntegerLiteral">50</FONT>);
+<FONT ID="LN">85    </FONT><A NAME="85"></A>    strategy.show();
+<FONT ID="LN">86    </FONT><A NAME="86"></A>  }
+<FONT ID="LN">87    </FONT><A NAME="87"></A>  
+<FONT ID="LN">88    </FONT><A NAME="88"></A>  <FONT ID="Public">public</FONT> <A TITLE='Java Source' HREF="version13/SpriteCache.java.html">SpriteCache</A> getSpriteCache() {
+<FONT ID="LN">89    </FONT><A NAME="89"></A>    <FONT ID="Return">return</FONT> spriteCache;
+<FONT ID="LN">90    </FONT><A NAME="90"></A>  }
+<FONT ID="LN">91    </FONT><A NAME="91"></A>  
+<FONT ID="LN">92    </FONT><A NAME="92"></A>  <FONT ID="Public">public</FONT> <FONT ID="Void">void</FONT> game() {
+<FONT ID="LN">93    </FONT><A NAME="93"></A>    usedTime=<FONT ID="IntegerLiteral">1000</FONT>;
+<FONT ID="LN">94    </FONT><A NAME="94"></A>    initWorld();
+<FONT ID="LN">95    </FONT><A NAME="95"></A>    <FONT ID="While">while</FONT> (isVisible()) {
+<FONT ID="LN">96    </FONT><A NAME="96"></A>      <FONT ID="Long">long</FONT> startTime = System.currentTimeMillis();
+<FONT ID="LN">97    </FONT><A NAME="97"></A>      updateWorld();
+<FONT ID="LN">98    </FONT><A NAME="98"></A>      paintWorld();
+<FONT ID="LN">99    </FONT><A NAME="99"></A>      usedTime = System.currentTimeMillis()-startTime;
+<FONT ID="LN">100   </FONT><A NAME="100"></A>      <FONT ID="Try">try</FONT> { 
+<FONT ID="LN">101   </FONT><A NAME="101"></A>         Thread.sleep(SPEED);
+<FONT ID="LN">102   </FONT><A NAME="102"></A>      } <FONT ID="Catch">catch</FONT> (InterruptedException e) {}
+<FONT ID="LN">103   </FONT><A NAME="103"></A>    }
+<FONT ID="LN">104   </FONT><A NAME="104"></A>  }
+<FONT ID="LN">105   </FONT><A NAME="105"></A>  
+<FONT ID="LN">106   </FONT><A NAME="106"></A>  <FONT ID="Public">public</FONT> <FONT ID="Static">static</FONT> <FONT ID="Void">void</FONT> main(String[] args) {
+<FONT ID="LN">107   </FONT><A NAME="107"></A>    <A TITLE='Java Source' HREF="version13/Invaders.java.html">Invaders</A> inv = <FONT ID="New">new</FONT> <A TITLE='Java Source' HREF="version13/Invaders.java.html">Invaders</A>();
+<FONT ID="LN">108   </FONT><A NAME="108"></A>    inv.game();
+<FONT ID="LN">109   </FONT><A NAME="109"></A>  }
+<FONT ID="LN">110   </FONT><A NAME="110"></A>}
+<FONT ID="LN">111   </FONT><A NAME="111"></A>
+</div>
+
+
+<p>Fijémonos especialmente en los métodos <span class="kw">initWorld(), updateWorld() y paintWorld()</span>. El primero de ellos
+es nuevo y su propósito es inicializar el escenario. En este caso, se construyen distintos monstruos y se añaden a la lista
+de actores existentes. Los métodos <span class="kw">updateWorld() y paintWorld()</span> tienen los mismos papeles que antes,
+pero ahora son mucho más limpios y no dependen para nada del tipo de actores con los que están tratando. Cada uno de 
+estos métodos se limita a recorrer la lista de actores diciéndoles "píntate!", "actúa", etc... y cada actor concreto,
+dependiendo de cómo están sobreescritos sus métodos, actúa en consecuencia</p>
+<p align="center"><img src="images/version13.jpg" alt="Monstruitos Java" /></p>
+                               
+
+
+<br />
+
+<hr>
+<div class="archivos">  
+<h3>Lista de archivos Java del programa en este paso </h3>
+<table width='80%' align='center' border='1' cellpadding='4' cellspacing='0'>
+<tr >
+<td width='25%' align='center'>
+<a href='version13/Actor.java'>Actor.java</a>
+</td>
+<td width='25%' align='center'>
+<a href='version13/Invaders.java'>Invaders.java</a>
+</td>
+<td width='25%' align='center'>
+<a href='version13/Monster.java'>Monster.java</a>
+</td>
+<td width='25%' align='center'>
+<a href='version13/SpriteCache.java'>SpriteCache.java</a>
+</td>
+</tr>
+<tr >
+<td width='25%' align='center'>
+<a href='version13/Stage.java'>Stage.java</a>
+</td>
+<td width='25%' align='center'>&nbsp;</td>
+<td width='25%' align='center'>&nbsp;</td>
+<td width='25%' align='center'>&nbsp;</td>
+</tr>
+</table>
+
+<br />
+<h3>Lista de recursos</h3>
+<table width='80%' align='center' border='1' cellpadding='4' cellspacing='0'>
+<tr >
+<td align='center'>
+<a href='res/bicho.gif'>bicho.gif</a>
+</td>
+<td align='center'>
+<a href='res/bicho0.gif'>bicho0.gif</a>
+</td>
+<td align='center'>
+<a href='res/bicho1.gif'>bicho1.gif</a>
+</td>
+<td align='center'>
+<a href='res/bicho2.gif'>bicho2.gif</a>
+</td>
+</tr>
+<tr >
+<td align='center'>
+<a href='res/bombD.gif'>bombD.gif</a>
+</td>
+<td align='center'>
+<a href='res/bombDL.gif'>bombDL.gif</a>
+</td>
+<td align='center'>
+<a href='res/bombDR.gif'>bombDR.gif</a>
+</td>
+<td align='center'>
+<a href='res/bombL.gif'>bombL.gif</a>
+</td>
+</tr>
+<tr >
+<td align='center'>
+<a href='res/bombR.gif'>bombR.gif</a>
+</td>
+<td align='center'>
+<a href='res/bombU.gif'>bombU.gif</a>
+</td>
+<td align='center'>
+<a href='res/bombUL.gif'>bombUL.gif</a>
+</td>
+<td align='center'>
+<a href='res/bombUR.gif'>bombUR.gif</a>
+</td>
+</tr>
+<tr >
+<td align='center'>
+<a href='res/disparo.gif'>disparo.gif</a>
+</td>
+<td align='center'>
+<a href='res/disparo0.gif'>disparo0.gif</a>
+</td>
+<td align='center'>
+<a href='res/disparo1.gif'>disparo1.gif</a>
+</td>
+<td align='center'>
+<a href='res/disparo2.gif'>disparo2.gif</a>
+</td>
+</tr>
+<tr >
+<td align='center'>
+<a href='res/explosion.wav'>explosion.wav</a>
+</td>
+<td align='center'>
+<a href='res/misil.gif'>misil.gif</a>
+</td>
+<td align='center'>
+<a href='res/missile.wav'>missile.wav</a>
+</td>
+<td align='center'>
+<a href='res/musica.wav'>musica.wav</a>
+</td>
+</tr>
+<tr >
+<td align='center'>
+<a href='res/nave.gif'>nave.gif</a>
+</td>
+<td align='center'>
+<a href='res/oceano.gif'>oceano.gif</a>
+</td>
+<td align='center'>
+<a href='res/photon.wav'>photon.wav</a>
+</td>
+<td align='center'>
+<a href='res/Thumbs.db'>Thumbs.db</a>
+</td>
+</tr>
+</table>
+
+<br />
+</div>
+<table border="0" width="100%">
+<tr>
+  <td width="33%" align="center">&nbsp;
+    
+    <a href="JAVA-INVADERS-12.html"> 
+    
+    Página Anterior - 
+    
+    Medición del rendimiento
+    </a>
+   
+  </td>
+  <td width="33%" align="center"><b>
+    
+    Página Actual - 
+    
+    13 - Reorganización del código Java</b>
+  </td>
+  <td width="33%" align="center">&nbsp;
+    
+    <a href="JAVA-INVADERS-14.html"> 
+    
+    Página Siguiente - 
+    
+    Fotogramas
+    </a>
+    
+  </td>    
+</tr>
+<tr>
+<tr>
+  <td>&nbsp;</td>
+  <td align="center"><a href="index.html">Índice del curso</a></td>
+  <td>&nbsp;</td>
+</tr>
+</table>
+
+<p class="pie">(c) 2004 Planetalia S.L. Todos los derechos reservados. Prohibida su reproducción</p>
+</html>
+

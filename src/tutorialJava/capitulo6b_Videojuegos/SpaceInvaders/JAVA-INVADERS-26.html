@@ -1,0 +1,288 @@
+<html>
+<head>
+<title>Curso - Programación de un Space Invaders en Java</title>
+
+</head>
+<body><link rel="stylesheet" type="text/css" href="estilos.css">
+
+
+
+
+                     
+<link rel="stylesheet" type="text/css" href="estilos.css">
+
+
+<h1>Curso - Programación de un Space Invaders en Java</h1>
+<table border="0" width="100%">
+<tr>
+  <td width="33%" align="center">&nbsp;
+    
+    <a href="JAVA-INVADERS-25.html"> 
+    
+    Página Anterior - 
+    
+    Fondo con scroll
+    </a>
+   
+  </td>
+  <td width="33%" align="center"><b>
+    
+    Página Actual - 
+    
+    26 - Reaparición de monstruos</b>
+  </td>
+  <td width="33%" align="center">&nbsp;
+    
+    <a href="JAVA-INVADERS-27.html"> 
+    
+    Página Siguiente - 
+    
+    Sonido sencillo
+    </a>
+    
+  </td>    
+</tr>
+<tr>
+<tr>
+  <td>&nbsp;</td>
+  <td align="center"><a href="index.html">Índice del curso</a></td>
+  <td>&nbsp;</td>
+</tr>
+</table>
+<hr>
+ 
+<link rel="stylesheet" href="codigo.css" />
+<h2>Reaparición de monstruos</h2>
+<p class=autor> (c) Alexander Hristov </p>
+
+<p>En nuestro juego cuando matamos a un monstruo de momento no ocurre nada especial, y los monstruos son exterminados
+con bastante rapidez. Podemos afrontar esta situación de distintas formas:</p>
+<ul>
+  <li>Hacer aparecer nuevos monstruso cada vez que un monstruo muere</li>
+  <li>Cambiar el "nivel" de juego cambiando los decorados y haciendo que aparezcan diferentes bichos </li>
+  <li>Haciendo que aparezcan nuevos monstruos de forma periódica con independencia de los que matamos</li>
+</ul>
+
+<p>Para ilustrar este proceso, utilizaremos el primero de los enfoques : Cada vez que matemos a un monstruo,
+aparecerá uno nuevo. Esto es fácil de conseguir añadiendo lo siguiente a nuestra clase <span class="clase">Monster</span>:</p>
+
+<div class='codigo'>
+<TABLE id="Header" border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td colspan="2" width="33%">&nbsp;</td>
+<td align="center" colspan="2" width="33%">
+<font size="4">Monster.java</font>
+</td>
+<td align="right" colspan="2" width="33%">&nbsp;</td>
+</tr>
+</TABLE>
+<pre ID="Classes">
+
+           . . .  
+<FONT ID="LN">33    </FONT><A NAME="33"></A>  <FONT ID="Public">public</FONT> <FONT ID="Void">void</FONT> collision(<A TITLE='Java Source' HREF="version26/Actor.java.html">Actor</A> a) {
+<FONT ID="LN">34    </FONT><A NAME="34"></A>    <FONT ID="If">if</FONT> (a <FONT ID="InstanceOf">instanceof</FONT> <A TITLE='Java Source' HREF="version26/Bullet.java.html">Bullet</A> || a <FONT ID="InstanceOf">instanceof</FONT> <A TITLE='Java Source' HREF="version26/Bomb.java.html">Bomb</A>) {
+<FONT ID="LN">35    </FONT><A NAME="35"></A>      remove();
+<div class='cambio'>
+<FONT ID="LN">36    </FONT><A NAME="36"></A>      spawn();
+</div>
+<FONT ID="LN">37    </FONT><A NAME="37"></A>      stage.getPlayer().addScore(<FONT ID="IntegerLiteral">20</FONT>);
+<FONT ID="LN">38    </FONT><A NAME="38"></A>    }
+<FONT ID="LN">39    </FONT><A NAME="39"></A>  }
+<FONT ID="LN">40    </FONT><A NAME="40"></A>  
+<div class='cambio'>
+<FONT ID="LN">41    </FONT><A NAME="41"></A>  <FONT ID="Public">public</FONT> <FONT ID="Void">void</FONT> spawn() {
+<FONT ID="LN">42    </FONT><A NAME="42"></A>    <A TITLE='Java Source' HREF="version26/Monster.java.html">Monster</A> m = <FONT ID="New">new</FONT> <A TITLE='Java Source' HREF="version26/Monster.java.html">Monster</A>(stage);
+<FONT ID="LN">43    </FONT><A NAME="43"></A>    m.setX( (<FONT ID="Int">int</FONT>)(Math.random()*Stage.WIDTH) );
+<FONT ID="LN">44    </FONT><A NAME="44"></A>    m.setY( (<FONT ID="Int">int</FONT>)(Math.random()*Stage.PLAY_HEIGHT/<FONT ID="IntegerLiteral">2</FONT>) );
+<FONT ID="LN">45    </FONT><A NAME="45"></A>    m.setVx( (<FONT ID="Int">int</FONT>)(Math.random()*<FONT ID="IntegerLiteral">20</FONT>-<FONT ID="IntegerLiteral">10</FONT>) );
+<FONT ID="LN">46    </FONT><A NAME="46"></A>    stage.addActor(m);
+<FONT ID="LN">47    </FONT><A NAME="47"></A>  }
+</div>
+<FONT ID="LN">48    </FONT><A NAME="48"></A>  
+<FONT ID="LN">49    </FONT><A NAME="49"></A>  <FONT ID="Public">public</FONT> <FONT ID="Void">void</FONT> fire() {
+           . . .  
+
+</div>
+
+
+
+                               
+
+
+<br />
+
+<hr>
+<div class="archivos">  
+<h3>Lista de archivos Java del programa en este paso </h3>
+<table width='80%' align='center' border='1' cellpadding='4' cellspacing='0'>
+<tr >
+<td width='25%' align='center'>
+<a href='version26/Actor.java'>Actor.java</a>
+</td>
+<td width='25%' align='center'>
+<a href='version26/Bomb.java'>Bomb.java</a>
+</td>
+<td width='25%' align='center'>
+<a href='version26/Bullet.java'>Bullet.java</a>
+</td>
+<td width='25%' align='center'>
+<a href='version26/Invaders.java'>Invaders.java</a>
+</td>
+</tr>
+<tr >
+<td width='25%' align='center'>
+<a href='version26/Laser.java'>Laser.java</a>
+</td>
+<td width='25%' align='center'>
+<a href='version26/Monster.java'>Monster.java</a>
+</td>
+<td width='25%' align='center'>
+<a href='version26/Player.java'>Player.java</a>
+</td>
+<td width='25%' align='center'>
+<a href='version26/SpriteCache.java'>SpriteCache.java</a>
+</td>
+</tr>
+<tr >
+<td width='25%' align='center'>
+<a href='version26/Stage.java'>Stage.java</a>
+</td>
+<td width='25%' align='center'>&nbsp;</td>
+<td width='25%' align='center'>&nbsp;</td>
+<td width='25%' align='center'>&nbsp;</td>
+</tr>
+</table>
+
+<br />
+<h3>Lista de recursos</h3>
+<table width='80%' align='center' border='1' cellpadding='4' cellspacing='0'>
+<tr >
+<td align='center'>
+<a href='res/bicho.gif'>bicho.gif</a>
+</td>
+<td align='center'>
+<a href='res/bicho0.gif'>bicho0.gif</a>
+</td>
+<td align='center'>
+<a href='res/bicho1.gif'>bicho1.gif</a>
+</td>
+<td align='center'>
+<a href='res/bicho2.gif'>bicho2.gif</a>
+</td>
+</tr>
+<tr >
+<td align='center'>
+<a href='res/bombD.gif'>bombD.gif</a>
+</td>
+<td align='center'>
+<a href='res/bombDL.gif'>bombDL.gif</a>
+</td>
+<td align='center'>
+<a href='res/bombDR.gif'>bombDR.gif</a>
+</td>
+<td align='center'>
+<a href='res/bombL.gif'>bombL.gif</a>
+</td>
+</tr>
+<tr >
+<td align='center'>
+<a href='res/bombR.gif'>bombR.gif</a>
+</td>
+<td align='center'>
+<a href='res/bombU.gif'>bombU.gif</a>
+</td>
+<td align='center'>
+<a href='res/bombUL.gif'>bombUL.gif</a>
+</td>
+<td align='center'>
+<a href='res/bombUR.gif'>bombUR.gif</a>
+</td>
+</tr>
+<tr >
+<td align='center'>
+<a href='res/disparo.gif'>disparo.gif</a>
+</td>
+<td align='center'>
+<a href='res/disparo0.gif'>disparo0.gif</a>
+</td>
+<td align='center'>
+<a href='res/disparo1.gif'>disparo1.gif</a>
+</td>
+<td align='center'>
+<a href='res/disparo2.gif'>disparo2.gif</a>
+</td>
+</tr>
+<tr >
+<td align='center'>
+<a href='res/explosion.wav'>explosion.wav</a>
+</td>
+<td align='center'>
+<a href='res/misil.gif'>misil.gif</a>
+</td>
+<td align='center'>
+<a href='res/missile.wav'>missile.wav</a>
+</td>
+<td align='center'>
+<a href='res/musica.wav'>musica.wav</a>
+</td>
+</tr>
+<tr >
+<td align='center'>
+<a href='res/nave.gif'>nave.gif</a>
+</td>
+<td align='center'>
+<a href='res/oceano.gif'>oceano.gif</a>
+</td>
+<td align='center'>
+<a href='res/photon.wav'>photon.wav</a>
+</td>
+<td align='center'>
+<a href='res/Thumbs.db'>Thumbs.db</a>
+</td>
+</tr>
+</table>
+
+<br />
+</div>
+<table border="0" width="100%">
+<tr>
+  <td width="33%" align="center">&nbsp;
+    
+    <a href="JAVA-INVADERS-25.html"> 
+    
+    Página Anterior - 
+    
+    Fondo con scroll
+    </a>
+   
+  </td>
+  <td width="33%" align="center"><b>
+    
+    Página Actual - 
+    
+    26 - Reaparición de monstruos</b>
+  </td>
+  <td width="33%" align="center">&nbsp;
+    
+    <a href="JAVA-INVADERS-27.html"> 
+    
+    Página Siguiente - 
+    
+    Sonido sencillo
+    </a>
+    
+  </td>    
+</tr>
+<tr>
+<tr>
+  <td>&nbsp;</td>
+  <td align="center"><a href="index.html">Índice del curso</a></td>
+  <td>&nbsp;</td>
+</tr>
+</table>
+
+<p class="pie">(c) 2004 Planetalia S.L. Todos los derechos reservados. Prohibida su reproducción</p>
+</html>
+
+
+

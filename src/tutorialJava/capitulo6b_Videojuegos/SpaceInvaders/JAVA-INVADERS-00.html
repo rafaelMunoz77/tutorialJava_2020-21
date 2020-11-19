@@ -1,0 +1,190 @@
+<html>
+<head>
+<title>Curso - Programación de un Space Invaders en Java</title>
+
+</head>
+<body><link rel="stylesheet" type="text/css" href="estilos.css">
+
+<h1>Curso - Programación de un Space Invaders en Java</h1>
+<table border="0" width="100%">
+<tr>
+  <td width="33%" align="center">&nbsp;</td>
+  <td width="33%" align="center"><b>Página Actual - 00 - Introducción</b></td>
+  <td width="33%" align="center">
+	&nbsp;<a href="JAVA-INVADERS-01.html">Página Siguiente - La ventana</a></td>    
+</tr>
+<tr>
+  <td>&nbsp;</td>
+  <td align="center"><a href="index.html">Índice del curso</a></td>
+  <td>&nbsp;</td>
+</tr>
+</table>
+<hr>
+ 
+<link rel="stylesheet" href="codigo.css" />
+<h2>Introducción </h2>
+<p class=autor> (c) Alexander Hristov </p>
+
+<p>
+Este tutorial tiene como objetivo mostrar cómo es posible desarrollar un juego en java con un rendimiento
+más que aceptable. Además, el curso ilustra algunas técnicas de Java2D para conseguir aceleración gráfica
+que no se cubren habitualmente en muchos curriculums formativos ni en libros o manuales de java "estándar"
+</p>
+
+<p>
+En lugar del sistema tradicional de plantear un código fuente y explicarlo, hemos seguido el sistema
+que utilizamos en los propios cursos internos de Planetalia, consistente en desarrollar el programa
+paso a paso, como lo haría cualquier programador : desde las primeras líneas de Java hasta completarlo,
+a lo largo de una serie de versiones. De esta forma queda mucho mas claro el por qué de cada línea de código y
+su papel dentro del programa.
+</p>
+
+<p>
+Sin embargo, no pretendemos que este sistema sea un engaño para presentar como se construye paso a paso y supuestamente
+sin ninguna tribulación por el camino un programa ideal, ya que en la realidad este tipo de fantasías no ocurren.
+En lugar de esto hemos preferido conservar los errores que se pudieran cometer por el camino, así como no aspirar
+a un diseño perfecto desde el principio, sino ir haciendo el programa y ver cómo podríamos afrontar el cambio de objetivos
+o de requisitos que se puedan plantear en un momento dado.
+</p>
+
+<p>
+Te recomendamos que sigas este tipo de filosofía cuando afrontes tus desarrollos. Una vez que tengas hecho
+el correspondiente análisis y modelado (que en este curso vamos a obviar), es recomendable tener lo antes posible
+algo que funcione. No esperes a tener 200.000 líneas de código para darle al "Run" y ver si aquello tiene sentido
+o se comporta como es debido. El tener algo que funciona te proporciona una base sólida a la que volver si algún cambio
+que hagas estropea las cosas.
+</p>
+
+<p>
+El objetivo del curso es desarrollar un juego en Java de tipo "Space Invaders" - marcianos por arriba, nave por abajo.
+El objetivo irá cambiando, ya que una vez que hemos llegado a ese límite, es muy fácil añadir más elementos interesantes.
+</p>
+
+<p>
+Finalmente, antes de comenzar es necesario indicar que <b>no se trata de un curso de java</b>, sino un curso
+con un objetivo específico. Si no sabes lo que es la herencia, el polimorfismo, lo que es Graphics2D o JFrame, entonces
+este no es tu curso. Para poder seguir este tutorial son necesarios los siguientes conocimientos básicos:
+<ul>
+  <li>Lenguaje Java</li>
+  <li>Conicimientos básicos de Swing o AWT y la jerarquía de componentes</li>
+  <li>Colecciones de Java</li>
+  <li>Librería de gráficos de Java (Graphics2D) </li>
+</ul>
+</p>
+                               
+
+
+<br />
+
+<hr>
+<div class="archivos">  
+<h3>Lista de archivos Java del programa en este paso </h3>
+
+<br />
+<h3>Lista de recursos</h3>
+<table width='80%' align='center' border='1' cellpadding='4' cellspacing='0'>
+<tr >
+<td align='center'>
+<a href='res/bicho.gif'>bicho.gif</a>
+</td>
+<td align='center'>
+<a href='res/bicho0.gif'>bicho0.gif</a>
+</td>
+<td align='center'>
+<a href='res/bicho1.gif'>bicho1.gif</a>
+</td>
+<td align='center'>
+<a href='res/bicho2.gif'>bicho2.gif</a>
+</td>
+</tr>
+<tr >
+<td align='center'>
+<a href='res/bombD.gif'>bombD.gif</a>
+</td>
+<td align='center'>
+<a href='res/bombDL.gif'>bombDL.gif</a>
+</td>
+<td align='center'>
+<a href='res/bombDR.gif'>bombDR.gif</a>
+</td>
+<td align='center'>
+<a href='res/bombL.gif'>bombL.gif</a>
+</td>
+</tr>
+<tr >
+<td align='center'>
+<a href='res/bombR.gif'>bombR.gif</a>
+</td>
+<td align='center'>
+<a href='res/bombU.gif'>bombU.gif</a>
+</td>
+<td align='center'>
+<a href='res/bombUL.gif'>bombUL.gif</a>
+</td>
+<td align='center'>
+<a href='res/bombUR.gif'>bombUR.gif</a>
+</td>
+</tr>
+<tr >
+<td align='center'>
+<a href='res/disparo.gif'>disparo.gif</a>
+</td>
+<td align='center'>
+<a href='res/disparo0.gif'>disparo0.gif</a>
+</td>
+<td align='center'>
+<a href='res/disparo1.gif'>disparo1.gif</a>
+</td>
+<td align='center'>
+<a href='res/disparo2.gif'>disparo2.gif</a>
+</td>
+</tr>
+<tr >
+<td align='center'>
+<a href='res/explosion.wav'>explosion.wav</a>
+</td>
+<td align='center'>
+<a href='res/misil.gif'>misil.gif</a>
+</td>
+<td align='center'>
+<a href='res/missile.wav'>missile.wav</a>
+</td>
+<td align='center'>
+<a href='res/musica.wav'>musica.wav</a>
+</td>
+</tr>
+<tr >
+<td align='center'>
+<a href='res/nave.gif'>nave.gif</a>
+</td>
+<td align='center'>
+<a href='res/oceano.gif'>oceano.gif</a>
+</td>
+<td align='center'>
+<a href='res/photon.wav'>photon.wav</a>
+</td>
+<td align='center'>
+<a href='res/Thumbs.db'>Thumbs.db</a>
+</td>
+</tr>
+</table>
+
+<br />
+</div>
+<table border="0" width="100%">
+<tr>
+  <td width="33%" align="center">&nbsp;</td>
+  <td width="33%" align="center"><b>Página Actual - 00 - Introducción</b></td>
+  <td width="33%" align="center">
+	&nbsp;<a href="JAVA-INVADERS-01.html">Página Siguiente - La ventana</a></td>    
+</tr>
+<tr>
+  <td>&nbsp;</td>
+  <td align="center"><a href="index.html">Índice del curso</a></td>
+  <td>&nbsp;</td>
+</tr>
+</table>
+
+<p class="pie">(c) 2004 Planetalia S.L. Todos los derechos reservados. Prohibida su reproducción</p>
+</html>
+

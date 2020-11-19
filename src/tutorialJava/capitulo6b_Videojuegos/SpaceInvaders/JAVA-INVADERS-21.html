@@ -1,0 +1,662 @@
+<html>
+<head>
+<title>Curso - Programación de un Space Invaders en Java</title>
+
+</head>
+<body><link rel="stylesheet" type="text/css" href="estilos.css">
+
+
+
+
+                     
+<link rel="stylesheet" type="text/css" href="estilos.css">
+
+
+<h1>Curso - Programación de un Space Invaders en Java</h1>
+<table border="0" width="100%">
+<tr>
+  <td width="33%" align="center">&nbsp;
+    
+    <a href="JAVA-INVADERS-20.html"> 
+    
+    Página Anterior - 
+    
+    Detección de colisiones
+    </a>
+   
+  </td>
+  <td width="33%" align="center"><b>
+    
+    Página Actual - 
+    
+    21 - Barra de estado</b>
+  </td>
+  <td width="33%" align="center">&nbsp;
+    
+    <a href="JAVA-INVADERS-22.html"> 
+    
+    Página Siguiente - 
+    
+    Puntuación
+    </a>
+    
+  </td>    
+</tr>
+<tr>
+<tr>
+  <td>&nbsp;</td>
+  <td align="center"><a href="index.html">Índice del curso</a></td>
+  <td>&nbsp;</td>
+</tr>
+</table>
+<hr>
+ 
+<link rel="stylesheet" href="codigo.css" />
+<h2>Barra de estado</h2>
+<p class=autor> (c) Alexander Hristov </p>
+
+<p>Ahora que somos capaces de matar a los bichos, sería útil disponer de alguna clase de puntuación para motivarnos
+en nuestro xenocidio. En este paso añadiremos una barra de estado en la parte inferior de la pantalla. Esta barra
+contendrá lo siguiente:</p>
+<ul>
+  <li>Un indicador de puntuación</li>
+  <li>Un medidor de escudos</li>
+  <li>Una representación gráfica del número de bombas de fragmentación que nos quedan.</li>
+  <li>Como siempre, nuestro contador fps</li>
+</ul>
+
+<p>Vamos a comenzar primero por la puntuación y los escudos. Estos atributos pertenecen a la clase del jugador, así
+que los añadiremos allí, junto con sus correspondientes métodos de acceso. Por otra parte, en este punto me he dado
+cuenta que es bastante molesto que la nave del jugador "rebote" cuando llega a los límites de la pantalla, así que
+hemos aprovechado para modificar este comportamiento y hacer que en su lugar si el jugador trata de salirse de la 
+pantalla, simplemente se queda en el borde.</p>
+
+<div class='codigo'>
+<TABLE id="Header" border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td colspan="2" width="33%">&nbsp;</td>
+<td align="center" colspan="2" width="33%">
+<font size="4">Player.java</font>
+</td>
+<td align="right" colspan="2" width="33%">&nbsp;</td>
+</tr>
+</TABLE>
+<pre ID="Classes">
+
+<FONT ID="LN">1     </FONT><A NAME="1"></A><FONT ID="FormalComment">/**
+<FONT ID="LN">2     </FONT><A NAME="2"></A> * Curso Básico de desarrollo de Juegos en Java - Invaders
+<FONT ID="LN">3     </FONT><A NAME="3"></A> * 
+<FONT ID="LN">4     </FONT><A NAME="4"></A> * (c) 2004 Planetalia S.L. - Todos los derechos reservados. Prohibida su reproducción
+<FONT ID="LN">5     </FONT><A NAME="5"></A> * 
+<FONT ID="LN">6     </FONT><A NAME="6"></A> * http://www.planetalia.com
+<FONT ID="LN">7     </FONT><A NAME="7"></A> * 
+<FONT ID="LN">8     </FONT><A NAME="8"></A> */</FONT>
+<FONT ID="LN">9     </FONT><A NAME="9"></A><FONT ID="Package">package</FONT> version21;
+<FONT ID="LN">10    </FONT><A NAME="10"></A>
+<FONT ID="LN">11    </FONT><A NAME="11"></A><FONT ID="Import">import</FONT> java.awt.event.KeyEvent;
+<FONT ID="LN">12    </FONT><A NAME="12"></A>
+<FONT ID="LN">13    </FONT><A NAME="13"></A><FONT ID="Public">public</FONT> <FONT ID="Class">class</FONT> Player <FONT ID="Extends">extends</FONT> <A TITLE='Java Source' HREF="version21/Actor.java.html">Actor</A> {
+<div class='cambio'>
+<FONT ID="LN">14    </FONT><A NAME="14"></A>  <FONT ID="Public">public</FONT> <FONT ID="Static">static</FONT> <FONT ID="Final">final</FONT> <FONT ID="Int">int</FONT> MAX_SHIELDS = <FONT ID="IntegerLiteral">200</FONT>;
+</div>
+<FONT ID="LN">15    </FONT><A NAME="15"></A>  <FONT ID="Public">public</FONT> <FONT ID="Static">static</FONT> <FONT ID="Final">final</FONT> <FONT ID="Int">int</FONT> MAX_BOMBS = <FONT ID="IntegerLiteral">5</FONT>;
+<FONT ID="LN">16    </FONT><A NAME="16"></A>  <FONT ID="Protected">protected</FONT> <FONT ID="Static">static</FONT> <FONT ID="Final">final</FONT> <FONT ID="Int">int</FONT> PLAYER_SPEED = <FONT ID="IntegerLiteral">4</FONT>;
+<FONT ID="LN">17    </FONT><A NAME="17"></A>  <FONT ID="Protected">protected</FONT> <FONT ID="Int">int</FONT> vx;
+<FONT ID="LN">18    </FONT><A NAME="18"></A>  <FONT ID="Protected">protected</FONT> <FONT ID="Int">int</FONT> vy;
+<FONT ID="LN">19    </FONT><A NAME="19"></A>  <FONT ID="Private">private</FONT> <FONT ID="Boolean">boolean</FONT> up,down,left,right;
+<FONT ID="LN">20    </FONT><A NAME="20"></A>  <FONT ID="Private">private</FONT> <FONT ID="Int">int</FONT> clusterBombs; 
+<div class='cambio'>
+<FONT ID="LN">21    </FONT><A NAME="21"></A>  <FONT ID="Private">private</FONT> <FONT ID="Int">int</FONT> score;
+<FONT ID="LN">22    </FONT><A NAME="22"></A>  <FONT ID="Private">private</FONT> <FONT ID="Int">int</FONT> shields;
+</div>
+<FONT ID="LN">23    </FONT><A NAME="23"></A>    
+<FONT ID="LN">24    </FONT><A NAME="24"></A>  
+<FONT ID="LN">25    </FONT><A NAME="25"></A>  <FONT ID="Public">public</FONT> Player(<A TITLE='Java Source' HREF="version21/Stage.java.html">Stage</A> stage) {
+<FONT ID="LN">26    </FONT><A NAME="26"></A>    <FONT ID="Super">super</FONT>(stage);
+<FONT ID="LN">27    </FONT><A NAME="27"></A>    setSpriteNames( <FONT ID="New">new</FONT> String[] {<FONT ID="StringLiteral">"nave.gif"</FONT>});
+<FONT ID="LN">28    </FONT><A NAME="28"></A>    clusterBombs = MAX_BOMBS;
+<div class='cambio'>
+<FONT ID="LN">29    </FONT><A NAME="29"></A>    shields = MAX_SHIELDS;
+</div>
+<FONT ID="LN">30    </FONT><A NAME="30"></A>    score = <FONT ID="IntegerLiteral">0</FONT>;
+<FONT ID="LN">31    </FONT><A NAME="31"></A>  }
+<FONT ID="LN">32    </FONT><A NAME="32"></A>  
+<div class='cambio'>
+<FONT ID="LN">33    </FONT><A NAME="33"></A>  <FONT ID="Public">public</FONT> <FONT ID="Void">void</FONT> act() {
+<FONT ID="LN">34    </FONT><A NAME="34"></A>    <FONT ID="Super">super</FONT>.act();
+<FONT ID="LN">35    </FONT><A NAME="35"></A>    x+=vx;
+<FONT ID="LN">36    </FONT><A NAME="36"></A>    y+=vy;
+<FONT ID="LN">37    </FONT><A NAME="37"></A>    <FONT ID="If">if</FONT> (x &lt; <FONT ID="IntegerLiteral">0</FONT> ) 
+<FONT ID="LN">38    </FONT><A NAME="38"></A>      x = <FONT ID="IntegerLiteral">0</FONT>;
+<FONT ID="LN">39    </FONT><A NAME="39"></A>    <FONT ID="If">if</FONT> (x &gt; Stage.WIDTH - getWidth())
+<FONT ID="LN">40    </FONT><A NAME="40"></A>      x = Stage.WIDTH - getWidth();
+<FONT ID="LN">41    </FONT><A NAME="41"></A>    <FONT ID="If">if</FONT> (y &lt; <FONT ID="IntegerLiteral">0</FONT> )
+<FONT ID="LN">42    </FONT><A NAME="42"></A>      y = <FONT ID="IntegerLiteral">0</FONT>;
+<FONT ID="LN">43    </FONT><A NAME="43"></A>    <FONT ID="If">if</FONT> ( y &gt; Stage.PLAY_HEIGHT-getHeight())
+<FONT ID="LN">44    </FONT><A NAME="44"></A>      y = Stage.PLAY_HEIGHT - getHeight();
+<FONT ID="LN">45    </FONT><A NAME="45"></A>  }
+<FONT ID="LN">46    </FONT><A NAME="46"></A>
+</div>
+<FONT ID="LN">47    </FONT><A NAME="47"></A>  <FONT ID="Public">public</FONT> <FONT ID="Int">int</FONT> getVx() { <FONT ID="Return">return</FONT> vx; }
+<FONT ID="LN">48    </FONT><A NAME="48"></A>  <FONT ID="Public">public</FONT> <FONT ID="Void">void</FONT> setVx(<FONT ID="Int">int</FONT> i) {vx = i; }
+<FONT ID="LN">49    </FONT><A NAME="49"></A>  <FONT ID="Public">public</FONT> <FONT ID="Int">int</FONT> getVy() { <FONT ID="Return">return</FONT> vy; }
+<FONT ID="LN">50    </FONT><A NAME="50"></A>  <FONT ID="Public">public</FONT> <FONT ID="Void">void</FONT> setVy(<FONT ID="Int">int</FONT> i) {vy = i; }
+<FONT ID="LN">51    </FONT><A NAME="51"></A>  
+<FONT ID="LN">52    </FONT><A NAME="52"></A>  
+<FONT ID="LN">53    </FONT><A NAME="53"></A>  <FONT ID="Protected">protected</FONT> <FONT ID="Void">void</FONT> updateSpeed() {
+<FONT ID="LN">54    </FONT><A NAME="54"></A>    vx=<FONT ID="IntegerLiteral">0</FONT>;vy=<FONT ID="IntegerLiteral">0</FONT>;
+<FONT ID="LN">55    </FONT><A NAME="55"></A>    <FONT ID="If">if</FONT> (down) vy = PLAYER_SPEED;
+<FONT ID="LN">56    </FONT><A NAME="56"></A>    <FONT ID="If">if</FONT> (up) vy = -PLAYER_SPEED;
+<FONT ID="LN">57    </FONT><A NAME="57"></A>    <FONT ID="If">if</FONT> (left) vx = -PLAYER_SPEED;
+<FONT ID="LN">58    </FONT><A NAME="58"></A>    <FONT ID="If">if</FONT> (right) vx = PLAYER_SPEED;
+<FONT ID="LN">59    </FONT><A NAME="59"></A>  }
+<FONT ID="LN">60    </FONT><A NAME="60"></A>  
+<FONT ID="LN">61    </FONT><A NAME="61"></A>  <FONT ID="Public">public</FONT> <FONT ID="Void">void</FONT> keyReleased(KeyEvent e) {
+<FONT ID="LN">62    </FONT><A NAME="62"></A>    <FONT ID="Switch">switch</FONT> (e.getKeyCode()) {
+<FONT ID="LN">63    </FONT><A NAME="63"></A>      <FONT ID="Case">case</FONT> KeyEvent.VK_DOWN : down = <FONT ID="False">false</FONT>;<FONT ID="Break">break</FONT>;
+<FONT ID="LN">64    </FONT><A NAME="64"></A>      <FONT ID="Case">case</FONT> KeyEvent.VK_UP : up = <FONT ID="False">false</FONT>; <FONT ID="Break">break</FONT>;
+<FONT ID="LN">65    </FONT><A NAME="65"></A>      <FONT ID="Case">case</FONT> KeyEvent.VK_LEFT : left = <FONT ID="False">false</FONT>; <FONT ID="Break">break</FONT>; 
+<FONT ID="LN">66    </FONT><A NAME="66"></A>      <FONT ID="Case">case</FONT> KeyEvent.VK_RIGHT : right = <FONT ID="False">false</FONT>;<FONT ID="Break">break</FONT>;
+<FONT ID="LN">67    </FONT><A NAME="67"></A>    }
+<FONT ID="LN">68    </FONT><A NAME="68"></A>    updateSpeed();
+<FONT ID="LN">69    </FONT><A NAME="69"></A>  }
+<FONT ID="LN">70    </FONT><A NAME="70"></A>  
+<FONT ID="LN">71    </FONT><A NAME="71"></A>  <FONT ID="Public">public</FONT> <FONT ID="Void">void</FONT> keyPressed(KeyEvent e) {
+<FONT ID="LN">72    </FONT><A NAME="72"></A>    <FONT ID="Switch">switch</FONT> (e.getKeyCode()) {
+<FONT ID="LN">73    </FONT><A NAME="73"></A>      <FONT ID="Case">case</FONT> KeyEvent.VK_UP : up = <FONT ID="True">true</FONT>; <FONT ID="Break">break</FONT>;
+<FONT ID="LN">74    </FONT><A NAME="74"></A>      <FONT ID="Case">case</FONT> KeyEvent.VK_LEFT : left = <FONT ID="True">true</FONT>; <FONT ID="Break">break</FONT>;
+<FONT ID="LN">75    </FONT><A NAME="75"></A>      <FONT ID="Case">case</FONT> KeyEvent.VK_RIGHT : right = <FONT ID="True">true</FONT>; <FONT ID="Break">break</FONT>;
+<FONT ID="LN">76    </FONT><A NAME="76"></A>      <FONT ID="Case">case</FONT> KeyEvent.VK_DOWN : down = <FONT ID="True">true</FONT>;<FONT ID="Break">break</FONT>;
+<FONT ID="LN">77    </FONT><A NAME="77"></A>      <FONT ID="Case">case</FONT> KeyEvent.VK_SPACE : fire(); <FONT ID="Break">break</FONT>;
+<FONT ID="LN">78    </FONT><A NAME="78"></A>      <FONT ID="Case">case</FONT> KeyEvent.VK_B : fireCluster(); <FONT ID="Break">break</FONT>;
+<FONT ID="LN">79    </FONT><A NAME="79"></A>    }
+<FONT ID="LN">80    </FONT><A NAME="80"></A>    updateSpeed();
+<FONT ID="LN">81    </FONT><A NAME="81"></A>  }
+<FONT ID="LN">82    </FONT><A NAME="82"></A>  
+<FONT ID="LN">83    </FONT><A NAME="83"></A>  <FONT ID="Public">public</FONT> <FONT ID="Void">void</FONT> fire() {
+<FONT ID="LN">84    </FONT><A NAME="84"></A>    <A TITLE='Java Source' HREF="version21/Bullet.java.html">Bullet</A> b = <FONT ID="New">new</FONT> <A TITLE='Java Source' HREF="version21/Bullet.java.html">Bullet</A>(stage);
+<FONT ID="LN">85    </FONT><A NAME="85"></A>    b.setX(x);
+<FONT ID="LN">86    </FONT><A NAME="86"></A>    b.setY(y - b.getHeight());
+<FONT ID="LN">87    </FONT><A NAME="87"></A>    stage.addActor(b);
+<FONT ID="LN">88    </FONT><A NAME="88"></A>  }
+<FONT ID="LN">89    </FONT><A NAME="89"></A>  
+<FONT ID="LN">90    </FONT><A NAME="90"></A>  <FONT ID="Public">public</FONT> <FONT ID="Void">void</FONT> fireCluster() {
+<FONT ID="LN">91    </FONT><A NAME="91"></A>    <FONT ID="If">if</FONT> (clusterBombs == <FONT ID="IntegerLiteral">0</FONT>)
+<FONT ID="LN">92    </FONT><A NAME="92"></A>      <FONT ID="Return">return</FONT>;
+<FONT ID="LN">93    </FONT><A NAME="93"></A>      
+<FONT ID="LN">94    </FONT><A NAME="94"></A>    clusterBombs--;
+<FONT ID="LN">95    </FONT><A NAME="95"></A>    stage.addActor( <FONT ID="New">new</FONT> <A TITLE='Java Source' HREF="version21/Bomb.java.html">Bomb</A>(stage, Bomb.UP_LEFT, x,y));
+<FONT ID="LN">96    </FONT><A NAME="96"></A>    stage.addActor( <FONT ID="New">new</FONT> <A TITLE='Java Source' HREF="version21/Bomb.java.html">Bomb</A>(stage, Bomb.UP,x,y));
+<FONT ID="LN">97    </FONT><A NAME="97"></A>    stage.addActor( <FONT ID="New">new</FONT> <A TITLE='Java Source' HREF="version21/Bomb.java.html">Bomb</A>(stage, Bomb.UP_RIGHT,x,y));
+<FONT ID="LN">98    </FONT><A NAME="98"></A>    stage.addActor( <FONT ID="New">new</FONT> <A TITLE='Java Source' HREF="version21/Bomb.java.html">Bomb</A>(stage, Bomb.LEFT,x,y));
+<FONT ID="LN">99    </FONT><A NAME="99"></A>    stage.addActor( <FONT ID="New">new</FONT> <A TITLE='Java Source' HREF="version21/Bomb.java.html">Bomb</A>(stage, Bomb.RIGHT,x,y));
+<FONT ID="LN">100   </FONT><A NAME="100"></A>    stage.addActor( <FONT ID="New">new</FONT> <A TITLE='Java Source' HREF="version21/Bomb.java.html">Bomb</A>(stage, Bomb.DOWN_LEFT,x,y));
+<FONT ID="LN">101   </FONT><A NAME="101"></A>    stage.addActor( <FONT ID="New">new</FONT> <A TITLE='Java Source' HREF="version21/Bomb.java.html">Bomb</A>(stage, Bomb.DOWN,x,y));
+<FONT ID="LN">102   </FONT><A NAME="102"></A>    stage.addActor( <FONT ID="New">new</FONT> <A TITLE='Java Source' HREF="version21/Bomb.java.html">Bomb</A>(stage, Bomb.DOWN_RIGHT,x,y));
+<FONT ID="LN">103   </FONT><A NAME="103"></A>  }
+<FONT ID="LN">104   </FONT><A NAME="104"></A>  
+<div class='cambio'>
+<FONT ID="LN">105   </FONT><A NAME="105"></A>  <FONT ID="Public">public</FONT> <FONT ID="Int">int</FONT> getScore() {   <FONT ID="Return">return</FONT> score; }
+<FONT ID="LN">106   </FONT><A NAME="106"></A>  <FONT ID="Public">public</FONT> <FONT ID="Void">void</FONT> setScore(<FONT ID="Int">int</FONT> i) { score = i;  }
+<FONT ID="LN">107   </FONT><A NAME="107"></A>
+<FONT ID="LN">108   </FONT><A NAME="108"></A>  <FONT ID="Public">public</FONT> <FONT ID="Int">int</FONT> getShields() { <FONT ID="Return">return</FONT> shields; }
+<FONT ID="LN">109   </FONT><A NAME="109"></A>  <FONT ID="Public">public</FONT> <FONT ID="Void">void</FONT> setShields(<FONT ID="Int">int</FONT> i) { shields = i;  }
+</div>
+<FONT ID="LN">110   </FONT><A NAME="110"></A>  
+<FONT ID="LN">111   </FONT><A NAME="111"></A>  <FONT ID="Public">public</FONT> <FONT ID="Int">int</FONT> getClusterBombs() {  <FONT ID="Return">return</FONT> clusterBombs;  }
+<FONT ID="LN">112   </FONT><A NAME="112"></A>  <FONT ID="Public">public</FONT> <FONT ID="Void">void</FONT> setClusterBombs(<FONT ID="Int">int</FONT> i) {  clusterBombs = i; }
+<FONT ID="LN">113   </FONT><A NAME="113"></A>  
+<FONT ID="LN">114   </FONT><A NAME="114"></A>
+<FONT ID="LN">115   </FONT><A NAME="115"></A>}
+<FONT ID="LN">116   </FONT><A NAME="116"></A>
+</div>
+
+
+<p>Lo siguiente que debemos hacer es cambiar el tamaño del area de juego, ya que ahora debemos reservar una parte
+para el redibujo del estado actual. Así que añadimos una nueva constante llamada <span class="kw">PLAY_HEIGHT</span> a
+la clase <span class="clase">Stage</span>. Esta constante contendrá el tamaño del área de juego:</p>
+
+<div class='codigo'>
+<TABLE id="Header" border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td colspan="2" width="33%">&nbsp;</td>
+<td align="center" colspan="2" width="33%">
+<font size="4">Stage.java</font>
+</td>
+<td align="right" colspan="2" width="33%">&nbsp;</td>
+</tr>
+</TABLE>
+<pre ID="Classes">
+
+<FONT ID="LN">1     </FONT><A NAME="1"></A><FONT ID="FormalComment">/**
+<FONT ID="LN">2     </FONT><A NAME="2"></A> * Curso Básico de desarrollo de Juegos en Java - Invaders
+<FONT ID="LN">3     </FONT><A NAME="3"></A> * 
+<FONT ID="LN">4     </FONT><A NAME="4"></A> * (c) 2004 Planetalia S.L. - Todos los derechos reservados. Prohibida su reproducción
+<FONT ID="LN">5     </FONT><A NAME="5"></A> * 
+<FONT ID="LN">6     </FONT><A NAME="6"></A> * http://www.planetalia.com
+<FONT ID="LN">7     </FONT><A NAME="7"></A> * 
+<FONT ID="LN">8     </FONT><A NAME="8"></A> */</FONT>
+<FONT ID="LN">9     </FONT><A NAME="9"></A><FONT ID="Package">package</FONT> version21;
+<FONT ID="LN">10    </FONT><A NAME="10"></A>
+<FONT ID="LN">11    </FONT><A NAME="11"></A><FONT ID="Import">import</FONT> java.awt.image.ImageObserver;
+<FONT ID="LN">12    </FONT><A NAME="12"></A>
+<FONT ID="LN">13    </FONT><A NAME="13"></A><FONT ID="Public">public</FONT> <FONT ID="Interface">interface</FONT> Stage <FONT ID="Extends">extends</FONT> ImageObserver {
+<FONT ID="LN">14    </FONT><A NAME="14"></A>  <FONT ID="Public">public</FONT> <FONT ID="Static">static</FONT> <FONT ID="Final">final</FONT> <FONT ID="Int">int</FONT> WIDTH=<FONT ID="IntegerLiteral">640</FONT>;
+<FONT ID="LN">15    </FONT><A NAME="15"></A>  <FONT ID="Public">public</FONT> <FONT ID="Static">static</FONT> <FONT ID="Final">final</FONT> <FONT ID="Int">int</FONT> HEIGHT=<FONT ID="IntegerLiteral">480</FONT>;
+<div class='cambio'>
+<FONT ID="LN">16    </FONT><A NAME="16"></A>  <FONT ID="Public">public</FONT> <FONT ID="Static">static</FONT> <FONT ID="Final">final</FONT> <FONT ID="Int">int</FONT> PLAY_HEIGHT = <FONT ID="IntegerLiteral">400</FONT>; 
+</div>
+<FONT ID="LN">17    </FONT><A NAME="17"></A>  <FONT ID="Public">public</FONT> <FONT ID="Static">static</FONT> <FONT ID="Final">final</FONT> <FONT ID="Int">int</FONT> SPEED=<FONT ID="IntegerLiteral">10</FONT>;
+<FONT ID="LN">18    </FONT><A NAME="18"></A>  <FONT ID="Public">public</FONT> <A TITLE='Java Source' HREF="version21/SpriteCache.java.html">SpriteCache</A> getSpriteCache();
+<FONT ID="LN">19    </FONT><A NAME="19"></A>  <FONT ID="Public">public</FONT> <FONT ID="Void">void</FONT> addActor(<A TITLE='Java Source' HREF="version21/Actor.java.html">Actor</A> a);
+<FONT ID="LN">20    </FONT><A NAME="20"></A>}
+<FONT ID="LN">21    </FONT><A NAME="21"></A>
+</div>
+
+
+<p>El mayor cambio ocurrirá en la clase <span class="clase">Invaders</span>, donde ahora tendremos cuatro métodos
+para dibujar las diferentes partes de la barra de estado:</p>
+
+<div class='codigo'>
+<TABLE id="Header" border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td colspan="2" width="33%">&nbsp;</td>
+<td align="center" colspan="2" width="33%">
+<font size="4">Invaders.java</font>
+</td>
+<td align="right" colspan="2" width="33%">&nbsp;</td>
+</tr>
+</TABLE>
+<pre ID="Classes">
+
+<FONT ID="LN">1     </FONT><A NAME="1"></A><FONT ID="Package">package</FONT> version21;
+<FONT ID="LN">2     </FONT><A NAME="2"></A><FONT ID="FormalComment">/**
+<FONT ID="LN">3     </FONT><A NAME="3"></A> * Curso Básico de desarrollo de Juegos en Java - Invaders
+<FONT ID="LN">4     </FONT><A NAME="4"></A> * 
+<FONT ID="LN">5     </FONT><A NAME="5"></A> * (c) 2004 Planetalia S.L. - Todos los derechos reservados. Prohibida su reproducción
+<FONT ID="LN">6     </FONT><A NAME="6"></A> * 
+<FONT ID="LN">7     </FONT><A NAME="7"></A> * http://www.planetalia.com
+<FONT ID="LN">8     </FONT><A NAME="8"></A> * 
+<FONT ID="LN">9     </FONT><A NAME="9"></A> */</FONT>
+<FONT ID="LN">10    </FONT><A NAME="10"></A>
+<FONT ID="LN">11    </FONT><A NAME="11"></A>
+<FONT ID="LN">12    </FONT><A NAME="12"></A><FONT ID="Import">import</FONT> java.awt.Canvas;
+<FONT ID="LN">13    </FONT><A NAME="13"></A><FONT ID="Import">import</FONT> java.awt.Color;
+<FONT ID="LN">14    </FONT><A NAME="14"></A><FONT ID="Import">import</FONT> java.awt.Dimension;
+<FONT ID="LN">15    </FONT><A NAME="15"></A><FONT ID="Import">import</FONT> java.awt.Font;
+<FONT ID="LN">16    </FONT><A NAME="16"></A><FONT ID="Import">import</FONT> java.awt.Graphics2D;
+<FONT ID="LN">17    </FONT><A NAME="17"></A><FONT ID="Import">import</FONT> java.awt.Rectangle;
+<FONT ID="LN">18    </FONT><A NAME="18"></A><FONT ID="Import">import</FONT> java.awt.event.KeyEvent;
+<FONT ID="LN">19    </FONT><A NAME="19"></A><FONT ID="Import">import</FONT> java.awt.event.KeyListener;
+<FONT ID="LN">20    </FONT><A NAME="20"></A><FONT ID="Import">import</FONT> java.awt.event.WindowAdapter;
+<FONT ID="LN">21    </FONT><A NAME="21"></A><FONT ID="Import">import</FONT> java.awt.event.WindowEvent;
+<FONT ID="LN">22    </FONT><A NAME="22"></A><FONT ID="Import">import</FONT> java.awt.image.BufferStrategy;
+<FONT ID="LN">23    </FONT><A NAME="23"></A><FONT ID="Import">import</FONT> java.awt.image.BufferedImage;
+<FONT ID="LN">24    </FONT><A NAME="24"></A><FONT ID="Import">import</FONT> java.util.ArrayList;
+<FONT ID="LN">25    </FONT><A NAME="25"></A>
+<FONT ID="LN">26    </FONT><A NAME="26"></A><FONT ID="Import">import</FONT> javax.swing.JFrame;
+<FONT ID="LN">27    </FONT><A NAME="27"></A><FONT ID="Import">import</FONT> javax.swing.JPanel;
+<FONT ID="LN">28    </FONT><A NAME="28"></A>
+<FONT ID="LN">29    </FONT><A NAME="29"></A><FONT ID="Public">public</FONT> <FONT ID="Class">class</FONT> Invaders <FONT ID="Extends">extends</FONT> Canvas <FONT ID="Implements">implements</FONT> <A TITLE='Java Source' HREF="version21/Stage.java.html">Stage</A>, KeyListener {
+<FONT ID="LN">30    </FONT><A NAME="30"></A>  
+<FONT ID="LN">31    </FONT><A NAME="31"></A>  <FONT ID="Private">private</FONT> BufferStrategy strategy;
+<FONT ID="LN">32    </FONT><A NAME="32"></A>  <FONT ID="Private">private</FONT> <FONT ID="Long">long</FONT> usedTime;
+<FONT ID="LN">33    </FONT><A NAME="33"></A>  
+<FONT ID="LN">34    </FONT><A NAME="34"></A>  <FONT ID="Private">private</FONT> <A TITLE='Java Source' HREF="version21/SpriteCache.java.html">SpriteCache</A> spriteCache;
+<FONT ID="LN">35    </FONT><A NAME="35"></A>  <FONT ID="Private">private</FONT> ArrayList actors; 
+<FONT ID="LN">36    </FONT><A NAME="36"></A>  <FONT ID="Private">private</FONT> <A TITLE='Java Source' HREF="version21/Player.java.html">Player</A> player;
+<FONT ID="LN">37    </FONT><A NAME="37"></A>  
+<FONT ID="LN">38    </FONT><A NAME="38"></A>  <FONT ID="Public">public</FONT> Invaders() {
+<FONT ID="LN">39    </FONT><A NAME="39"></A>    spriteCache = <FONT ID="New">new</FONT> <A TITLE='Java Source' HREF="version21/SpriteCache.java.html">SpriteCache</A>();
+<FONT ID="LN">40    </FONT><A NAME="40"></A>    
+<FONT ID="LN">41    </FONT><A NAME="41"></A>  
+<FONT ID="LN">42    </FONT><A NAME="42"></A>    JFrame ventana = <FONT ID="New">new</FONT> JFrame(<FONT ID="StringLiteral">"Invaders"</FONT>);
+<FONT ID="LN">43    </FONT><A NAME="43"></A>    JPanel panel = (JPanel)ventana.getContentPane();
+<FONT ID="LN">44    </FONT><A NAME="44"></A>    setBounds(<FONT ID="IntegerLiteral">0</FONT>,<FONT ID="IntegerLiteral">0</FONT>,Stage.WIDTH,Stage.HEIGHT);
+<FONT ID="LN">45    </FONT><A NAME="45"></A>    panel.setPreferredSize(<FONT ID="New">new</FONT> Dimension(Stage.WIDTH,Stage.HEIGHT));
+<FONT ID="LN">46    </FONT><A NAME="46"></A>    panel.setLayout(<FONT ID="Null">null</FONT>);
+<FONT ID="LN">47    </FONT><A NAME="47"></A>    panel.add(<FONT ID="This">this</FONT>);
+<FONT ID="LN">48    </FONT><A NAME="48"></A>    ventana.setBounds(<FONT ID="IntegerLiteral">0</FONT>,<FONT ID="IntegerLiteral">0</FONT>,Stage.WIDTH,Stage.HEIGHT);
+<FONT ID="LN">49    </FONT><A NAME="49"></A>    ventana.setVisible(<FONT ID="True">true</FONT>);
+<FONT ID="LN">50    </FONT><A NAME="50"></A>    ventana.addWindowListener( <FONT ID="New">new</FONT> WindowAdapter() {
+<FONT ID="LN">51    </FONT><A NAME="51"></A>      <FONT ID="Public">public</FONT> <FONT ID="Void">void</FONT> windowClosing(WindowEvent e) {
+<FONT ID="LN">52    </FONT><A NAME="52"></A>        System.exit(<FONT ID="IntegerLiteral">0</FONT>);
+<FONT ID="LN">53    </FONT><A NAME="53"></A>      }
+<FONT ID="LN">54    </FONT><A NAME="54"></A>    });
+<FONT ID="LN">55    </FONT><A NAME="55"></A>    ventana.setResizable(<FONT ID="False">false</FONT>);
+<FONT ID="LN">56    </FONT><A NAME="56"></A>    createBufferStrategy(<FONT ID="IntegerLiteral">2</FONT>);
+<FONT ID="LN">57    </FONT><A NAME="57"></A>    strategy = getBufferStrategy();
+<FONT ID="LN">58    </FONT><A NAME="58"></A>    requestFocus();
+<FONT ID="LN">59    </FONT><A NAME="59"></A>    addKeyListener(<FONT ID="This">this</FONT>);
+<FONT ID="LN">60    </FONT><A NAME="60"></A>  }
+<FONT ID="LN">61    </FONT><A NAME="61"></A>  
+<FONT ID="LN">62    </FONT><A NAME="62"></A>  <FONT ID="Public">public</FONT> <FONT ID="Void">void</FONT> initWorld() {
+<FONT ID="LN">63    </FONT><A NAME="63"></A>    actors = <FONT ID="New">new</FONT> ArrayList();
+<FONT ID="LN">64    </FONT><A NAME="64"></A>    <FONT ID="For">for</FONT> (<FONT ID="Int">int</FONT> i = <FONT ID="IntegerLiteral">0</FONT>; i &lt; <FONT ID="IntegerLiteral">10</FONT>; i++){
+<FONT ID="LN">65    </FONT><A NAME="65"></A>      <A TITLE='Java Source' HREF="version21/Monster.java.html">Monster</A> m = <FONT ID="New">new</FONT> <A TITLE='Java Source' HREF="version21/Monster.java.html">Monster</A>(<FONT ID="This">this</FONT>);
+<FONT ID="LN">66    </FONT><A NAME="66"></A>      m.setX( (<FONT ID="Int">int</FONT>)(Math.random()*Stage.WIDTH) );
+<FONT ID="LN">67    </FONT><A NAME="67"></A>      m.setY( i*<FONT ID="IntegerLiteral">20</FONT> );
+<FONT ID="LN">68    </FONT><A NAME="68"></A>      m.setVx( (<FONT ID="Int">int</FONT>)(Math.random()*<FONT ID="IntegerLiteral">20</FONT>-<FONT ID="IntegerLiteral">10</FONT>) );
+<FONT ID="LN">69    </FONT><A NAME="69"></A>      
+<FONT ID="LN">70    </FONT><A NAME="70"></A>      actors.add(m);
+<FONT ID="LN">71    </FONT><A NAME="71"></A>    }
+<FONT ID="LN">72    </FONT><A NAME="72"></A>    
+<FONT ID="LN">73    </FONT><A NAME="73"></A>    player = <FONT ID="New">new</FONT> <A TITLE='Java Source' HREF="version21/Player.java.html">Player</A>(<FONT ID="This">this</FONT>);
+<FONT ID="LN">74    </FONT><A NAME="74"></A>    player.setX(Stage.WIDTH/<FONT ID="IntegerLiteral">2</FONT>);
+<FONT ID="LN">75    </FONT><A NAME="75"></A>    player.setY(Stage.PLAY_HEIGHT - <FONT ID="IntegerLiteral">2</FONT>*player.getHeight());
+<FONT ID="LN">76    </FONT><A NAME="76"></A>  }
+<FONT ID="LN">77    </FONT><A NAME="77"></A>  
+<FONT ID="LN">78    </FONT><A NAME="78"></A>  <FONT ID="Public">public</FONT> <FONT ID="Void">void</FONT> addActor(<A TITLE='Java Source' HREF="version21/Actor.java.html">Actor</A> a) {
+<FONT ID="LN">79    </FONT><A NAME="79"></A>    actors.add(a);
+<FONT ID="LN">80    </FONT><A NAME="80"></A>  } 
+<FONT ID="LN">81    </FONT><A NAME="81"></A>  
+<FONT ID="LN">82    </FONT><A NAME="82"></A>  <FONT ID="Public">public</FONT> <FONT ID="Void">void</FONT> updateWorld() {
+<FONT ID="LN">83    </FONT><A NAME="83"></A>    <FONT ID="Int">int</FONT> i = <FONT ID="IntegerLiteral">0</FONT>;
+<FONT ID="LN">84    </FONT><A NAME="84"></A>    <FONT ID="While">while</FONT> (i &lt; actors.size()) {
+<FONT ID="LN">85    </FONT><A NAME="85"></A>      <A TITLE='Java Source' HREF="version21/Actor.java.html">Actor</A> m = (<A TITLE='Java Source' HREF="version21/Actor.java.html">Actor</A>)actors.get(i);
+<FONT ID="LN">86    </FONT><A NAME="86"></A>      <FONT ID="If">if</FONT> (m.isMarkedForRemoval()) {
+<FONT ID="LN">87    </FONT><A NAME="87"></A>        actors.remove(i);
+<FONT ID="LN">88    </FONT><A NAME="88"></A>      } <FONT ID="Else">else</FONT> {
+<FONT ID="LN">89    </FONT><A NAME="89"></A>        m.act();
+<FONT ID="LN">90    </FONT><A NAME="90"></A>        i++;
+<FONT ID="LN">91    </FONT><A NAME="91"></A>      }
+<FONT ID="LN">92    </FONT><A NAME="92"></A>    }
+<FONT ID="LN">93    </FONT><A NAME="93"></A>    player.act();
+<FONT ID="LN">94    </FONT><A NAME="94"></A>  }
+<FONT ID="LN">95    </FONT><A NAME="95"></A>  
+<FONT ID="LN">96    </FONT><A NAME="96"></A>  <FONT ID="Public">public</FONT> <FONT ID="Void">void</FONT> checkCollisions() {
+<FONT ID="LN">97    </FONT><A NAME="97"></A>    Rectangle playerBounds = player.getBounds();
+<FONT ID="LN">98    </FONT><A NAME="98"></A>    <FONT ID="For">for</FONT> (<FONT ID="Int">int</FONT> i = <FONT ID="IntegerLiteral">0</FONT>; i &lt; actors.size(); i++) {
+<FONT ID="LN">99    </FONT><A NAME="99"></A>      <A TITLE='Java Source' HREF="version21/Actor.java.html">Actor</A> a1 = (<A TITLE='Java Source' HREF="version21/Actor.java.html">Actor</A>)actors.get(i);
+<FONT ID="LN">100   </FONT><A NAME="100"></A>      Rectangle r1 = a1.getBounds();
+<FONT ID="LN">101   </FONT><A NAME="101"></A>      <FONT ID="If">if</FONT> (r1.intersects(playerBounds)) {
+<FONT ID="LN">102   </FONT><A NAME="102"></A>        player.collision(a1);
+<FONT ID="LN">103   </FONT><A NAME="103"></A>        a1.collision(player);
+<FONT ID="LN">104   </FONT><A NAME="104"></A>      }
+<FONT ID="LN">105   </FONT><A NAME="105"></A>      <FONT ID="For">for</FONT> (<FONT ID="Int">int</FONT> j = i+<FONT ID="IntegerLiteral">1</FONT>; j &lt; actors.size(); j++) {
+<FONT ID="LN">106   </FONT><A NAME="106"></A>        <A TITLE='Java Source' HREF="version21/Actor.java.html">Actor</A> a2 = (<A TITLE='Java Source' HREF="version21/Actor.java.html">Actor</A>)actors.get(j);
+<FONT ID="LN">107   </FONT><A NAME="107"></A>        Rectangle r2 = a2.getBounds();
+<FONT ID="LN">108   </FONT><A NAME="108"></A>        <FONT ID="If">if</FONT> (r1.intersects(r2)) {
+<FONT ID="LN">109   </FONT><A NAME="109"></A>          a1.collision(a2);
+<FONT ID="LN">110   </FONT><A NAME="110"></A>          a2.collision(a1);
+<FONT ID="LN">111   </FONT><A NAME="111"></A>        }
+<FONT ID="LN">112   </FONT><A NAME="112"></A>      }
+<FONT ID="LN">113   </FONT><A NAME="113"></A>    }
+<FONT ID="LN">114   </FONT><A NAME="114"></A>  }
+<FONT ID="LN">115   </FONT><A NAME="115"></A>  
+<div class='cambio'>
+<FONT ID="LN">116   </FONT><A NAME="116"></A>  <FONT ID="Public">public</FONT> <FONT ID="Void">void</FONT> paintShields(Graphics2D g) {
+<FONT ID="LN">117   </FONT><A NAME="117"></A>    g.setPaint(Color.red);
+<FONT ID="LN">118   </FONT><A NAME="118"></A>    g.fillRect(<FONT ID="IntegerLiteral">280</FONT>,Stage.PLAY_HEIGHT,Player.MAX_SHIELDS,<FONT ID="IntegerLiteral">30</FONT>);
+<FONT ID="LN">119   </FONT><A NAME="119"></A>    g.setPaint(Color.blue);
+<FONT ID="LN">120   </FONT><A NAME="120"></A>    g.fillRect(<FONT ID="IntegerLiteral">280</FONT>+Player.MAX_SHIELDS-player.getShields(),Stage.PLAY_HEIGHT,player.getShields(),<FONT ID="IntegerLiteral">30</FONT>);
+<FONT ID="LN">121   </FONT><A NAME="121"></A>    g.setFont(<FONT ID="New">new</FONT> Font(<FONT ID="StringLiteral">"Arial"</FONT>,Font.BOLD,<FONT ID="IntegerLiteral">20</FONT>));
+<FONT ID="LN">122   </FONT><A NAME="122"></A>    g.setPaint(Color.green);
+<FONT ID="LN">123   </FONT><A NAME="123"></A>    g.drawString(<FONT ID="StringLiteral">"Shields"</FONT>,<FONT ID="IntegerLiteral">170</FONT>,Stage.PLAY_HEIGHT+<FONT ID="IntegerLiteral">20</FONT>);
+<FONT ID="LN">124   </FONT><A NAME="124"></A>      
+<FONT ID="LN">125   </FONT><A NAME="125"></A>  }
+<FONT ID="LN">126   </FONT><A NAME="126"></A>    
+<FONT ID="LN">127   </FONT><A NAME="127"></A>  <FONT ID="Public">public</FONT> <FONT ID="Void">void</FONT> paintScore(Graphics2D g) {
+<FONT ID="LN">128   </FONT><A NAME="128"></A>    g.setFont(<FONT ID="New">new</FONT> Font(<FONT ID="StringLiteral">"Arial"</FONT>,Font.BOLD,<FONT ID="IntegerLiteral">20</FONT>));
+<FONT ID="LN">129   </FONT><A NAME="129"></A>    g.setPaint(Color.green);
+<FONT ID="LN">130   </FONT><A NAME="130"></A>    g.drawString(<FONT ID="StringLiteral">"Score:"</FONT>,<FONT ID="IntegerLiteral">20</FONT>,Stage.PLAY_HEIGHT + <FONT ID="IntegerLiteral">20</FONT>);
+<FONT ID="LN">131   </FONT><A NAME="131"></A>    g.setPaint(Color.red);
+<FONT ID="LN">132   </FONT><A NAME="132"></A>    g.drawString(player.getScore()+<FONT ID="StringLiteral">""</FONT>,<FONT ID="IntegerLiteral">100</FONT>,Stage.PLAY_HEIGHT  + <FONT ID="IntegerLiteral">20</FONT>);
+<FONT ID="LN">133   </FONT><A NAME="133"></A>  }
+<FONT ID="LN">134   </FONT><A NAME="134"></A>  
+<FONT ID="LN">135   </FONT><A NAME="135"></A>  <FONT ID="Public">public</FONT> <FONT ID="Void">void</FONT> paintAmmo(Graphics2D g) {
+<FONT ID="LN">136   </FONT><A NAME="136"></A>    <FONT ID="Int">int</FONT> xBase = <FONT ID="IntegerLiteral">280</FONT>+Player.MAX_SHIELDS+<FONT ID="IntegerLiteral">10</FONT>;
+<FONT ID="LN">137   </FONT><A NAME="137"></A>    <FONT ID="For">for</FONT> (<FONT ID="Int">int</FONT> i = <FONT ID="IntegerLiteral">0</FONT>; i &lt; player.getClusterBombs();i++) {
+<FONT ID="LN">138   </FONT><A NAME="138"></A>      BufferedImage bomb = spriteCache.getSprite(<FONT ID="StringLiteral">"bombUL.gif"</FONT>);
+<FONT ID="LN">139   </FONT><A NAME="139"></A>      g.drawImage( bomb ,xBase+i*bomb.getWidth(),Stage.PLAY_HEIGHT,<FONT ID="This">this</FONT>);
+<FONT ID="LN">140   </FONT><A NAME="140"></A>    }
+<FONT ID="LN">141   </FONT><A NAME="141"></A>  }
+<FONT ID="LN">142   </FONT><A NAME="142"></A>  
+<FONT ID="LN">143   </FONT><A NAME="143"></A>  <FONT ID="Public">public</FONT> <FONT ID="Void">void</FONT> paintfps(Graphics2D g) {
+<FONT ID="LN">144   </FONT><A NAME="144"></A>    g.setFont( <FONT ID="New">new</FONT> Font(<FONT ID="StringLiteral">"Arial"</FONT>,Font.BOLD,<FONT ID="IntegerLiteral">12</FONT>));
+<FONT ID="LN">145   </FONT><A NAME="145"></A>    g.setColor(Color.white);
+<FONT ID="LN">146   </FONT><A NAME="146"></A>    <FONT ID="If">if</FONT> (usedTime &gt; <FONT ID="IntegerLiteral">0</FONT>)
+<FONT ID="LN">147   </FONT><A NAME="147"></A>      g.drawString(String.valueOf(<FONT ID="IntegerLiteral">1000</FONT>/usedTime)+<FONT ID="StringLiteral">" fps"</FONT>,Stage.WIDTH-<FONT ID="IntegerLiteral">50</FONT>,Stage.PLAY_HEIGHT);
+<FONT ID="LN">148   </FONT><A NAME="148"></A>  <FONT ID="Else">else</FONT>
+<FONT ID="LN">149   </FONT><A NAME="149"></A>    g.drawString(<FONT ID="StringLiteral">"--- fps"</FONT>,Stage.WIDTH-<FONT ID="IntegerLiteral">50</FONT>,Stage.PLAY_HEIGHT);
+<FONT ID="LN">150   </FONT><A NAME="150"></A>  }
+<FONT ID="LN">151   </FONT><A NAME="151"></A>  
+<FONT ID="LN">152   </FONT><A NAME="152"></A>  
+<FONT ID="LN">153   </FONT><A NAME="153"></A>  <FONT ID="Public">public</FONT> <FONT ID="Void">void</FONT> paintStatus(Graphics2D g) {
+<FONT ID="LN">154   </FONT><A NAME="154"></A>    paintScore(g);
+<FONT ID="LN">155   </FONT><A NAME="155"></A>    paintShields(g);
+<FONT ID="LN">156   </FONT><A NAME="156"></A>    paintAmmo(g);
+<FONT ID="LN">157   </FONT><A NAME="157"></A>    paintfps(g);  
+<FONT ID="LN">158   </FONT><A NAME="158"></A>  }
+</div>
+<FONT ID="LN">159   </FONT><A NAME="159"></A>  
+<FONT ID="LN">160   </FONT><A NAME="160"></A>  <FONT ID="Public">public</FONT> <FONT ID="Void">void</FONT> paintWorld() {
+<FONT ID="LN">161   </FONT><A NAME="161"></A>    Graphics2D g = (Graphics2D)strategy.getDrawGraphics();
+<FONT ID="LN">162   </FONT><A NAME="162"></A>    g.setColor(Color.black);
+<FONT ID="LN">163   </FONT><A NAME="163"></A>    g.fillRect(<FONT ID="IntegerLiteral">0</FONT>,<FONT ID="IntegerLiteral">0</FONT>,getWidth(),getHeight());
+<FONT ID="LN">164   </FONT><A NAME="164"></A>    <FONT ID="For">for</FONT> (<FONT ID="Int">int</FONT> i = <FONT ID="IntegerLiteral">0</FONT>; i &lt; actors.size(); i++) {
+<FONT ID="LN">165   </FONT><A NAME="165"></A>      <A TITLE='Java Source' HREF="version21/Actor.java.html">Actor</A> m = (<A TITLE='Java Source' HREF="version21/Actor.java.html">Actor</A>)actors.get(i);
+<FONT ID="LN">166   </FONT><A NAME="166"></A>      m.paint(g);
+<FONT ID="LN">167   </FONT><A NAME="167"></A>    }
+<FONT ID="LN">168   </FONT><A NAME="168"></A>    player.paint(g);
+<FONT ID="LN">169   </FONT><A NAME="169"></A>
+<FONT ID="LN">170   </FONT><A NAME="170"></A>      
+<div class='cambio'>
+<FONT ID="LN">171   </FONT><A NAME="171"></A>    paintStatus(g);
+</div>
+<FONT ID="LN">172   </FONT><A NAME="172"></A>    strategy.show();
+<FONT ID="LN">173   </FONT><A NAME="173"></A>  }
+<FONT ID="LN">174   </FONT><A NAME="174"></A>  
+<FONT ID="LN">175   </FONT><A NAME="175"></A>  <FONT ID="Public">public</FONT> <A TITLE='Java Source' HREF="version21/SpriteCache.java.html">SpriteCache</A> getSpriteCache() {
+<FONT ID="LN">176   </FONT><A NAME="176"></A>    <FONT ID="Return">return</FONT> spriteCache;
+<FONT ID="LN">177   </FONT><A NAME="177"></A>  }
+<FONT ID="LN">178   </FONT><A NAME="178"></A>  
+<FONT ID="LN">179   </FONT><A NAME="179"></A>  <FONT ID="Public">public</FONT> <FONT ID="Void">void</FONT> keyPressed(KeyEvent e) {
+<FONT ID="LN">180   </FONT><A NAME="180"></A>    player.keyPressed(e);
+<FONT ID="LN">181   </FONT><A NAME="181"></A>  }
+<FONT ID="LN">182   </FONT><A NAME="182"></A>  
+<FONT ID="LN">183   </FONT><A NAME="183"></A>  <FONT ID="Public">public</FONT> <FONT ID="Void">void</FONT> keyReleased(KeyEvent e) {
+<FONT ID="LN">184   </FONT><A NAME="184"></A>    player.keyReleased(e);
+<FONT ID="LN">185   </FONT><A NAME="185"></A>  }
+<FONT ID="LN">186   </FONT><A NAME="186"></A>  <FONT ID="Public">public</FONT> <FONT ID="Void">void</FONT> keyTyped(KeyEvent e) {}
+<FONT ID="LN">187   </FONT><A NAME="187"></A>  
+<FONT ID="LN">188   </FONT><A NAME="188"></A>  <FONT ID="Public">public</FONT> <FONT ID="Void">void</FONT> game() {
+<FONT ID="LN">189   </FONT><A NAME="189"></A>    usedTime=<FONT ID="IntegerLiteral">1000</FONT>;
+<FONT ID="LN">190   </FONT><A NAME="190"></A>    initWorld();
+<FONT ID="LN">191   </FONT><A NAME="191"></A>    <FONT ID="While">while</FONT> (isVisible()) {
+<FONT ID="LN">192   </FONT><A NAME="192"></A>      <FONT ID="Long">long</FONT> startTime = System.currentTimeMillis();
+<FONT ID="LN">193   </FONT><A NAME="193"></A>      updateWorld();
+<FONT ID="LN">194   </FONT><A NAME="194"></A>      checkCollisions();
+<FONT ID="LN">195   </FONT><A NAME="195"></A>      paintWorld();
+<FONT ID="LN">196   </FONT><A NAME="196"></A>      usedTime = System.currentTimeMillis()-startTime;
+<FONT ID="LN">197   </FONT><A NAME="197"></A>      <FONT ID="Try">try</FONT> { 
+<FONT ID="LN">198   </FONT><A NAME="198"></A>         Thread.sleep(SPEED);
+<FONT ID="LN">199   </FONT><A NAME="199"></A>      } <FONT ID="Catch">catch</FONT> (InterruptedException e) {}
+<FONT ID="LN">200   </FONT><A NAME="200"></A>    }
+<FONT ID="LN">201   </FONT><A NAME="201"></A>  }
+<FONT ID="LN">202   </FONT><A NAME="202"></A>  
+<FONT ID="LN">203   </FONT><A NAME="203"></A>  <FONT ID="Public">public</FONT> <FONT ID="Static">static</FONT> <FONT ID="Void">void</FONT> main(String[] args) {
+<FONT ID="LN">204   </FONT><A NAME="204"></A>    <A TITLE='Java Source' HREF="version21/Invaders.java.html">Invaders</A> inv = <FONT ID="New">new</FONT> <A TITLE='Java Source' HREF="version21/Invaders.java.html">Invaders</A>();
+<FONT ID="LN">205   </FONT><A NAME="205"></A>    inv.game();
+<FONT ID="LN">206   </FONT><A NAME="206"></A>  }
+<FONT ID="LN">207   </FONT><A NAME="207"></A>}
+<FONT ID="LN">208   </FONT><A NAME="208"></A>
+</div>
+
+
+<p>El resultado ahora es:</p>
+<p align="center"><img src="images/version21.jpg" alt="Curso Space Invaders en Java" /></p>
+
+
+                               
+
+
+<br />
+
+<hr>
+<div class="archivos">  
+<h3>Lista de archivos Java del programa en este paso </h3>
+<table width='80%' align='center' border='1' cellpadding='4' cellspacing='0'>
+<tr >
+<td width='25%' align='center'>
+<a href='version21/Actor.java'>Actor.java</a>
+</td>
+<td width='25%' align='center'>
+<a href='version21/Bomb.java'>Bomb.java</a>
+</td>
+<td width='25%' align='center'>
+<a href='version21/Bullet.java'>Bullet.java</a>
+</td>
+<td width='25%' align='center'>
+<a href='version21/Invaders.java'>Invaders.java</a>
+</td>
+</tr>
+<tr >
+<td width='25%' align='center'>
+<a href='version21/Monster.java'>Monster.java</a>
+</td>
+<td width='25%' align='center'>
+<a href='version21/Player.java'>Player.java</a>
+</td>
+<td width='25%' align='center'>
+<a href='version21/SpriteCache.java'>SpriteCache.java</a>
+</td>
+<td width='25%' align='center'>
+<a href='version21/Stage.java'>Stage.java</a>
+</td>
+</tr>
+</table>
+
+<br />
+<h3>Lista de recursos</h3>
+<table width='80%' align='center' border='1' cellpadding='4' cellspacing='0'>
+<tr >
+<td align='center'>
+<a href='res/bicho.gif'>bicho.gif</a>
+</td>
+<td align='center'>
+<a href='res/bicho0.gif'>bicho0.gif</a>
+</td>
+<td align='center'>
+<a href='res/bicho1.gif'>bicho1.gif</a>
+</td>
+<td align='center'>
+<a href='res/bicho2.gif'>bicho2.gif</a>
+</td>
+</tr>
+<tr >
+<td align='center'>
+<a href='res/bombD.gif'>bombD.gif</a>
+</td>
+<td align='center'>
+<a href='res/bombDL.gif'>bombDL.gif</a>
+</td>
+<td align='center'>
+<a href='res/bombDR.gif'>bombDR.gif</a>
+</td>
+<td align='center'>
+<a href='res/bombL.gif'>bombL.gif</a>
+</td>
+</tr>
+<tr >
+<td align='center'>
+<a href='res/bombR.gif'>bombR.gif</a>
+</td>
+<td align='center'>
+<a href='res/bombU.gif'>bombU.gif</a>
+</td>
+<td align='center'>
+<a href='res/bombUL.gif'>bombUL.gif</a>
+</td>
+<td align='center'>
+<a href='res/bombUR.gif'>bombUR.gif</a>
+</td>
+</tr>
+<tr >
+<td align='center'>
+<a href='res/disparo.gif'>disparo.gif</a>
+</td>
+<td align='center'>
+<a href='res/disparo0.gif'>disparo0.gif</a>
+</td>
+<td align='center'>
+<a href='res/disparo1.gif'>disparo1.gif</a>
+</td>
+<td align='center'>
+<a href='res/disparo2.gif'>disparo2.gif</a>
+</td>
+</tr>
+<tr >
+<td align='center'>
+<a href='res/explosion.wav'>explosion.wav</a>
+</td>
+<td align='center'>
+<a href='res/misil.gif'>misil.gif</a>
+</td>
+<td align='center'>
+<a href='res/missile.wav'>missile.wav</a>
+</td>
+<td align='center'>
+<a href='res/musica.wav'>musica.wav</a>
+</td>
+</tr>
+<tr >
+<td align='center'>
+<a href='res/nave.gif'>nave.gif</a>
+</td>
+<td align='center'>
+<a href='res/oceano.gif'>oceano.gif</a>
+</td>
+<td align='center'>
+<a href='res/photon.wav'>photon.wav</a>
+</td>
+<td align='center'>
+<a href='res/Thumbs.db'>Thumbs.db</a>
+</td>
+</tr>
+</table>
+
+<br />
+</div>
+<table border="0" width="100%">
+<tr>
+  <td width="33%" align="center">&nbsp;
+    
+    <a href="JAVA-INVADERS-20.html"> 
+    
+    Página Anterior - 
+    
+    Detección de colisiones
+    </a>
+   
+  </td>
+  <td width="33%" align="center"><b>
+    
+    Página Actual - 
+    
+    21 - Barra de estado</b>
+  </td>
+  <td width="33%" align="center">&nbsp;
+    
+    <a href="JAVA-INVADERS-22.html"> 
+    
+    Página Siguiente - 
+    
+    Puntuación
+    </a>
+    
+  </td>    
+</tr>
+<tr>
+<tr>
+  <td>&nbsp;</td>
+  <td align="center"><a href="index.html">Índice del curso</a></td>
+  <td>&nbsp;</td>
+</tr>
+</table>
+
+<p class="pie">(c) 2004 Planetalia S.L. Todos los derechos reservados. Prohibida su reproducción</p>
+</html>
+
+
+
