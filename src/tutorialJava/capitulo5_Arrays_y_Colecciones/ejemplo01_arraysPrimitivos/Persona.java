@@ -1,4 +1,4 @@
-package tutorialJava.capitulo5_Arrays_y_Colecciones.arraysPrimitivos;
+package tutorialJava.capitulo5_Arrays_y_Colecciones.ejemplo01_arraysPrimitivos;
 
 public class Persona {
 	String nombre;

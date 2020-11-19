@@ -1,12 +1,11 @@
-package tutorialJava.capitulo1.ejercicios;
+package tutorialJava.capitulo1.ejercicios.bloque01;
 
 import javax.swing.JOptionPane;
 
-public class Bloque01EJercicio03 {
+public class Ejercicio04_Media_de_tres_numeros {
 
 	/*
-	 3º.- Realiza un programa que pida al usuario tres números y calcule y muestre
-	  en pantalla la suma de los tres
+	 * 4º.- Realiza un programa que muestre la media de tres números introducidos.
 	 */
 	
 	public static void main(String[] args) {
@@ -28,7 +27,7 @@ public class Bloque01EJercicio03 {
 		numDouble = Double.parseDouble(str);
 		
 		suma = numEntero + numFlotante + numDouble;
-		System.out.println("La suma es: " + suma);
+		System.out.println("La suma es: " + (suma / 3));
 		
 	}
 

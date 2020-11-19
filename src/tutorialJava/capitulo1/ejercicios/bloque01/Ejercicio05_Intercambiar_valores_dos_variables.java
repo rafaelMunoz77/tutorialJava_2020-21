@@ -1,8 +1,8 @@
-package tutorialJava.capitulo1.ejercicios;
+package tutorialJava.capitulo1.ejercicios.bloque01;
 
 import javax.swing.JOptionPane;
 
-public class Bloque01Ejercicio05 {
+public class Ejercicio05_Intercambiar_valores_dos_variables {
 
 	/*
 	 * 5º.- Realiza un programa en C que pida dos variables al usuario, intercambie 

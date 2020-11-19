@@ -1,8 +1,8 @@
-package tutorialJava.capitulo1.ejercicios;
+package tutorialJava.capitulo1.ejercicios.bloque01;
 
 import javax.swing.JOptionPane;
 
-public class Bloque01Ejercicio01 {
+public class Ejercicio01_Pedir_y_mostrar_tres_numeros {
 	
 	/*
 	 1º.-Realiza un programa que pida al usuario tres números: uno de tipo entero, 

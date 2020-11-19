@@ -65,6 +65,13 @@ public class Utils {
 		return numEntero;
 	}
 	
+	
+	public static int obtenerEnteroConDescripcion(String desc) {
+		System.out.println(desc);
+		int num = obtenerEnteroPorScanner();
+		return num;
+	}
+	
 	/**
 	 * 
 	 * @return Número entero introducido por el usuario

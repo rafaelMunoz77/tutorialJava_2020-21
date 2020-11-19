@@ -17,14 +17,16 @@ public class Ejercicio01_OrdenacionBurbuja {
 	 * Método principal
 	 * @param args
 	 */
-	public static void main(String[] args) {
-		int vector[] = UtilsArrays.creaArrayNumerosAzar(15, 0, 100);
+	public static void main(String[] args) {		
+		
+		int vector[] = UtilsArrays.creaArrayNumerosAzar(5, 0, 10);
 		
 		UtilsArrays.mostrarArray(vector);
 		
 		// Mido el tiempo de inicio
 		long millisAntesDeLaOrdenacion = new Date().getTime();
 		
+		ordenaArrayPorBurbuja(vector);
 
 		// Mido el tiempo después
 		long millisDespuesDeLaOrdenacion = new Date().getTime();
@@ -55,6 +57,6 @@ public class Ejercicio01_OrdenacionBurbuja {
 					hayIntercambios = true;
 				}
 			}
-		} while (hayIntercambios);
+		} while (hayIntercambios == true);
 	}
 }

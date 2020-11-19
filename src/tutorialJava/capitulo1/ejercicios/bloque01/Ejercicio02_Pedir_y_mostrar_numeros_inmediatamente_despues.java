@@ -1,8 +1,8 @@
-package tutorialJava.capitulo1.ejercicios;
+package tutorialJava.capitulo1.ejercicios.bloque01;
 
 import javax.swing.JOptionPane;
 
-public class Bloque01Ejercicio02 {
+public class Ejercicio02_Pedir_y_mostrar_numeros_inmediatamente_despues {
 
 	/*
 	 2º.-Realiza un programa igual al anterior, con la particularidad de que ahora 
