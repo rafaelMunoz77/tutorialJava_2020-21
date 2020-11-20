@@ -5,7 +5,8 @@ import tutorialJava.Utils;
 public class Ejercicio_01_y_02_Creacion_matriz_e_impresion_en_consola {
 
 	/**
-	 * 
+	 *  1º - Crea un método que rellena la matriz con valores creados al azar. El método recibirá la matriz y devolverá "void".
+		2º - Crea un método que imprima la matriz en consola. El método recibirá la matriz y devolverá "void".
 	 * @param args
 	 */
 	public static void main(String[] args) {
@@ -48,7 +49,7 @@ public class Ejercicio_01_y_02_Creacion_matriz_e_impresion_en_consola {
 		// Asignación de valores al azar en las posiciones de la matriz
 		for (int i = 0; i < matriz.length; i++) { // Con la variable "i" recorro todas las filas
 			for (int j = 0; j < matriz[i].length; j++) { // Con la variable "j" recorro las columnas de cada fila
-				// Asigno n�mero al azar
+				// Asigno número al azar
 				matriz[i][j] = Utils.obtenerNumeroAzar(min, max);
 			}
 		}
