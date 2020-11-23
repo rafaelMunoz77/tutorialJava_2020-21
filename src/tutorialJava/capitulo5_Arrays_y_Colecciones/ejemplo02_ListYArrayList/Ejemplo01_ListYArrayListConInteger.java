@@ -13,7 +13,7 @@ public class Ejemplo01_ListYArrayListConInteger {
 		
 		// Una lista puede agreagar elementos al final de la misma o en cualquier 
 		// posición concreta
-		lista1.add(1);
+		lista1.add(11);
 		imprimeList(lista1, "Lista con un elemento");		
 
 		// Inserción en una posición concreta: primer elemento de la lista
@@ -57,5 +57,13 @@ public class Ejemplo01_ListYArrayListConInteger {
 			System.out.println("Elemento en posición: " + i + ": " + lista.get(i));
 		}
 	}
+	
+	
+	
+	
+	
+	
+	
+	
 
 }
