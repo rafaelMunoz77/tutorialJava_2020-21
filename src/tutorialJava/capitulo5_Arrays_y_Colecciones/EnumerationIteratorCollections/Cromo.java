@@ -1,4 +1,4 @@
-package tutorialJava.capitulo5_Arrays_y_Colecciones.ejerciciosResueltos.bloque01.ejercicio06;
+package tutorialJava.capitulo5_Arrays_y_Colecciones.EnumerationIteratorCollections;
 
 public class Cromo {
 	

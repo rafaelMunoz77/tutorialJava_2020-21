@@ -1,32 +1,30 @@
-package tutorialJava.capitulo5_Arrays_y_Colecciones.ListYArrayList;
+package tutorialJava.capitulo5_Arrays_y_Colecciones.ejemplo02_ListYArrayList;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import tutorialJava.capitulo5_Arrays_y_Colecciones.ejerciciosResueltos.bloque01.ejercicio06.Cromo;
-
-public class EjemploListYArrayList {
+public class Ejemplo02_ListYArrayListConCromos {
 
 	public static void main (String args[]) {
 
-		// Construyo dos objetos de tipo Cromo, que se añadirán a la lista
+		// Construyo dos objetos de tipo Cromo, que se aï¿½adirï¿½n a la lista
 		Cromo pauGasol = new Cromo (1, "Pau Gasol");
 		Cromo marcGasol = new Cromo (2, "Marc Gasol");
 		
-		// Instancio un nuevo elemento de la Interface List, a través de la creación de un objeto
+		// Instancio un nuevo elemento de la Interface List, a travï¿½s de la creaciï¿½n de un objeto
 		// que implementa la interfaz, en concreto en este caso se utiliza la clase ArrayList
 		List<Cromo> cromosBasket1 = new ArrayList<Cromo>();
 
-		imprimeList(cromosBasket1, "Lista vacía");		
+		imprimeList(cromosBasket1, "Lista vacï¿½a");		
 		
-		// Un elemento de tipo List puede añadir elementos al final de la lista o en cualquier 
-		// posición concreta
+		// Un elemento de tipo List puede aï¿½adir elementos al final de la lista o en cualquier 
+		// posiciï¿½n concreta
 		cromosBasket1.add(pauGasol);
 
 		imprimeList(cromosBasket1, "Lista con un elemento");		
 
-		// Posición concreta: primer elemento de la lista
+		// Posiciï¿½n concreta: primer elemento de la lista
 		cromosBasket1.add(0, marcGasol);
 		
 		imprimeList(cromosBasket1, "Lista con dos elementos");		
@@ -38,7 +36,7 @@ public class EjemploListYArrayList {
 
 
 		// Ahora repito el experimento con otros dos cromos y otra lista diferente
-		Cromo rudyFernandez = new Cromo (3, "Rudy Fernández");
+		Cromo rudyFernandez = new Cromo (3, "Rudy Fernï¿½ndez");
 		Cromo rickyRubio = new Cromo (4, "Ricky Rubio");
 		
 		List<Cromo> cromosBasket2 = new ArrayList<Cromo>();
@@ -55,7 +53,7 @@ public class EjemploListYArrayList {
 			cromosBasket1.add(new Cromo(10 + i, "Jugador-" + i));
 		}
 		
-		imprimeList(cromosBasket1, "Con más jugadores agregados");
+		imprimeList(cromosBasket1, "Con mï¿½s jugadores agregados");
 		
 	}
 	
@@ -67,7 +65,7 @@ public class EjemploListYArrayList {
 	private static void imprimeList (List<Cromo> lista, String titulo) {
 		System.out.println(titulo);
 		for (int i = 0; i < lista.size(); i++) {
-			System.out.println("Elemento en posición: " + i + ": " + lista.get(i).toString());
+			System.out.println("Elemento en posiciï¿½n: " + i + ": " + lista.get(i).toString());
 		}
 	}
 }
