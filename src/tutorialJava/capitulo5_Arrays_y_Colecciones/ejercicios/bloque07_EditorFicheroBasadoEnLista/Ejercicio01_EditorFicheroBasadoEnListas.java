@@ -1,7 +1,11 @@
 package tutorialJava.capitulo5_Arrays_y_Colecciones.ejercicios.bloque07_EditorFicheroBasadoEnLista;
 
+
+
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.swing.JOptionPane;
 
 import tutorialJava.Utils;
 
@@ -84,10 +88,8 @@ public class Ejercicio01_EditorFicheroBasadoEnListas {
 				+ "\n6.- Pegar un conjunto de líneas"
 				+ "\n7.- Visualizar el fichero"
 				+ "\n\nIntroduzca su opción: ";
-		// Muestro el menú
-		System.out.println(strMenu);
-		// Pido una opción al usuario
-		int opcionUsuario = Utils.obtenerEnteroPorScanner();
+		// Muestro el menú y pido una opción al usuario
+		int opcionUsuario = Integer.parseInt(JOptionPane.showInputDialog(strMenu));
 		// Devuelvo la opción seleccionada
 		return opcionUsuario;
 	}
