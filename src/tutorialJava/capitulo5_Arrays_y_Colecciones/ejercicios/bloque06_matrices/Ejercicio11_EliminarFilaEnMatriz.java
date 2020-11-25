@@ -45,7 +45,7 @@ public class Ejercicio11_EliminarFilaEnMatriz {
 			}
 		}
 		
-		// Devuelvo la dispersa
+		// Devuelvo la nueva matriz creada, en la que falta una fila con respecto a la original
 		return nueva;
 	}
 

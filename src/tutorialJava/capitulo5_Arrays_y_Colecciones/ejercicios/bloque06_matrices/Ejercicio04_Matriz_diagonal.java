@@ -28,18 +28,16 @@ public class Ejercicio04_Matriz_diagonal {
 	 * @return
 	 */
 	public static boolean esMatrizDiagonal (int matriz[][]) {
-		boolean diagonal = true; // Utilizo una bandera, parto de que la matriz va a ser diagonal e intento demostrar lo contrario
-		
 		// Recorro la matriz buscando un elemento fuera de la diagonal principal que no sea 0
 		for (int i = 0; i < matriz.length; i++) {
 			for (int j = 0; j < matriz[i].length; j++) {
 				if (i != j && matriz[i][j] != 0) { 
 					// Si encuentro un elemento fuera de la diagonal principal distinto de 0, la matriz no es diagonal
-					diagonal = false;
+					return false;
 				}
 			}
 		}
-		// Devuelvo la bandera
-		return diagonal;
+		// Si llego hasta la siguiente línea de código, significa que la matriz es diagonal
+		return true;
 	}
 }

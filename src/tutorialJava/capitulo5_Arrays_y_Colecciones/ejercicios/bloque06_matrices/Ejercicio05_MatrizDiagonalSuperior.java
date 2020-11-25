@@ -29,19 +29,17 @@ public class Ejercicio05_MatrizDiagonalSuperior {
 	 * @return
 	 */
 	public static boolean esMatrizDiagonalSuperior (int matriz[][]) {
-		boolean diagonal = true; // Utilizo una bandera, parto de que la matriz va a ser diagonal superior e intento demostrar lo contrario
-		
 		// Recorro la matriz buscando un elemento fuera debajo de la diagonal principal que no sea 0
-		for (int i = 0; i < matriz.length; i++) {
+		for (int i = 1; i < matriz.length; i++) {
 			for (int j = 0; j < i; j++) {
-				if (i != j && matriz[i][j] != 0) { 
+				if (matriz[i][j] != 0) { 
 					// Si encuentro un elemento debajo de la diagonal principal distinto de 0, la matriz no es diagonal
-					diagonal = false;
+					return false;
 				}
 			}
 		}
-		// Devuelvo la bandera
-		return diagonal;
+		// Si llego hasta la siguiente línea de código, significa que la matriz es diagonal superior
+		return true;
 	}
 
 }

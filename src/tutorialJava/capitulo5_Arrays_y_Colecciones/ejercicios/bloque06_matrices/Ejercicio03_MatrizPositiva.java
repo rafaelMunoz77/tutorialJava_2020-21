@@ -28,18 +28,16 @@ public class Ejercicio03_MatrizPositiva {
 	 * @return
 	 */
 	public static boolean esMatrizPositiva (int matriz[][]) {
-		boolean esPositiva = true; // Comienzo asumiendo que va a ser positiva
-		
 		// Recorro todos los valores de la matriz, buscando uno que sea negativo
 		for (int i = 0; i < matriz.length; i++) { // Recorro filas
 			for (int j = 0; j < matriz[i].length; j++) {  // Recorro columnas
 				if (matriz[i][j] < 0) {
-					esPositiva = false; // Si un sólo elemento es negativo, la matriz no es positiva
+					return false; // Si un sólo elemento es negativo, la matriz no es positiva
 				}
 			}
 		}
-		// Al llegar a esta línea sé si la matriz es positiva o negativa.
-		return esPositiva;
+		// Si llego hasta la siguiente línea de código, significa que la matriz es positiva
+		return true;
 	}
 
 }

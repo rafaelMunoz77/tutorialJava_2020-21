@@ -29,17 +29,16 @@ public class Ejercicio08_MatrizSimetrica {
 	 * @return
 	 */
 	public static boolean esMatrizSimetrica (int matriz[][]) {
-		boolean simetrica = true; // Parto de que es simétrica, intento demostrar lo contrario
-		
+
 		// Recorro la matriz buscando un elemento no simétrico
 		for (int i = 0; i < matriz.length; i++) {
 			for (int j = 0; j < matriz[i].length; j++) {
 				if (matriz[i][j] != matriz[j][i]) { 
-					simetrica = false;
+					return false; // Si encuentro un elemento no simétrico, devuelvo que la matriz no es simétrica
 				}
 			}
 		}
-		// Devuelvo la bandera
-		return simetrica;
+		// Si llego hasta la siguiente línea de código, significa que la matriz es simétrica
+		return true;
 	}
 }

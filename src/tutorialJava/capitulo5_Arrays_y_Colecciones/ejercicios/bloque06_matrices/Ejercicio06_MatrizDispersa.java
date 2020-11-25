@@ -28,8 +28,6 @@ public class Ejercicio06_MatrizDispersa {
 	 * @return
 	 */
 	public static boolean esMatrizDispersa (int matriz[][]) {
-		boolean dispersa = true; // Utilizo una bandera, parto de que la matriz es dispersa e intento comprobar lo contrario
-		
 		// Recorro las filas de la matriz, en cada fila utilizo una bandera indicando que no hay ceros en la fila. Cuando encuentre
 		// un cero sabré que esa fila cumple con lo que se pide
 		for (int i = 0; i < matriz.length; i++) {
@@ -42,7 +40,7 @@ public class Ejercicio06_MatrizDispersa {
 			}
 			// Al acabar la fila sé si hay un cero o no
 			if (hayCero == false) {
-				dispersa = false; // Si en una fila no hay un cero, puedo decir que la matriz no es dispersa
+				return false; // Si en una fila no hay un cero, puedo decir que la matriz no es dispersa
 			}
 		}
 		
@@ -57,12 +55,12 @@ public class Ejercicio06_MatrizDispersa {
 			}
 			// Al acabar la fila sé si hay un cero o no
 			if (hayCero == false) {
-				dispersa = false; // Si en una fila no hay un cero, puedo decir que la matriz no es dispersa
+				return false; // Si en una fila no hay un cero, puedo decir que la matriz no es dispersa
 			}
 		}
 		
 		
-		// Devuelvo la bandera
-		return dispersa;
+		// Si llego hasta la siguiente línea de código, significa que la matriz es dispersa
+		return true;
 	}
 }
