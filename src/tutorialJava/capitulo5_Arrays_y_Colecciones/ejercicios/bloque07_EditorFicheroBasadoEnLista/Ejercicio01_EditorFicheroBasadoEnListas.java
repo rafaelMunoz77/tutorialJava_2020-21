@@ -1,7 +1,5 @@
 package tutorialJava.capitulo5_Arrays_y_Colecciones.ejercicios.bloque07_EditorFicheroBasadoEnLista;
 
-
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -34,7 +32,8 @@ public class Ejercicio01_EditorFicheroBasadoEnListas {
 	public static void main(String[] args) {
 		// Declaro variables necesarias
 		int opcion;
-		List<String> fichero = new ArrayList<String>();
+		List<String> fichero = new ArrayList<String>(); // Conjunto de líneas que conforman el fichero 
+		List<String> portapapeles = new ArrayList<String>(); // Lista que servirá como portapapeles
 		
 		// Inicializo algo de contenido en la lista. Esto debe eliminarse cuando el programa esté finalizado
 		fichero.add("Primera línea"); fichero.add("Segunda línea"); fichero.add("Tercera línea");
@@ -49,17 +48,34 @@ public class Ejercicio01_EditorFicheroBasadoEnListas {
 			case 0: // Ha elegido abandonar la aplicación
 				System.out.println("Adios!");
 				break;
-			case 1:
+			case 1: // Voy a insertar una nueva línea, la pediré al usuario y la agregaré al final de la lista
+				String nuevaLinea = JOptionPane.showInputDialog("Por favor, escribe la nueva línea: ");
+				fichero.add(nuevaLinea);
 				break;
-			case 2:
+			case 2: // Inserto una nueva línea en una posición, pido los datos e inserto en la lista
+				nuevaLinea = JOptionPane.showInputDialog("Por favor, escribe la nueva línea a insertar en una posición: ");
+				int posicion = Integer.parseInt(JOptionPane.showInputDialog("Introduzca la posición en la que insertar: "));
+				fichero.add(posicion, nuevaLinea);
 				break;
-			case 3:
+			case 3: // Sobrescribo una línea, pido los datos del número de línea y la nueva línea
+				posicion = Integer.parseInt(JOptionPane.showInputDialog("Introduzca la posición cuya línea quiere modificar: "));
+				nuevaLinea = JOptionPane.showInputDialog("Escriba la nueva línea que sobrescribirá a la antigua: ");
+				fichero.remove(posicion); // Elimino la línea especificada
+				fichero.add(posicion, nuevaLinea); // Inserto en la posición concreta
+//				fichero.set(posicion, nuevaLinea);; // Otra forma de hacerlo
 				break;
-			case 4:
+			case 4: // Elimino una línea del fichero, pido la posición y elimino
+				posicion = Integer.parseInt(JOptionPane.showInputDialog("Introduzca la línea que desea eliminar: "));
+				fichero.remove(posicion); // Elimino una posición del fichero
 				break;
-			case 5: 
+			case 5: // Cortar un conjunto de líneas
+				int posIni = Integer.parseInt(JOptionPane.showInputDialog("Introduzca la línea en la que comenzar a cortar: "));
+				int posFin = Integer.parseInt(JOptionPane.showInputDialog("Introduzca la línea en la que termina el corte: "));
+				cortar (fichero, portapapeles, posIni, posFin);
 				break;
-			case 6:
+			case 6: // Pegar un conjunto de líneas cortadas
+				posicion = Integer.parseInt(JOptionPane.showInputDialog("Introduzca la posición en la que desea insertar el portapapeles: "));
+				fichero.addAll(posicion, portapapeles); // Agrego una lista (portapapeles) en una posición concreta de otra (fichero).
 				break;
 			case 7: // Ha elegido visualizar el fichero
 				visualizaLista(fichero);
@@ -68,7 +84,7 @@ public class Ejercicio01_EditorFicheroBasadoEnListas {
 				System.out.println("Opción no válida");
 			}
 			
-			
+			// El bucle se repetirá mientras no se pulse la opción de salir.
 		} while (opcion != 0);
 
 	}
@@ -103,5 +119,19 @@ public class Ejercicio01_EditorFicheroBasadoEnListas {
 		for (int i = 0; i < lista.size(); i++) {
 			System.out.println("\t" + i + " - " + lista.get(i));
 		}
+	}
+	
+	/**
+	 * Elimina líneas de la lista que representa el fichero y las agrega al portapapeles
+	 * @param fichero
+	 * @param portapapeles
+	 */
+	public static void cortar (List<String> fichero, List<String> portapapeles, int posInicial, int posFinal) {
+		portapapeles.clear(); // Limpio, elimino todos los elementos, por si hubiera elementos cortados previamente
+		for (int i = posInicial; i <= posFinal; i++) { // Recorro los elementos desde la posición inicial a la final, del corte
+			portapapeles.add(fichero.get(posInicial)); // Obtengo el elemento con posición inicial seleccionada del fichero 
+			fichero.remove(posInicial); // Elimino el elemento con posición inicial, siempre debo eliminar la misma posición
+		}
+		// No devuelvo nada, porque las listas son punteros, trabajamos a nivel de memoria.
 	}
 }
