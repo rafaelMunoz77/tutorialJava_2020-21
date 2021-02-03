@@ -21,11 +21,11 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 /**
- * @author Rafael Carlos Muñoz Ruiz
+ * @author Rafael Carlos Muï¿½oz Ruiz
  * 
  * Clase principal del juego, contiene la ventana y, al mismo tiempo, es el objeto Canvas sobre el que
  * se redibuja continuamente el juego. Tiene la lista de actores. Para el repintado de escena utiliza
- * la técnica de doble búffer, a través del objeto BufferStrategy
+ * la tï¿½cnica de doble bï¿½ffer, a travï¿½s del objeto BufferStrategy
  *
  */
 public class Invaders extends Canvas {
@@ -36,25 +36,25 @@ public class Invaders extends Canvas {
 	private static final int JFRAME_WIDTH=640;
 	private static final int JFRAME_HEIGHT=480;
 	
-	// Velocidad de los fotogramas, en concreto este indica que el proceso de redibujado dormirá 20 millis
+	// Velocidad de los fotogramas, en concreto este indica que el proceso de redibujado dormirï¿½ 20 millis
 	// tras haber repintado la escena
 	public static final int TIME_TO_SLEEP=20;
 	
-	// BufferStrategy usado para conseguir la técnica de doble búffer
+	// BufferStrategy usado para conseguir la tï¿½cnica de doble bï¿½ffer
 	private BufferStrategy strategy;
 
 	private int monsterX = 0, monsterY = 100; // Coordenadas en las que se encuentra el monstruo
 	private int monsterSpeed = 2; // Velocidad a la que se mueve el monstruo sobre la pantalla
 	
-	// El almacen de imágenes se mapeará con un objeto de tipo HashMap<String, BufferedImage>
-	// En este tipo de HashMap todas las claves (keys) serán de tipo String y todas los objetos
-	// almacenados serán de tipo BufferedImage
+	// El almacen de imï¿½genes se mapearï¿½ con un objeto de tipo HashMap<String, BufferedImage>
+	// En este tipo de HashMap todas las claves (keys) serï¿½n de tipo String y todas los objetos
+	// almacenados serï¿½n de tipo BufferedImage
 	private HashMap<String, BufferedImage> sprites = new HashMap<String, BufferedImage>();
 	
-	// Carpeta en la que se encuentran los recursos: imágenes, sonidos, etc.
+	// Carpeta en la que se encuentran los recursos: imï¿½genes, sonidos, etc.
 	private static String RESOURCES_FOLDER = "../res/";
 
-	// Instancia para patrón Singleton
+	// Instancia para patrï¿½n Singleton
 	private static Invaders instance = null;
 	
 	
@@ -74,7 +74,7 @@ public class Invaders extends Canvas {
 		ventana.setBounds(0,0, JFRAME_WIDTH, JFRAME_HEIGHT);
 		// Muestro la ventana en pantalla
 		ventana.setVisible(true);
-		// Desactivo el comportamiento por defecto al pulsar el botón de cierre de la ventana
+		// Desactivo el comportamiento por defecto al pulsar el botï¿½n de cierre de la ventana
 		ventana.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		// Agrego un escuchador a la ventana, para detectar el evento de cierre de la misma
 		ventana.addWindowListener( new WindowAdapter() {
@@ -85,16 +85,16 @@ public class Invaders extends Canvas {
 		// Con ignoreRepaint le decimos al JFrame que no debe repintarse cuando el Sistema Operativo se lo indique,
 		// nosotros nos ocupamos totalmente del refresco de la pantalla
 		ventana.setIgnoreRepaint(true);
-		// El Canvas se dibujará en pantalla con una estrategia de doble búffer
+		// El Canvas se dibujarï¿½ en pantalla con una estrategia de doble bï¿½ffer
 		this.createBufferStrategy(2);
-		// Obtengo una referencia a la estrategia de doble búffer.
+		// Obtengo una referencia a la estrategia de doble bï¿½ffer.
 		strategy = getBufferStrategy();
-		// El foco de Windows irá al Canvas, para que directamente podamos controlar este juego a través del teclado
+		// El foco de Windows irï¿½ al Canvas, para que directamente podamos controlar este juego a travï¿½s del teclado
 		this.requestFocus();
 	}
 	
 	/**
-	 * Método de obtención de patrón Singleton
+	 * Mï¿½todo de obtenciï¿½n de patrï¿½n Singleton
 	 * @return
 	 */
 	public static Invaders getInstance () {
@@ -105,11 +105,11 @@ public class Invaders extends Canvas {
 	}
 	
 	/**
-	 * Al cerrar la aplicación preguntaremos al usuario si está seguro de que desea salir.
+	 * Al cerrar la aplicaciï¿½n preguntaremos al usuario si estï¿½ seguro de que desea salir.
 	 */
 	private void cerrarAplicacion() {
 		String [] opciones ={"Aceptar","Cancelar"};
-		int eleccion = JOptionPane.showOptionDialog(ventana,"¿Desea cerrar la aplicación?","Salir de la aplicación",
+		int eleccion = JOptionPane.showOptionDialog(ventana,"ï¿½Desea cerrar la aplicaciï¿½n?","Salir de la aplicaciï¿½n",
 		JOptionPane.YES_NO_OPTION,
 		JOptionPane.QUESTION_MESSAGE, null, opciones, "Aceptar");
 		if (eleccion == JOptionPane.YES_OPTION) {
@@ -119,10 +119,10 @@ public class Invaders extends Canvas {
 
 	
 	/**
-	 * Este método actualiza la posición y valores de los diferentes actores del juego, se ejecuta en cada iteración.
+	 * Este mï¿½todo actualiza la posiciï¿½n y valores de los diferentes actores del juego, se ejecuta en cada iteraciï¿½n.
 	 */
 	public void updateWorld() {
-		this.monsterX += this.monsterSpeed; // Actualizo la posición del monstruo
+		this.monsterX += this.monsterSpeed; // Actualizo la posiciï¿½n del monstruo
 		// Si el monstruo sale del canvas, cambio de signo la velocidad que sigue, para provocar un cambio de sentido
 		if (this.monsterX < 0 || this.monsterX > this.getWidth()) {
 			this.monsterSpeed = -this.monsterSpeed;
@@ -130,27 +130,27 @@ public class Invaders extends Canvas {
 	}
 	
 	/**
-	 * Método responsable del pintado de toda la escena, se ejecuta una vez por cada ciclo del programa
+	 * Mï¿½todo responsable del pintado de toda la escena, se ejecuta una vez por cada ciclo del programa
 	 */
 	public void paintWorld() {
-		// Resuelve un problema de sincronización de memoria de vídeo en Linux
+		// Resuelve un problema de sincronizaciï¿½n de memoria de vï¿½deo en Linux
 		Toolkit.getDefaultToolkit().sync();
-		// Obtengo el objeto gráfico que me permita pintar en el doble búffer
+		// Obtengo el objeto grï¿½fico que me permita pintar en el doble bï¿½ffer
 		Graphics2D g = (Graphics2D)strategy.getDrawGraphics();
-		// Pinto un rectángulo negro que ocupe toda la escena
+		// Pinto un rectï¿½ngulo negro que ocupe toda la escena
 		g.setColor(Color.black);
 		g.fillRect(0, 0, this.getWidth(), this.getHeight());
-		// Pinto el monstruo en la posición que le corresponde
+		// Pinto el monstruo en la posiciï¿½n que le corresponde
 		g.drawImage(getSprite("bicho.gif"), monsterX, monsterY,this);
 		// Muestro en pantalla el buffer con el nuevo frame creado para el juego
 		strategy.show();
 	}
 	
 	/**
-	 * Método principal del juego, con el bucle contínuo que refresca el mismo en cada FPS
+	 * Mï¿½todo principal del juego, con el bucle contï¿½nuo que refresca el mismo en cada FPS
 	 */
 	public void game() {
-		// El bucle se ejecutará mientras el objeto Canvas sea visible
+		// El bucle se ejecutarï¿½ mientras el objeto Canvas sea visible
 		while (this.isVisible()) {
 			// actualizo y pinto la escena
 			updateWorld(); 
@@ -177,22 +177,22 @@ public class Invaders extends Canvas {
 		// Para localizar el archivo se utiliza un objeto de tipo URL
 		URL url=null;
 		
-		// Se intenta cargar el recurso del disco duro, si no se pudiera se capturará la excepción y se
-		// mostrará un mensaje en pantalla
+		// Se intenta cargar el recurso del disco duro, si no se pudiera se capturarï¿½ la excepciï¿½n y se
+		// mostrarï¿½ un mensaje en pantalla
 		try {
 			url = getClass().getResource(resourceName);
 			return ImageIO.read(url);
 		} catch (Exception e) {
-			// Aquí dentro capturamos y tratamos el error que pueda haberse ocasionado
+			// Aquï¿½ dentro capturamos y tratamos el error que pueda haberse ocasionado
 			System.out.println("No se pudo cargar la imagen " + resourceName +" de "+url);
 			System.out.println("El error fue : "+e.getClass().getName()+" "+e.getMessage());
 			System.exit(0); // Fin del programa
 		}
-		return null; // Sólo se llegará a esta línea si no se ha podido cargar el recurso correctamente
+		return null; // Sï¿½lo se llegarï¿½ a esta lï¿½nea si no se ha podido cargar el recurso correctamente
 	}
 	
 	/**
-	 * Método para obtener una imagen.
+	 * Mï¿½todo para obtener una imagen.
 	 * @param nombre
 	 * @return
 	 */
@@ -203,7 +203,7 @@ public class Invaders extends Canvas {
 		// En caso de que el objeto BufferedImage no exista dentro del HashMap, se carga desde el disco duro
 		if (img == null) {
 			img = loadImage(RESOURCES_FOLDER + resourceName);
-			// Una vez que cargo el recurso en la memoria, lo agrego al HashMap, así no habrá que volver a 
+			// Una vez que cargo el recurso en la memoria, lo agrego al HashMap, asï¿½ no habrï¿½ que volver a 
 			// buscarlo en el disco duro. Como "clave" del objeto en el HashMap utilizo el nombre del fichero
 			sprites.put(resourceName, img);
 		}
@@ -211,7 +211,7 @@ public class Invaders extends Canvas {
 	}	
 	
 	/**
-	 * Método principal del juego
+	 * Mï¿½todo principal del juego
 	 * @param args
 	 */
 	public static void main(String[] args) {
