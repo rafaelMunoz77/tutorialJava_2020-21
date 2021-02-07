@@ -26,8 +26,8 @@ public class EjemploDateCalendar {
 	 * 
 	 */
 	private static void ejemploFormateoFecha () {
-		// El formateo de fechas se puede realizar a travÈs de SimpleDateFormat, de una forma sencilla.
-		// Consulta Javadoc SimpleDateFormat para m·s detalles
+		// El formateo de fechas se puede realizar a trav√©s de SimpleDateFormat, de una forma sencilla.
+		// Consulta Javadoc SimpleDateFormat para m√°s detalles
 		SimpleDateFormat sdf = new SimpleDateFormat ("EEE, MMM d, ''yy 'at' hh:mm:ss a z");
 		System.out.println("Fecha actual: " + sdf.format(new Date()));
 		
@@ -48,10 +48,10 @@ public class EjemploDateCalendar {
 	 * 
 	 */
 	private static void ejemploCalendarBasico () {
-		// Otra forma muy habitual de manejar fechas es a travÈs de los objetos de tipo Calendar
+		// Otra forma muy habitual de manejar fechas es a trav√©s de los objetos de tipo Calendar
 		Calendar fechaCalendar = new GregorianCalendar(1918, Calendar.APRIL, 01, 22, 05, 23);
-		System.out.println("Millis para MarÌa: " + fechaCalendar.getTimeInMillis());
-		// Es f·cil y muy habitual convertir un Calendar en Date
+		System.out.println("Millis para Mar√≠a: " + fechaCalendar.getTimeInMillis());
+		// Es f√°cil y muy habitual convertir un Calendar en Date
 		Date fechaAPartirDeCalendar = new Date(fechaCalendar.getTimeInMillis());
 		System.out.println("Fecha a partir de Calendar : " + fechaAPartirDeCalendar);
 	}
@@ -59,10 +59,10 @@ public class EjemploDateCalendar {
 	
 	
 	private static void ejemploCalendarConCamposIndividualizados () {
-		Calendar fechaCalendar = Calendar.getInstance(); // InstanciaciÛn por patrÛn Factory (Recuerda como funciona)
+		Calendar fechaCalendar = Calendar.getInstance(); // Instanciaci√≥n por patr√≥n Factory (Recuerda como funciona)
 
 		fechaCalendar.set(Calendar.YEAR, 2018);
-		// Sobre el mes, recuerda que Enero corresponde al valor int 0 y Diciembre al int 11. Mejor usa las variables est·ticas
+		// Sobre el mes, recuerda que Enero corresponde al valor int 0 y Diciembre al int 11. Mejor usa las variables est√°ticas
 		fechaCalendar.set(Calendar.MONTH, Calendar.APRIL);
 		fechaCalendar.set(Calendar.DAY_OF_MONTH, 01);
 
@@ -76,7 +76,7 @@ public class EjemploDateCalendar {
 		fechaCalendar.set(Calendar.SECOND, 23);
 		fechaCalendar.set(Calendar.MILLISECOND, 123);
 
-		// ConversiÛn a date y formateo
+		// Conversi√≥n a date y formateo
 		Date fechaAPartirDeCalendar = new Date(fechaCalendar.getTimeInMillis());
 		System.out.println("Fecha a partir de Calendar con campos individualizados: " + 
 				new SimpleDateFormat ("dd/MM/yyyy HH:mm:ss").format(fechaAPartirDeCalendar));
@@ -92,16 +92,16 @@ public class EjemploDateCalendar {
 		//Locale locale = Locale.ITALIAN;
 		Calendar ahora = Calendar.getInstance();
 
-		System.out.println("AÒo: " + ahora.get(Calendar.YEAR));
+		System.out.println("A√±o: " + ahora.get(Calendar.YEAR));
 		System.out.println("Mes (0 es Enero): " + ahora.get(Calendar.MONTH));
 		System.out.println("Month (String): " + ahora.getDisplayName(Calendar.MONTH, Calendar.SHORT, locale));
-		System.out.println("DÌa del mes: " + ahora.get(Calendar.DAY_OF_MONTH));
-		System.out.println("DÌa de la semana (0 es Domingo): " + ahora.get(Calendar.DAY_OF_WEEK));
-		System.out.println("DÌa de la semana (String): "
+		System.out.println("D√≠a del mes: " + ahora.get(Calendar.DAY_OF_MONTH));
+		System.out.println("D√≠a de la semana (0 es Domingo): " + ahora.get(Calendar.DAY_OF_WEEK));
+		System.out.println("D√≠a de la semana (String): "
 		            + ahora.getDisplayName(Calendar.DAY_OF_WEEK, Calendar.LONG, locale));
-		System.out.println("Semana del aÒo: " + ahora.get(Calendar.WEEK_OF_YEAR));
+		System.out.println("Semana del a√±o: " + ahora.get(Calendar.WEEK_OF_YEAR));
 		System.out.println("Semana del mes: " + ahora.get(Calendar.WEEK_OF_MONTH));
-		System.out.println("DÌa del aÒo: " + ahora.get(Calendar.DAY_OF_YEAR));
+		System.out.println("D√≠a del a√±o: " + ahora.get(Calendar.DAY_OF_YEAR));
 		System.out.println("Hora en formato 24H: " + ahora.get(Calendar.HOUR_OF_DAY));
 		System.out.println("Hora en formato 12H: " + ahora.get(Calendar.HOUR));
 		System.out.println("AM/PM: " + ahora.get(Calendar.AM_PM));
@@ -122,11 +122,11 @@ public class EjemploDateCalendar {
 	private static void ejemploSumaRestaFechas () {
 		Calendar ahora = Calendar.getInstance();
 		ahora.add(Calendar.DAY_OF_MONTH, 20);
-		System.out.println("Ahora m·s 20 dÌas : " + ahora.getTime());
+		System.out.println("Ahora m√°s 20 d√≠as : " + ahora.getTime());
 
 		ahora = Calendar.getInstance();
 		ahora.add(Calendar.DAY_OF_MONTH, -20);
-		System.out.println("Ahora menos 20 dÌas : " + ahora.getTime());
+		System.out.println("Ahora menos 20 d√≠as : " + ahora.getTime());
 	}
 	
 	
@@ -141,9 +141,9 @@ public class EjemploDateCalendar {
 		Calendar antes = Calendar.getInstance();
 		antes.add(Calendar.HOUR_OF_DAY, -5);
 
-		System.out.println("Ahora es despuÈs que despuÈs: " + ahora.after(despues));
-		System.out.println("Ahora es antes que despuÈs: " + ahora.before(despues));
-		System.out.println("Ahora es despuÈs que antes: " + ahora.after(antes));
+		System.out.println("Ahora es despu√©s que despu√©s: " + ahora.after(despues));
+		System.out.println("Ahora es antes que despu√©s: " + ahora.before(despues));
+		System.out.println("Ahora es despu√©s que antes: " + ahora.after(antes));
 		System.out.println("Ahora es antes que antes: " + ahora.before(antes));
 	}
 	
@@ -174,7 +174,7 @@ public class EjemploDateCalendar {
 		Calendar ahoraEnCanada = Calendar.getInstance(TimeZone.getTimeZone("Canada/Central"));
 		Calendar ahoraEnNewYork = Calendar.getInstance(TimeZone.getTimeZone("America/New_York"));
 		
-		System.out.println("Hora espaÒola: " + ahoraEnEspania.get(Calendar.HOUR_OF_DAY));
+		System.out.println("Hora espa√±ola: " + ahoraEnEspania.get(Calendar.HOUR_OF_DAY));
 		System.out.println("Hora canadiense: " + ahoraEnCanada.get(Calendar.HOUR_OF_DAY));
 		System.out.println("Hora en New York: " + ahoraEnNewYork.get(Calendar.HOUR_OF_DAY));
 		
@@ -184,7 +184,7 @@ public class EjemploDateCalendar {
 			System.out.println("Zona horaria: " + str);
 //		System.out.println("Zona horaria disponible: " + Arrays.toString(zonasHorarias));
 		
-		// TambiÈn podemos fabricarnos una zona horaria determinada, si no hallamos la que buscamos
+		// TambiÔøΩn podemos fabricarnos una zona horaria determinada, si no hallamos la que buscamos
 		// Cuidado con los horarios de verano!!!
 		Calendar unaZona= Calendar.getInstance(TimeZone.getTimeZone("GMT+8:00"));
 		Calendar otraZona= Calendar.getInstance(TimeZone.getTimeZone("GMT-4:00"));

@@ -82,8 +82,8 @@ public class EjemploFicheroPropiedades {
 		String password = EjemploFicheroPropiedades.getProperty("PASSWORD");
 		int id = EjemploFicheroPropiedades.getIntProperty("ID_USUARIO");
 		
-		System.out.println("Usuario leído del fichero de propiedades: " + usuario);
-		System.out.println("Password leído del fichero de propiedades: " + password);
-		System.out.println("Id de usuario leído del fichero de propiedades: " + id);
+		System.out.println("Usuario leÃ­do del fichero de propiedades: " + usuario);
+		System.out.println("Password leÃ­do del fichero de propiedades: " + password);
+		System.out.println("Id de usuario leÃ­do del fichero de propiedades: " + id);
 	}
 }

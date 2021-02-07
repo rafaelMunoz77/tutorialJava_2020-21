@@ -3,49 +3,49 @@ package tutorialJava.capitulo6_Recursos;
 public class EjemploString {
 
 	public static void main(String[] args) {
-		String str = "Cadena de texto de tamaño mediano"; 
-		str = new String("Cadena de texto de tamaño mediano");
+		String str = "Cadena de texto de tamaï¿½o mediano"; 
+		str = new String("Cadena de texto de tamaï¿½o mediano");
 		str = new String(new char[] {'C', 'a', 'd', 'e', 'n', 'a', ' ', 'd', 'e', ' ', 't', 'e', 'x', 't', 'o'});
-		str = new String(new StringBuffer("Cadena de texto de tamaño mediano"));
+		str = new String(new StringBuffer("Cadena de texto de tamaÃ±o mediano"));
 		
-		System.out.println("Caracter en la posición 4: " + str.charAt(4));
-		System.out.println("Comparación con la cadena \"Hola\": " + str.compareTo("Hola"));
-		System.out.println("Concatenación con la cadena \" para practicar\": " + str.concat(" para practicar"));
-		System.out.println("Búsqueda booleana de la cadena \"texto\": " + str.contains("texto"));
-		System.out.println("Respuesta booleana a la terminación de la cadena con respecto a la cadena \"mediano\": " + str.endsWith("mediano"));
-		System.out.println("Comparación de cadena ignorando mayúsculas: " + str.equalsIgnoreCase("CADENA DE TEXTO DE TAMAÑO MEDIANO"));
-		System.out.println("Índice en el que se encuentra la cadena \"texto\" (-1 si no se encuentra la cadena): " + str.indexOf("texto"));
-		System.out.println("Está la cadena vacía?: " + str.isEmpty());
-		System.out.println("Índice de la última aparición del carácter 'a': " + str.lastIndexOf("a"));
+		System.out.println("Caracter en la posiciÃ³n 4: " + str.charAt(4));
+		System.out.println("ComparaciÃ³n con la cadena \"Hola\": " + str.compareTo("Hola"));
+		System.out.println("ConcatenaciÃ³n con la cadena \" para practicar\": " + str.concat(" para practicar"));
+		System.out.println("BÃºsqueda booleana de la cadena \"texto\": " + str.contains("texto"));
+		System.out.println("Respuesta booleana a la terminaciÃ³n de la cadena con respecto a la cadena \"mediano\": " + str.endsWith("mediano"));
+		System.out.println("ComparaciÃ³n de cadena ignorando mayÃºsculas: " + str.equalsIgnoreCase("CADENA DE TEXTO DE TAMAÃ‘O MEDIANO"));
+		System.out.println("Ãndice en el que se encuentra la cadena \"texto\" (-1 si no se encuentra la cadena): " + str.indexOf("texto"));
+		System.out.println("EstÃ¡ la cadena vacÃ­a?: " + str.isEmpty());
+		System.out.println("Ãndice de la Ãºltima apariciÃ³n del carÃ¡cter 'a': " + str.lastIndexOf("a"));
 		System.out.println("Longitud de una cadena de texto: " + str.length());
-		System.out.println("Reemplazar todas las apariciones de 'a' por el carácter 'o': " + str.replace('a', 'o'));
-		System.out.println("Remplazo de todas las vocales a través de expresión regular: " + str.replaceAll("[aeiou]", "Ö"));
+		System.out.println("Reemplazar todas las apariciones de 'a' por el carÃ¡cter 'o': " + str.replace('a', 'o'));
+		System.out.println("Remplazo de todas las vocales a travÃ©s de expresiÃ³n regular: " + str.replaceAll("[aeiou]", "ï¿½"));
 		
-		// Ejemplo de separación de cadena en cadenas a través de split()
-		System.out.println("Separación de una cadena en otras cadenas a través de un espacio en blanco");
+		// Ejemplo de separaciÃ³n de cadena en cadenas a travÃ©s de split()
+		System.out.println("SeparaciÃ³n de una cadena en otras cadenas a travÃ©s de un espacio en blanco");
 		String[] palabras = str.split(" ");
 		for (int i = 0; i < palabras.length; i++) {
 			System.out.println("Palabra " + (i + 1) + ": " + palabras[i]);
 		}
 		
-		// Uso de split() con una expresión regular
-		System.out.println("Separación de una cadena en otras cadenas a través de la expresión regular [adt]");
+		// Uso de split() con una expresiÃ³n regular
+		System.out.println("SeparaciÃ³n de una cadena en otras cadenas a travï¿½s de la expresiÃ³n regular [adt]");
 		palabras = str.split("[adt]");
 		for (int i = 0; i < palabras.length; i++) {
 			System.out.println("Palabra " + (i + 1) + ": " + palabras[i]);
 		}
 		
-		// Uso de split() con una expresión regular
-		System.out.println("Separación de una cadena en otras cadenas a través de la expresión regular \" {2,}\", \" \"");
+		// Uso de split() con una expresiÃ³n regular
+		System.out.println("SeparaciÃ³n de una cadena en otras cadenas a travÃ©s de la expresiÃ³n regular \" {2,}\", \" \"");
 		palabras = new String("Cadena con 2 espacios  en medio").split(" {2,}");
 		for (int i = 0; i < palabras.length; i++) {
 			System.out.println("Palabra " + (i + 1) + ": " + palabras[i]);
 		}
 		
-		System.out.println("Subcadena de texto a partir de los índices de inicio y fin: " + str.substring(4, 15));
-		System.out.println("Paso a minúsculas: " + str.toLowerCase());
-		System.out.println("Paso a mayúsculas: " + str.toUpperCase());
-		System.out.println("Eliminación de los espacios en blanco iniciales: " + new String("        Cadena de texto de tamaño mediano").trim());
+		System.out.println("Subcadena de texto a partir de los Ã­ndices de inicio y fin: " + str.substring(4, 15));
+		System.out.println("Paso a minÃºsculas: " + str.toLowerCase());
+		System.out.println("Paso a mayÃºsculas: " + str.toUpperCase());
+		System.out.println("EliminaciÃ³n de los espacios en blanco iniciales: " + new String("        Cadena de texto de tamaÃ±o mediano").trim());
 	}
 
 }
