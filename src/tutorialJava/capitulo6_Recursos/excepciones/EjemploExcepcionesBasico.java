@@ -28,13 +28,16 @@ public class EjemploExcepcionesBasico {
 	 * 
 	 */
 	private static void ejemploNullPointerException () {
-		Persona persona = new Persona (null, new Pierna(Pierna.IZQUIERDA));
+		Persona persona = new Persona (new Pierna(Pierna.DERECHA), new Pierna(Pierna.IZQUIERDA));
 		
 		try {
 			System.out.println ("Pierna izquierda de la persona: " + persona.getPiernaIzquierda().toString());
 			System.out.println ("Pierna derecha de la persona: " + persona.getPiernaDerecha().toString());
 			String cadenas[] = new String[2];
-			System.out.println("cadena: " + cadenas[3]);
+			System.out.println("cadena: " + cadenas[0]);
+			
+			int num1 = 0;
+			int resultado = 56 / num1;
 		}
 		catch (NullPointerException ex) {
 			System.out.println("Exception NullPointer recogida");
@@ -43,7 +46,7 @@ public class EjemploExcepcionesBasico {
 			System.out.println("Exception IndexOutOfBoundsException recogida");
 		}
 		catch (Exception ex) {
-			System.out.println("Exception general recogida");
+			System.out.println("Exception general recogida: ");
 		}
 		
 		System.out.println("Fuera del catch");
@@ -56,10 +59,10 @@ public class EjemploExcepcionesBasico {
 	private static void ejemploArithmeticException () {
 		try {
 			int divisor = 0; 
-			System.out.println ("División: " + (50/divisor));
+			System.out.println ("Divisiï¿½n: " + (50/divisor));
 		}
 		catch (ArithmeticException ex) {
-			System.out.println("Error aritmético");
+			System.out.println("Error aritmï¿½tico");
 			System.out.println("Mensaje de error: " + ex.getMessage() + "\n\n");
 			ex.printStackTrace();
 		}
@@ -97,7 +100,7 @@ public class EjemploExcepcionesBasico {
 			System.out.println ("Pierna en array: " + piernas.get(1).toString());
 		}
 		catch (IndexOutOfBoundsException ex) {
-			System.out.println("Error de índice de acceso a un elemento en un array");
+			System.out.println("Error de ï¿½ndice de acceso a un elemento en un array");
 			System.out.println("Mensaje de error: " + ex.getMessage() + "\n\n");
 			ex.printStackTrace();
 		}
@@ -111,10 +114,10 @@ public class EjemploExcepcionesBasico {
 	 */
 	private static void ejemploNumberFormatException () {
 		try {
-			System.out.println("Parseo de número: " + Integer.parseInt("rafa"));
+			System.out.println("Parseo de nï¿½mero: " + Integer.parseInt("rafa"));
 		}
 		catch (NumberFormatException ex) {
-			System.out.println("Error de parseo a un número");
+			System.out.println("Error de parseo a un nï¿½mero");
 			System.out.println("Mensaje de error: " + ex.getMessage() + "\n\n");
 			ex.printStackTrace();
 		}
@@ -128,26 +131,26 @@ public class EjemploExcepcionesBasico {
 	 */
 	private static void ejemploClassNotFoundException () {
 		try {
-			// Ejemplo de instanciación de un objeto
+			// Ejemplo de instanciaciï¿½n de un objeto
 			Persona persona = (Persona) Class.forName("tutorialJava.capitulo6_Recursos.excepciones.Persona").newInstance();
 			System.out.println("Objeto instanciado: " + persona);
 			
-			// Ejemplo de obtención de las propiedades de un objeto
+			// Ejemplo de obtenciï¿½n de las propiedades de un objeto
 			Field propiedades[] = persona.getClass().getDeclaredFields();
 			System.out.println("\nListado de propiedades del objeto: ");
 			for (int i = 0; i < propiedades.length; i++) {
 				System.out.println("Campo: " +	propiedades[i].getName());
 			}
 			
-			// Ejemplo de obtención de los métodos de un objeto
+			// Ejemplo de obtenciï¿½n de los mï¿½todos de un objeto
 			Method metodos[] = persona.getClass().getMethods();
-			System.out.println("\nListado de métodos del objeto: ");
+			System.out.println("\nListado de mï¿½todos del objeto: ");
 			for (int i = 0; i < metodos.length; i++) {
-				System.out.println("Método: " + metodos[i].getName() + "()");
+				System.out.println("Mï¿½todo: " + metodos[i].getName() + "()");
 			}
 			
-			// Ejemplo de invocación de un método de un objeto
-			System.out.println("\nInvocación pierna derecha: " + Persona.class.getMethod("getPiernaDerecha", null).invoke(persona, null));
+			// Ejemplo de invocaciï¿½n de un mï¿½todo de un objeto
+			System.out.println("\nInvocaciï¿½n pierna derecha: " + Persona.class.getMethod("getPiernaDerecha", null).invoke(persona, null));
 			
 		}
 		catch (ClassNotFoundException ex) {
@@ -155,7 +158,7 @@ public class EjemploExcepcionesBasico {
 			System.out.println("Mensaje de error: " + ex.getMessage() + "\n\n");
 			ex.printStackTrace();
 		} catch (InstantiationException e) {
-			System.out.println("Error de instanciación de una clase");
+			System.out.println("Error de instanciaciï¿½n de una clase");
 			System.out.println("Mensaje de error: " + e.getMessage() + "\n\n");
 			e.printStackTrace();
 		} catch (IllegalAccessException e) {
@@ -163,19 +166,19 @@ public class EjemploExcepcionesBasico {
 			System.out.println("Mensaje de error: " + e.getMessage() + "\n\n");
 			e.printStackTrace();
 		} catch (IllegalArgumentException e) {
-			System.out.println("IllegalArgumentException Error en la invocación de un método");
+			System.out.println("IllegalArgumentException Error en la invocaciï¿½n de un mï¿½todo");
 			System.out.println("Mensaje de error: " + e.getMessage() + "\n\n");
 			e.printStackTrace();
 		} catch (InvocationTargetException e) {
-			System.out.println("InvocationTargetException Error en la invocación de un método");
+			System.out.println("InvocationTargetException Error en la invocaciï¿½n de un mï¿½todo");
 			System.out.println("Mensaje de error: " + e.getMessage() + "\n\n");
 			e.printStackTrace();
 		} catch (NoSuchMethodException e) {
-			System.out.println("NoSuchMethodException Error en la invocación de un método");
+			System.out.println("NoSuchMethodException Error en la invocaciï¿½n de un mï¿½todo");
 			System.out.println("Mensaje de error: " + e.getMessage() + "\n\n");
 			e.printStackTrace();
 		} catch (SecurityException e) {
-			System.out.println("SecurityException Error en la invocación de un método");
+			System.out.println("SecurityException Error en la invocaciï¿½n de un mï¿½todo");
 			System.out.println("Mensaje de error: " + e.getMessage() + "\n\n");
 			e.printStackTrace();
 		} catch(Exception ex) {
@@ -195,12 +198,12 @@ public class EjemploExcepcionesBasico {
 	 */
 	public static void main (String args[]) {
 		
-		ejemploExceptionGeneral();
+		//ejemploExceptionGeneral();
 		//ejemploNullPointerException();
 		//ejemploArithmeticException();
 		//ejemploClassCastException();
 		//ejemploIndexOutOfBoundsException();
 		//ejemploNumberFormatException();
-		//ejemploClassNotFoundException();	
+		ejemploClassNotFoundException();	
 	}
 }

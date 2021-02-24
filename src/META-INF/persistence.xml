@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence version="2.2" xmlns="http://xmlns.jcp.org/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence http://xmlns.jcp.org/xml/ns/persistence/persistence_2_2.xsd">
+	<persistence-unit name="VentaDeCoches"  transaction-type="RESOURCE_LOCAL">
+		<class>tutorialJava.modelosBasesDeDatosComunesJPA.ventaDeCoches.Cliente</class>
+		<class>tutorialJava.modelosBasesDeDatosComunesJPA.ventaDeCoches.Coche</class>
+		<class>tutorialJava.modelosBasesDeDatosComunesJPA.ventaDeCoches.Concesionario</class>
+		<class>tutorialJava.modelosBasesDeDatosComunesJPA.ventaDeCoches.Fabricante</class>
+		<class>tutorialJava.modelosBasesDeDatosComunesJPA.ventaDeCoches.Venta</class>
+		<properties> 
+           <property name="javax.persistence.jdbc.driver" value="com.mysql.cj.jdbc.Driver"/>
+            <property name="javax.persistence.jdbc.url" value="jdbc:mysql://127.0.0.1:3306/tutorialjavacoches?serverTimezone=Europe/Madrid"/>
+            <property name="javax.persistence.jdbc.user" value="java"/>
+            <property name="javax.persistence.jdbc.password" value="1234"/>
+        </properties>
+	</persistence-unit>
+	<persistence-unit name="EvaluacionCentroEducativo" transaction-type="RESOURCE_LOCAL">
+		<class>tutorialJava.modelosBasesDeDatosComunesJPA.evaluacionCentroEducativo.Curso</class>
+		<class>tutorialJava.modelosBasesDeDatosComunesJPA.evaluacionCentroEducativo.Estudiante</class>
+		<class>tutorialJava.modelosBasesDeDatosComunesJPA.evaluacionCentroEducativo.Materia</class>
+		<class>tutorialJava.modelosBasesDeDatosComunesJPA.evaluacionCentroEducativo.Profesor</class>
+		<class>tutorialJava.modelosBasesDeDatosComunesJPA.evaluacionCentroEducativo.TipologiaSexo</class>
+		<class>tutorialJava.modelosBasesDeDatosComunesJPA.evaluacionCentroEducativo.ValoracionMateria</class>
+		<properties>
+           <property name="javax.persistence.jdbc.driver" value="com.mysql.cj.jdbc.Driver"/>
+            <property name="javax.persistence.jdbc.url" value="jdbc:mysql://127.0.0.1:3306/centroeducativo?serverTimezone=Europe/Madrid"/>
+            <property name="javax.persistence.jdbc.user" value="java"/>
+            <property name="javax.persistence.jdbc.password" value="1234"/>
+        </properties>		
+	</persistence-unit>
+	<persistence-unit name="PoblacionProvincial"  transaction-type="RESOURCE_LOCAL">
+		<class>tutorialJava.modelosBasesDeDatosComunesJPA.poblacionPorProvincias.Provincia</class>
+		<class>tutorialJava.modelosBasesDeDatosComunesJPA.poblacionPorProvincias.Persona</class>
+		<properties>
+           <property name="javax.persistence.jdbc.driver" value="com.mysql.cj.jdbc.Driver"/>
+            <property name="javax.persistence.jdbc.url" value="jdbc:mysql://127.0.0.1:3306/poblacionprovincia?serverTimezone=Europe/Madrid"/>
+            <property name="javax.persistence.jdbc.user" value="java"/>
+            <property name="javax.persistence.jdbc.password" value="1234"/>
+        </properties>
+	</persistence-unit>
+	<persistence-unit name="Papeleria"  transaction-type="RESOURCE_LOCAL">
+		<class>tutorialJava.modelosBasesDeDatosComunesJPA.papeleria.Cliente</class>
+		<class>tutorialJava.modelosBasesDeDatosComunesJPA.papeleria.Distribuidor</class>
+		<class>tutorialJava.modelosBasesDeDatosComunesJPA.papeleria.Lote</class>
+		<class>tutorialJava.modelosBasesDeDatosComunesJPA.papeleria.MetodoPago</class>
+		<class>tutorialJava.modelosBasesDeDatosComunesJPA.papeleria.Provincia</class>
+		<class>tutorialJava.modelosBasesDeDatosComunesJPA.papeleria.TipoArticulo</class>
+		<class>tutorialJava.modelosBasesDeDatosComunesJPA.papeleria.Venta</class>
+		<properties>
+           <property name="javax.persistence.jdbc.driver" value="com.mysql.cj.jdbc.Driver"/>
+            <property name="javax.persistence.jdbc.url" value="jdbc:mysql://127.0.0.1:3306/papeleria?serverTimezone=Europe/Madrid"/>
+            <property name="javax.persistence.jdbc.user" value="java"/>
+            <property name="javax.persistence.jdbc.password" value="1234"/>
+        </properties>
+	</persistence-unit>
+	<persistence-unit name="Bankonter">
+		<class>tutorialJava.modelosBasesDeDatosComunesJPA.bankonter.Contrato</class>
+		<class>tutorialJava.modelosBasesDeDatosComunesJPA.bankonter.Imagen</class>
+		<class>tutorialJava.modelosBasesDeDatosComunesJPA.bankonter.TipoContrato</class>
+		<class>tutorialJava.modelosBasesDeDatosComunesJPA.bankonter.Usuario</class>
+		<properties>
+           <property name="javax.persistence.jdbc.driver" value="com.mysql.cj.jdbc.Driver"/>
+            <property name="javax.persistence.jdbc.url" value="jdbc:mysql://127.0.0.1:3306/bankonter?serverTimezone=Europe/Madrid"/>
+            <property name="javax.persistence.jdbc.user" value="java"/>
+            <property name="javax.persistence.jdbc.password" value="1234"/>
+        </properties>
+	</persistence-unit>
+</persistence>

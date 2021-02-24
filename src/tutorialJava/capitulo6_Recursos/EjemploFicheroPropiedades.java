@@ -59,7 +59,7 @@ public class EjemploFicheroPropiedades {
 	 * @return
 	 */
 	public static int getIntProperty (String nombrePropiedad) {
-		return Integer.parseInt(getPropiedades().getProperty(nombrePropiedad));
+		return Integer.parseInt(getProperty(nombrePropiedad));
 	}
 	
 	
@@ -69,7 +69,7 @@ public class EjemploFicheroPropiedades {
 	 * @return
 	 */
 	public static Float getFloatProperty (String nombrePropiedad) {
-		return Float.parseFloat(getPropiedades().getProperty(nombrePropiedad));
+		return Float.parseFloat(getProperty(nombrePropiedad));
 	}
 	
 	

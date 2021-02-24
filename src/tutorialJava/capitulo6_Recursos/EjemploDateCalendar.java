@@ -35,7 +35,7 @@ public class EjemploDateCalendar {
 		Date fechaParseada = null;
 		// El parseo de fechas debe obligatoriamente ser inspeccionado con un bloque de manejo de excepciones
 		try {
-			fechaParseada = sdf2.parse("19/03/2020 15:33:00");
+			fechaParseada = sdf2.parse("19/03/2021 15:33:00");
 		} catch (ParseException e) {
 			System.out.println ("Error en el parseo de la fecha");
 			e.printStackTrace();
@@ -88,8 +88,8 @@ public class EjemploDateCalendar {
 	 * 
 	 */
 	private static void ejemploLecturaCamposIndividualizadosYLocaleEnImpresion () {
-		Locale locale = Locale.getDefault();
-		//Locale locale = Locale.ITALIAN;
+		//Locale locale = Locale.getDefault();
+		Locale locale = Locale.KOREAN;
 		Calendar ahora = Calendar.getInstance();
 
 		System.out.println("Año: " + ahora.get(Calendar.YEAR));

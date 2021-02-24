@@ -46,11 +46,12 @@ public class EjemploLanzamientoExcepcionPropia {
 	public static void main(String[] args) {
 		
 		try {
-//			Persona persona = new Persona(new Pierna(Pierna.DERECHA), new Pierna(Pierna.IZQUIERDA));
+			Persona persona = new Persona(new Pierna(Pierna.DERECHA), new Pierna(Pierna.IZQUIERDA));
 //			Persona persona = null;
 //			Persona persona = new Persona(null, new Pierna(Pierna.IZQUIERDA));
-			Persona persona = new Persona(new Pierna(Pierna.DERECHA), null);
+//			Persona persona = new Persona(new Pierna(Pierna.DERECHA), null);
 			System.out.println(personaToString(persona));
+			
 		} catch (PersonaNulaException | PiernaNulaException e) {
 			System.out.println("Existen valores nulos en el objeto persona: " + e.getMessage());
 		}

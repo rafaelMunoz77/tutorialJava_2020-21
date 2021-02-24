@@ -1,8 +1,11 @@
 package tutorialJava.capitulo6_Recursos;
 
+import java.util.Scanner;
+
 public class EjemploString {
 
 	public static void main(String[] args) {
+		
 		String str = "Cadena de texto de tama�o mediano"; 
 		str = new String("Cadena de texto de tama�o mediano");
 		str = new String(new char[] {'C', 'a', 'd', 'e', 'n', 'a', ' ', 'd', 'e', ' ', 't', 'e', 'x', 't', 'o'});
