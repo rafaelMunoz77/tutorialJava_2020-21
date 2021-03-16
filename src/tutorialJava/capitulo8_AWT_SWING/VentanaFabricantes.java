@@ -11,9 +11,13 @@ import java.awt.Insets;
 import javax.swing.JPanel;
 import java.awt.FlowLayout;
 import javax.swing.JButton;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 public class VentanaFabricantes {
 
+	Fabricante actual = null;
+	
 	private JFrame frame;
 	private JTextField jtfId;
 	private JLabel lblNewLabel_1;
@@ -47,8 +51,19 @@ public class VentanaFabricantes {
 	 */
 	public VentanaFabricantes() {
 		initialize();
+		this.actual = ControladorFabricante.getInstance().findPrimero();
+		cargarActualEnPantalla();
 	}
 
+	
+	private void cargarActualEnPantalla() {
+		if (this.actual != null) {
+			this.jtfId.setText("" + this.actual.getId());
+			this.jtfCif.setText(this.actual.getCif());
+			this.jtfNombre.setText(this.actual.getNombre());
+		}
+	}
+	
 	/**
 	 * Initialize the contents of the frame.
 	 */
@@ -127,15 +142,39 @@ public class VentanaFabricantes {
 		panel.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
 		
 		btnPrimero = new JButton("<<");
+		btnPrimero.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				actual = ControladorFabricante.getInstance().findPrimero();
+				cargarActualEnPantalla();
+			}
+		});
 		panel.add(btnPrimero);
 		
 		btnAnterior = new JButton("<");
+		btnAnterior.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				actual = ControladorFabricante.getInstance().findAnterior(actual.getId());
+				cargarActualEnPantalla();
+			}
+		});
 		panel.add(btnAnterior);
 		
 		btnSiguiente = new JButton(">");
+		btnSiguiente.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				actual = ControladorFabricante.getInstance().findSiguiente(actual.getId());
+				cargarActualEnPantalla();
+			}
+		});
 		panel.add(btnSiguiente);
 		
 		btnUltimo = new JButton(">>");
+		btnUltimo.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				actual = ControladorFabricante.getInstance().findUltimo();
+				cargarActualEnPantalla();
+			}
+		});
 		panel.add(btnUltimo);
 	}
 
