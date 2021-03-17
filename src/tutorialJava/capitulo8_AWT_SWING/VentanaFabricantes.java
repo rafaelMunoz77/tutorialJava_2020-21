@@ -5,6 +5,8 @@ import java.awt.EventQueue;
 import javax.swing.JFrame;
 import java.awt.GridBagLayout;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+
 import java.awt.GridBagConstraints;
 import javax.swing.JTextField;
 import java.awt.Insets;
@@ -29,6 +31,9 @@ public class VentanaFabricantes {
 	private JButton btnAnterior;
 	private JButton btnSiguiente;
 	private JButton btnUltimo;
+	private JButton btnGuardar;
+	private JButton btnNuevo;
+	private JButton btnBorrar;
 
 	/**
 	 * Launch the application.
@@ -55,13 +60,24 @@ public class VentanaFabricantes {
 		cargarActualEnPantalla();
 	}
 
-	
+	/**
+	 * 
+	 */
 	private void cargarActualEnPantalla() {
 		if (this.actual != null) {
 			this.jtfId.setText("" + this.actual.getId());
 			this.jtfCif.setText(this.actual.getCif());
 			this.jtfNombre.setText(this.actual.getNombre());
 		}
+	}
+	
+	/**
+	 * 
+	 */
+	private void cargarActualDesdePantalla() {
+		this.actual.setId(Integer.parseInt(jtfId.getText()));
+		this.actual.setCif(jtfCif.getText());
+		this.actual.setNombre(jtfNombre.getText());
 	}
 	
 	/**
@@ -176,6 +192,76 @@ public class VentanaFabricantes {
 			}
 		});
 		panel.add(btnUltimo);
+		
+		btnGuardar = new JButton("Guardar");
+		btnGuardar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				guardar();
+			}
+		});
+		panel.add(btnGuardar);
+		
+		btnNuevo = new JButton("Nuevo");
+		btnNuevo.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				vaciarCampos();
+			}
+		});
+		panel.add(btnNuevo);
+		
+		btnBorrar = new JButton("Borrar");
+		btnBorrar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				borrar();
+			}
+		});
+		panel.add(btnBorrar);
 	}
 
+	/**
+	 * 
+	 */
+	private void guardar () {
+		cargarActualDesdePantalla();
+		// Decido si se trata de guardar un registro existente o nuevo
+		if (this.actual.getId() != 0) { // Modificación
+			int regsAfec = ControladorFabricante.getInstance().modificar(this.actual);
+			if (regsAfec > 0) {
+				JOptionPane.showMessageDialog(null, "Registro modificado correctamente");
+			}
+		}
+		else { // Alta -  nuevo
+			int idNuevoReg = ControladorFabricante.getInstance().nuevo(this.actual);
+			if (idNuevoReg > 0) {
+				this.jtfId.setText("" + idNuevoReg);
+				JOptionPane.showMessageDialog(null, "Registro insertado correctamente");
+			}
+		}
+	}
+	
+	/**
+	 * 
+	 */
+	private void vaciarCampos() {
+		this.jtfId.setText("0");
+		this.jtfCif.setText("");
+		this.jtfNombre.setText("");
+	}
+	
+	/**
+	 * 
+	 */
+	private void borrar() {
+		String posiblesRespuestas[] = {"Sí","No"};
+		// En esta opci�n se utiliza un showOptionDialog en el que personalizo el icono mostrado
+		int opcionElegida = JOptionPane.showOptionDialog(null, "¿Desea eliminar?", "Gestión venta de coches", 
+		        JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE, null, posiblesRespuestas, posiblesRespuestas[1]);
+	    if(opcionElegida == 0) {
+	    	int regsAfectados = ControladorFabricante.getInstance().borrar(this.actual.getId());
+	    	if (regsAfectados > 0) {
+	    		vaciarCampos();
+	    		JOptionPane.showMessageDialog(null, "Eliminado correctamente");
+	    	}
+	    }
+	}
 }

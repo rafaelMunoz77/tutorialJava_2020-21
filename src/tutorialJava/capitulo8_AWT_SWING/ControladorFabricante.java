@@ -3,6 +3,7 @@ package tutorialJava.capitulo8_AWT_SWING;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Statement;
 
 public class ControladorFabricante {
@@ -128,6 +129,92 @@ public class ControladorFabricante {
 		return f;
 	}
 	
+	/**
+	 * 
+	 * @return
+	 */
+	public int modificar (Fabricante f) {
+		int registrosAfectados = 0;
+		try {
+			Statement s = (Statement) this.conn.createStatement(); 
 
+			registrosAfectados = s.executeUpdate ("update fabricante set cif='" + f.getCif() + "', " +
+					" nombre='" + f.getNombre() + "' where id=" + f.getId() + ";");
+		   	
+			// Cierre de los elementos
+			s.close();
+		}
+		catch (Exception ex) {
+			ex.printStackTrace();
+		}
+		return registrosAfectados;
+		
+	}
+
+	/**
+	 * 
+	 * @param f
+	 * @return
+	 */
+	public int nuevo (Fabricante f) {
+		int registrosAfectados = 0;
+		int idNuevoRegistro = 0;
+		try {
+			Statement s = (Statement) this.conn.createStatement(); 
+
+			idNuevoRegistro = nextId();
+			registrosAfectados = s.executeUpdate ("insert into fabricante values(" + idNuevoRegistro + ", " +
+			"'" + f.getCif() + "', '" + f.getNombre() + "');");
+		   	
+			// Cierre de los elementos
+			s.close();
+		}
+		catch (Exception ex) {
+			ex.printStackTrace();
+		}
+		return idNuevoRegistro;
+
+	}
+
+	/**
+	 * 
+	 * @return
+	 * @throws SQLException
+	 */
+	private int nextId () throws SQLException {
+		Statement s = (Statement) this.conn.createStatement();
+
+		String sql = "select max(id) from tutorialjavacoches.fabricante";
+		ResultSet rs = s.executeQuery(sql);
+		int max = 1; 
+		if (rs.next() ) {
+			max = rs.getInt(1);
+		}
+		rs.close();
+		s.close();
+		return max + 1;
+	}
+	
+	
+	/**
+	 * 
+	 * @param id
+	 * @return
+	 */
+	public int borrar(int id) {
+		int registrosAfectados = 0;
+		try {
+			Statement s = (Statement) this.conn.createStatement(); 
+
+			registrosAfectados = s.executeUpdate ("delete from fabricante where id=" + id + ";");
+			
+			// Cierre de los elementos
+			s.close();
+		}
+		catch (Exception ex) {
+			ex.printStackTrace();
+		}
+		return registrosAfectados;
+	}
 
 }
