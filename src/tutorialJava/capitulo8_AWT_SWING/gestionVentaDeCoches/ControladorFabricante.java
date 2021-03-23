@@ -1,4 +1,4 @@
-package tutorialJava.capitulo8_AWT_SWING;
+package tutorialJava.capitulo8_AWT_SWING.gestionVentaDeCoches;
 
 import java.sql.Connection;
 import java.sql.DriverManager;

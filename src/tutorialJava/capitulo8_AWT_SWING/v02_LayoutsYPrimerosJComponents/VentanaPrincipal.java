@@ -33,12 +33,12 @@ public class VentanaPrincipal extends JFrame {
 
 	public static int ANCHO = 800;
 	public static int ALTO = 600;
-	public static String TITULO_APLICACION = "Título de la aplicación";
+	public static String TITULO_APLICACION = "Tï¿½tulo de la aplicaciï¿½n";
 
 	private CacheImagenes cacheImagenes;
 	public static BufferedImage iconoApp;
 
-	// Establecer la apariencia típica de Windows
+	// Establecer la apariencia tï¿½pica de Windows
 	static {
 		Apariencia.setAparienciasOrdenadas(Apariencia.aparienciasOrdenadas);
 	}
@@ -52,10 +52,10 @@ public class VentanaPrincipal extends JFrame {
 		iconoApp = cacheImagenes.getImagen("nave.gif");
 		setIconImage(iconoApp);
 		
-		// Tamaño por defecto, basado en los valores estáticos de esta misma clase
+		// Tamaï¿½o por defecto, basado en los valores estï¿½ticos de esta misma clase
 		setDimensionesBasicas();
 		
-		// Construcción elementos básicos sobre el ContentPanel
+		// Construcciï¿½n elementos bï¿½sicos sobre el ContentPanel
 		this.setContentPane(EjemplosJTabbedPane.getPanelesTabulados());
 	}
 
@@ -76,14 +76,14 @@ public class VentanaPrincipal extends JFrame {
 	 * 
 	 */
 	private void agregarGestionCierreAplicacion () {
-		// Configuración del evento de cerrado
-		// Para más información debes estudiar Javadoc WindowListener y WindowAdapter
+		// Configuraciï¿½n del evento de cerrado
+		// Para mï¿½s informaciï¿½n debes estudiar Javadoc WindowListener y WindowAdapter
 		this.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		this.addWindowListener (new WindowAdapter() {
 			public void windowClosing (WindowEvent e) {
-				String posiblesRespuestas[] = {"Sí","No"};
-				// En esta opción se utiliza un showOptionDialog en el que personalizo el icono mostrado
-				int opcionElegida = JOptionPane.showOptionDialog(null, "¿Realmente desea cerrar la aplicación?", TITULO_APLICACION, 
+				String posiblesRespuestas[] = {"Sï¿½","No"};
+				// En esta opciï¿½n se utiliza un showOptionDialog en el que personalizo el icono mostrado
+				int opcionElegida = JOptionPane.showOptionDialog(null, "ï¿½Realmente desea cerrar la aplicaciï¿½n?", TITULO_APLICACION, 
 				        JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE, cacheImagenes.getIcono("confirm.png"), posiblesRespuestas, posiblesRespuestas[1]);
 			    if(opcionElegida == 0) {
 			      System.exit(0);          

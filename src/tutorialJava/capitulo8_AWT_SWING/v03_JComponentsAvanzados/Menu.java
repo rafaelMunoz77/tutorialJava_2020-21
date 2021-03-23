@@ -22,7 +22,7 @@ public class Menu extends JMenuBar {
 	 * 
 	 */
 	public Menu () {
-		// Menú Archivo de la aplicación
+		// Menï¿½ Archivo de la aplicaciï¿½n
         JMenu menuArchivo = new JMenu("Archivo");
         menuArchivo.add(crearNuevoMenuItem("Abrir", "ruedadentada.png", KeyStroke.getKeyStroke(KeyEvent.VK_A, Toolkit.getDefaultToolkit().getMenuShortcutKeyMask())));
         
@@ -37,7 +37,7 @@ public class Menu extends JMenuBar {
         
         this.add(menuArchivo);
         
-        // Menú editar
+        // Menï¿½ editar
         JMenu menuEditar = new JMenu("Editar");
         menuEditar.add(crearNuevoMenuItem("Cortar", "next.png", KeyStroke.getKeyStroke(KeyEvent.VK_X, Toolkit.getDefaultToolkit().getMenuShortcutKeyMask())));
         menuEditar.add(crearNuevoMenuItem("Copiar", "previous.png", KeyStroke.getKeyStroke(KeyEvent.VK_C, Toolkit.getDefaultToolkit().getMenuShortcutKeyMask())));
@@ -46,15 +46,15 @@ public class Menu extends JMenuBar {
         
         this.add(menuEditar);
         
-        // Menú ejemplo checkbox y radio
+        // Menï¿½ ejemplo checkbox y radio
         JMenu menuCheckBoxYRadio = new JMenu("CheckBoxYRadio");
         menuCheckBoxYRadio.add(crearNuevoCheckBoxMenuItem("Ejemplo JCheckBoxMenuItem", "valign16.png"));
         menuCheckBoxYRadio.addSeparator();
         // Ejemplo del JRadioButtonMenuItem
         ButtonGroup buttonGroup = new ButtonGroup();
-        menuCheckBoxYRadio.add(crearNuevoRadioButtonMenuItem("Radio Button - Opción 1", "previous.png", buttonGroup));
-        menuCheckBoxYRadio.add(crearNuevoRadioButtonMenuItem("Radio Button - Opción 2", "previous.png", buttonGroup));
-        menuCheckBoxYRadio.add(crearNuevoRadioButtonMenuItem("Radio Button - Opción 3", "previous.png", buttonGroup));
+        menuCheckBoxYRadio.add(crearNuevoRadioButtonMenuItem("Radio Button - Opciï¿½n 1", "previous.png", buttonGroup));
+        menuCheckBoxYRadio.add(crearNuevoRadioButtonMenuItem("Radio Button - Opciï¿½n 2", "previous.png", buttonGroup));
+        menuCheckBoxYRadio.add(crearNuevoRadioButtonMenuItem("Radio Button - Opciï¿½n 3", "previous.png", buttonGroup));
         
         this.add(menuCheckBoxYRadio);
         
@@ -63,7 +63,7 @@ public class Menu extends JMenuBar {
 	
 	
 	/**
-	 * Menú Item para salir de la aplicación
+	 * Menï¿½ Item para salir de la aplicaciï¿½n
 	 * @return
 	 */
 	private JMenuItem crearNuevoMenuItem (String titulo, String nombreIcono, KeyStroke atajoTeclado) {

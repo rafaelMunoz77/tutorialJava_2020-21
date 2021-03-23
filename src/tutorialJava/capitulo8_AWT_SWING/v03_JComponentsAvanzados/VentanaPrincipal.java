@@ -22,10 +22,10 @@ public class VentanaPrincipal extends JFrame {
 		this.setBounds(0, 0, 500, 500);
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-		// Menú de la aplicación
+		// Menï¿½ de la aplicaciï¿½n
 		this.setJMenuBar(new Menu());
 
-		// Establezco el panel principal de la aplicación y la barra de herramientas
+		// Establezco el panel principal de la aplicaciï¿½n y la barra de herramientas
 		this.setLayout(new BorderLayout());
 		this.add(new ToolBar(), BorderLayout.NORTH);
 		this.add(getTabbedPane(), BorderLayout.CENTER);

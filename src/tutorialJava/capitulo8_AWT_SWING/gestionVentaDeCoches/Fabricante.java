@@ -1,4 +1,4 @@
-package tutorialJava.capitulo8_AWT_SWING;
+package tutorialJava.capitulo8_AWT_SWING.gestionVentaDeCoches;
 
 public class Fabricante {
 

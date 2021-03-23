@@ -72,7 +72,7 @@ public class Ejemplo04_CreacionDatosEnEsquema {
 					"VALUES  (" + nextIdEnTabla(conn, "concesionario") + ", '" + getDNICIFAzar() + "', '" + empresa + "', '" + getStringAlAzar(localidades) + "')";
 			registrosInsertados = s.executeUpdate(sql);
 			if (registrosInsertados != 1) {
-				throw new SQLException ("No ha sido posible la inserción con la cadena:\n" + sql);
+				throw new SQLException ("No ha sido posible la inserciï¿½n con la cadena:\n" + sql);
 			}
 			contRegistrosInsertados++;
 			if (contRegistrosInsertados % CONT_NOTIFICACION_INSERCION == 0 && LOG) {
@@ -108,7 +108,7 @@ public class Ejemplo04_CreacionDatosEnEsquema {
 							+ "'" + dni + "', '" + fechaNac + "', true)";
 			registrosInsertados = s.executeUpdate(sql);
 			if (registrosInsertados != 1) {
-				throw new SQLException ("No ha sido posible la inserción con la cadena:\n" + sql);
+				throw new SQLException ("No ha sido posible la inserciï¿½n con la cadena:\n" + sql);
 			}
 			contRegistrosInsertados++;
 			if (contRegistrosInsertados % CONT_NOTIFICACION_INSERCION == 0 && LOG) {
@@ -220,7 +220,7 @@ public class Ejemplo04_CreacionDatosEnEsquema {
 					", " + idsCoches.get(i) + ", '" + fecha + "', " + precio + ")";
 			registrosInsertados = s.executeUpdate(sql);
 			if (registrosInsertados != 1) {
-				throw new SQLException ("No ha sido posible la inserción con la cadena:\n" + sql);
+				throw new SQLException ("No ha sido posible la inserciï¿½n con la cadena:\n" + sql);
 			}
 			contRegistrosInsertados++;
 			if (contRegistrosInsertados % CONT_NOTIFICACION_INSERCION == 0 && LOG) {
@@ -288,7 +288,7 @@ public class Ejemplo04_CreacionDatosEnEsquema {
 	 * @return
 	 */
 	private static String getFechaAzar (int anioMin, int anioMax, SimpleDateFormat sdf) {
-		Calendar calendar = new GregorianCalendar(Utils.obtenerNumeroAzar(anioMin, anioMax) /*año*/, Utils.obtenerNumeroAzar(0, 11) /*mes*/, Utils.obtenerNumeroAzar(1, 31) /*día*/, 
+		Calendar calendar = new GregorianCalendar(Utils.obtenerNumeroAzar(anioMin, anioMax) /*aï¿½o*/, Utils.obtenerNumeroAzar(0, 11) /*mes*/, Utils.obtenerNumeroAzar(1, 31) /*dï¿½a*/, 
 				Utils.obtenerNumeroAzar(0, 23) /*hora*/, Utils.obtenerNumeroAzar(0, 59) /*minuto*/, Utils.obtenerNumeroAzar(0, 59) /*segundo*/);
 	
 		return sdf.format(calendar.getTime());
