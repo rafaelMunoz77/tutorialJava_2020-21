@@ -19,7 +19,7 @@ public class Fabricante {
 
 	@Override
 	public String toString() {
-		return "Fabricante [id=" + id + ", cif=" + cif + ", nombre=" + nombre + "]";
+		return this.nombre;
 	}
 
 	/**

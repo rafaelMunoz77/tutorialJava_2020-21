@@ -5,6 +5,8 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
 
 public class ControladorFabricante {
 
@@ -216,5 +218,32 @@ public class ControladorFabricante {
 		}
 		return registrosAfectados;
 	}
+
+	
+	/**
+	 * 
+	 * @return
+	 */
+	public List<Fabricante> findAll () {
+		List<Fabricante> fabricantes = new ArrayList<Fabricante>();
+		try {
+			Statement s = this.conn.createStatement();
+			ResultSet rs =  s.executeQuery("select * from tutorialjavacoches.fabricante");
+			while (rs.next()) {
+				Fabricante f = new Fabricante();
+				f.setId(rs.getInt("id"));
+				f.setCif(rs.getString("cif"));
+				f.setNombre(rs.getString("nombre"));
+				// Agrego el fabricante a la lista
+				fabricantes.add(f);
+			}
+		}
+		catch (Exception ex) {
+			ex.printStackTrace();
+		}
+		return fabricantes;
+	}
+	
+
 
 }

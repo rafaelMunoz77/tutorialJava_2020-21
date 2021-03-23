@@ -3,6 +3,8 @@ package tutorialJava.capitulo8_AWT_SWING.gestionVentaDeCoches;
 import javax.swing.JPanel;
 import java.awt.GridBagLayout;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
 import javax.swing.JTextField;
@@ -10,6 +12,7 @@ import javax.swing.JComboBox;
 import java.awt.FlowLayout;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
+import java.util.List;
 import java.awt.event.ActionEvent;
 
 public class PanelCoches extends JPanel {
@@ -20,6 +23,7 @@ public class PanelCoches extends JPanel {
 	private JTextField jtfBastidor;
 	private JTextField jtfModelo;
 	private JTextField jtfColor;
+	private JComboBox<Fabricante> jcbFabricante;
 
 	/**
 	 * Create the panel.
@@ -58,7 +62,7 @@ public class PanelCoches extends JPanel {
 		gbc_lblNewLabel_1.gridy = 1;
 		add(lblNewLabel_1, gbc_lblNewLabel_1);
 		
-		JComboBox jcbFabricante = new JComboBox();
+		jcbFabricante = new JComboBox();
 		GridBagConstraints gbc_jcbFabricante = new GridBagConstraints();
 		gbc_jcbFabricante.insets = new Insets(0, 0, 5, 0);
 		gbc_jcbFabricante.fill = GridBagConstraints.HORIZONTAL;
@@ -164,6 +168,11 @@ public class PanelCoches extends JPanel {
 		panel.add(btnUltimo);
 		
 		JButton btnGuardar = new JButton("Guardar");
+		btnGuardar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				guardar();
+			}
+		});
 		panel.add(btnGuardar);
 		
 		JButton btnNuevo = new JButton("Nuevo");
@@ -173,11 +182,22 @@ public class PanelCoches extends JPanel {
 		panel.add(btnEliminar);
 
 		
+		cargarDatosFabricantes();
 		this.actual = ControladorCoche.getInstance().findPrimero();
 		cargarActualEnPantalla();
 
 	}
 	
+	/**
+	 * 
+	 */
+	private void cargarDatosFabricantes() {
+		List<Fabricante> fabricantes = ControladorFabricante.getInstance().findAll();
+		
+		for (Fabricante f : fabricantes) {
+			this.jcbFabricante.addItem(f);
+		}
+	}
 	
 	/**
 	 * 
@@ -188,8 +208,50 @@ public class PanelCoches extends JPanel {
 			this.jtfBastidor.setText(this.actual.getBastidor());
 			this.jtfModelo.setText(this.actual.getModelo());
 			this.jtfColor.setText(this.actual.getColor());
+			
+			// Carga del fabricante
+			for (int i = 0; i < this.jcbFabricante.getItemCount(); i++) {
+				if (this.actual.getIdFabricante() == this.jcbFabricante.getItemAt(i).getId()) {
+					this.jcbFabricante.setSelectedIndex(i);
+				}
+			}
 		}
 	}
 
+
+	
+	/**
+	 * 
+	 */
+	private void cargarActualDesdePantalla() {
+		this.actual.setId(Integer.parseInt(jtfId.getText()));
+		this.actual.setBastidor(jtfBastidor.getText());
+		this.actual.setModelo(jtfModelo.getText());
+		this.actual.setColor(jtfColor.getText());
+		this.actual.setIdFabricante(((Fabricante) jcbFabricante.getSelectedItem()).getId());
+	}
+	
+	
+	/**
+	 * 
+	 */
+	private void guardar () {
+		cargarActualDesdePantalla();
+		// Decido si se trata de guardar un registro existente o nuevo
+		if (this.actual.getId() != 0) { // Modificación
+			int regsAfec = ControladorCoche.getInstance().modificar(this.actual);
+			if (regsAfec > 0) {
+				JOptionPane.showMessageDialog(null, "Registro modificado correctamente");
+			}
+		}
+		else { // Alta -  nuevo
+//			int idNuevoReg = ControladorCoche.getInstance().nuevo(this.actual);
+//			if (idNuevoReg > 0) {
+//				this.jtfId.setText("" + idNuevoReg);
+//				JOptionPane.showMessageDialog(null, "Registro insertado correctamente");
+//			}
+		}
+	}
+	
 
 }

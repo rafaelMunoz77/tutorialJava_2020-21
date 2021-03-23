@@ -227,4 +227,29 @@ public class ControladorCoche {
 		return registrosAfectados;
 	}
 
+	
+	
+	/**
+	 * 
+	 * @return
+	 */
+	public int modificar (Coche c) {
+		int registrosAfectados = 0;
+		try {
+			Statement s = (Statement) this.conn.createStatement(); 
+
+			registrosAfectados = s.executeUpdate ("update coche set idFabricante=" + c.getIdFabricante() + ", " +
+					" bastidor='" + c.getBastidor() + "', modelo='" + c.getModelo() + "', color='" + c.getColor() + "' where id=" + c.getId() + ";");
+		   	
+			// Cierre de los elementos
+			s.close();
+		}
+		catch (Exception ex) {
+			ex.printStackTrace();
+		}
+		return registrosAfectados;
+		
+	}
+
+
 }
