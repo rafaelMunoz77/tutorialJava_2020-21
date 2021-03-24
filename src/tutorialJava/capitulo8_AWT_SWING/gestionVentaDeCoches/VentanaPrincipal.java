@@ -10,9 +10,29 @@ import javax.swing.JTabbedPane;
 
 public class VentanaPrincipal extends JFrame {
 
+	private JTabbedPane jTabbedPane = null;
+	
+	private static VentanaPrincipal instance = null;
+	
+	/**
+	 * 
+	 * @return
+	 */
+	public static VentanaPrincipal getInstance () {
+		if (instance == null) {
+			instance = new VentanaPrincipal();
+		}
+		return instance;
+	}
+	
+	/**
+	 * 
+	 */
 	public VentanaPrincipal() {
 		super("Gestión de venta de coches");
 		this.setBounds(0, 0, 600, 400);
+		
+		this.setJMenuBar(new MenuBar());
 		
 		this.setLayout(new BorderLayout());
 		this.add(getPanelPrincipal(), BorderLayout.CENTER);
@@ -23,22 +43,32 @@ public class VentanaPrincipal extends JFrame {
 	 * @return
 	 */
 	private JTabbedPane getPanelPrincipal() {
-		JTabbedPane pane = new JTabbedPane();
+		jTabbedPane = new JTabbedPane();
 		
-		pane.add("Fabricantes", new PanelFabricantes());
-		pane.add("Coches", new PanelCoches());
+		jTabbedPane.add("Fabricantes", new PanelFabricantes());
+		jTabbedPane.add("Coches", new PanelCoches());
 		
-		return pane;
+		return jTabbedPane;
 	}
 	
 	
+	
+	
+	
+	/**
+	 * @return the jTabbedPane
+	 */
+	public JTabbedPane getjTabbedPane() {
+		return jTabbedPane;
+	}
+
+
 	/**
 	 * 
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		VentanaPrincipal ventana = new VentanaPrincipal();
-		ventana.setVisible(true);
+		VentanaPrincipal.getInstance().setVisible(true);
 	}
 
 }
