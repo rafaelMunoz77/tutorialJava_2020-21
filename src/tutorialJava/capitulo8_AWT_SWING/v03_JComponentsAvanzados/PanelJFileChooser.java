@@ -8,6 +8,8 @@ import java.awt.event.ActionListener;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
+import java.io.IOException;
+import java.nio.file.Files;
 
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
@@ -41,14 +43,14 @@ public class PanelJFileChooser extends JPanel {
 		constraints.weightx = 1;
 		this.add(jtfNombre, constraints);
 		
-		// Incluyo el botón que abrirá el dialogo del JFileChooser
+		// Incluyo el botï¿½n que abrirï¿½ el dialogo del JFileChooser
 		constraints.gridx = 1;
 		constraints.gridy = 0;
 		constraints.fill = GridBagConstraints.HORIZONTAL;
 		constraints.weightx = 0.25;
 		this.add(jbtAbrir, constraints);
 		
-		// Incluyo el área de texto que mostrará el fichero
+		// Incluyo el ï¿½rea de texto que mostrarï¿½ el fichero
 		constraints.gridx = 0;
 		constraints.gridy = 1;
 		constraints.gridwidth = 2;
@@ -60,7 +62,7 @@ public class PanelJFileChooser extends JPanel {
 		constraints.weighty = 1;
 		this.add(jtaContenidoFichero, constraints);
 
-		// Funcionalidad al botón
+		// Funcionalidad al botï¿½n
 		jbtAbrir.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
@@ -81,9 +83,9 @@ public class PanelJFileChooser extends JPanel {
 		// Establecimiento de la carpeta de inicio
 		this.jfileChooser.setCurrentDirectory(new File("C:\\"));
 		
-		// Tipo de selección que se hace en el diálogo
-		this.jfileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY); // Sólo selecciona ficheros
-		//this.jfileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY); // Sólo selecciona ficheros
+		// Tipo de selecciï¿½n que se hace en el diï¿½logo
+		this.jfileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY); // Sï¿½lo selecciona ficheros
+		//this.jfileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY); // Sï¿½lo selecciona ficheros
 		//this.jfileChooser.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES); // Selecciona ficheros y carpetas
 		
 		// Filtro del tipo de ficheros que puede abrir
@@ -102,7 +104,7 @@ public class PanelJFileChooser extends JPanel {
 			}
 		});
 		
-		// Abro el diálogo para la elección del usuario
+		// Abro el diï¿½logo para la elecciï¿½n del usuario
 		int seleccionUsuario = jfileChooser.showOpenDialog(null);
 		
 		if (seleccionUsuario == JFileChooser.APPROVE_OPTION) {
@@ -111,27 +113,53 @@ public class PanelJFileChooser extends JPanel {
 			// Vuelco el nombre del fichero sobre el JTextField
 			this.jtfNombre.setText(fichero.getAbsolutePath());
 			
-			if (fichero.isFile()) {
-				try {
-					FileReader fileReader = new FileReader(fichero);
-					BufferedReader bufferedReader = new BufferedReader(fileReader);
-			
-					StringBuffer sb = new StringBuffer();
-					String lineaDelFichero;
-			
-					// Lectura del fichero línea a línea
-					while ((lineaDelFichero = bufferedReader.readLine()) != null) {
-						sb.append(lineaDelFichero + "\n");
-					}
-					
-					// Volcamos el contenido del fichero al JTextArea
-					this.jtaContenidoFichero.setText(sb.toString());
-				}
-				catch (Exception ex) {
-					ex.printStackTrace();
-				}
-			}
+			// Volcamos el contenido del fichero al JTextArea
+			this.jtaContenidoFichero.setText(leerContenidoFicheroTexto(fichero));
 		}
 	}
 	
+	
+	/**
+	 * 
+	 * @param f
+	 * @return
+	 */
+	private String leerContenidoFicheroTexto (File f) {
+		if (f.isFile()) {
+			try {
+				FileReader fileReader = new FileReader(f);
+				BufferedReader bufferedReader = new BufferedReader(fileReader);
+		
+				StringBuffer sb = new StringBuffer();
+				String lineaDelFichero;
+		
+				// Lectura del fichero lï¿½nea a lï¿½nea
+				while ((lineaDelFichero = bufferedReader.readLine()) != null) {
+					sb.append(lineaDelFichero + "\n");
+				}
+				
+				return sb.toString();
+			}
+			catch (Exception ex) {
+				ex.printStackTrace();
+			}
+		}
+		return "Imposible obtener el contenido del fichero";
+	}
+	
+	
+	/**
+	 * 
+	 * @param f
+	 * @return
+	 */
+	private byte[] leerContenidoFicheroBinario (File f) {
+		try {
+			return Files.readAllBytes(f.toPath());
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return new byte[] {};
+	}
 }

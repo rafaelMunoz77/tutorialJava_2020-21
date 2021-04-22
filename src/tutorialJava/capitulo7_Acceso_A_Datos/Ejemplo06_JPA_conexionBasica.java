@@ -65,7 +65,7 @@ public class Ejemplo06_JPA_conexionBasica {
 
 		TypedQuery<Coche> q = em.createQuery("SELECT c FROM Coche c where c.id = :id", Coche.class);
 		q.setParameter("id", 100);
-		Coche coche = (Coche) q.getSingleResult();
+		Coche coche = q.getSingleResult();
 		
 		if (coche != null) {
 			System.out.println("Coche localizado -> " + coche.getId() + " " + coche.getModelo() + " " +
@@ -85,7 +85,7 @@ public class Ejemplo06_JPA_conexionBasica {
 		
 		EntityManager em = entityManagerFactory.createEntityManager();
 		
-		Query q = em.createNativeQuery("SELECT * FROM coche;", Coche.class);
+		Query q = em.createNativeQuery("SELECT * FROM coche", Coche.class);
 		
 		List<Coche> coches = (List<Coche>) q.getResultList();
 		
@@ -107,7 +107,7 @@ public class Ejemplo06_JPA_conexionBasica {
 		
 		TypedQuery<Coche> q = em.createQuery("SELECT c FROM Coche c", Coche.class);
 		
-		List<Coche> coches = (List<Coche>) q.getResultList();
+		List<Coche> coches = q.getResultList();
 		
 		for (Coche coche : coches) {
 			System.out.println("Coche: " + coche.getId() + " modelo: " + coche.getModelo());
@@ -125,9 +125,9 @@ public class Ejemplo06_JPA_conexionBasica {
 		
 		EntityManager em = entityManagerFactory.createEntityManager();
 		
-		Query q = em.createNamedQuery("Coche.findAll");//("SELECT c FROM Coche c", Coche.class);
+		TypedQuery<Coche> q = (TypedQuery<Coche>) em.createNamedQuery("Coche.findAll");//("SELECT c FROM Coche c", Coche.class);
 		
-		List<Coche> coches = (List<Coche>) q.getResultList();
+		List<Coche> coches = q.getResultList();
 		
 		for (Coche coche : coches) {
 			System.out.println("Coche: " + coche.getId() + " modelo: " + coche.getModelo());
@@ -146,7 +146,7 @@ public class Ejemplo06_JPA_conexionBasica {
 		EntityManager em = entityManagerFactory.createEntityManager();
 
 		Coche coche = (Coche) em.find(Coche.class, 1);
-		
+
 		System.out.println("Fabricante -> " + coche.getFabricante().getId() + " " + coche.getFabricante().getNombre());
 		
 		for (Venta venta : coche.getVentas()) {
@@ -168,13 +168,19 @@ public class Ejemplo06_JPA_conexionBasica {
 
 		EntityManager em = entityManagerFactory.createEntityManager();
 
-		Fabricante fab = new Fabricante();
-		fab.setCif("12345678A");
-		fab.setNombre("Coches Rafa");
 		
-		em.getTransaction().begin();
-		em.persist(fab);
-		em.getTransaction().commit();
+		for (int i = 0; i < 3; i++) {
+			Fabricante fab = new Fabricante();
+			fab.setCif("12345678A");
+			fab.setNombre("Coches Rafa");
+			
+			em.getTransaction().begin();
+			em.persist(fab);
+			em.getTransaction().commit();			
+		}
+		
+		
+		
 		
 		TypedQuery<Fabricante> q = em.createQuery("SELECT f FROM Fabricante as f", Fabricante.class);
 		
@@ -245,7 +251,7 @@ public class Ejemplo06_JPA_conexionBasica {
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		obtencionUnaSolaEntidad();
+		//obtencionUnaSolaEntidad();
 		//obtencionUnaSolaEntidadSegundoMetodo();
 		//obtencionUnaSolaEntidadTercerMetodo();
 		//listadoEntidades();
@@ -254,7 +260,7 @@ public class Ejemplo06_JPA_conexionBasica {
 		//obtencionEntidadesRelacionadas();
 		//creacionEntidad();
 		//modificacionEntidad();
-		//eliminacionEntidad();
+		eliminacionEntidad();
 	}
 
 }
