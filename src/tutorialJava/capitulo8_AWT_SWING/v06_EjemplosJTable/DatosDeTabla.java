@@ -12,7 +12,7 @@ public class DatosDeTabla {
 	 * @return
 	 */
 	public static String[] getTitulosColumnas() {
-		return new String[] {"Id", "Nombre", "1บ apellido", "2บ apellido", "Fecha Nac.", "Edad", "Activo", "Provincia"};
+		return new String[] {"Id", "Nombre", "1ยบ apellido", "2ยบ apellido", "Fecha Nac.", "Edad", "Activo", "Provincia"};
 	}
 
 	/**
